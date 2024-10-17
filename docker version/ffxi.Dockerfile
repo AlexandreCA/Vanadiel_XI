@@ -4,6 +4,7 @@ FROM ubuntu:jammy
 # Mettre à jour les paquets et installer des dépendances
 RUN apt-get update && apt-get install -y \
     git \
+	nano \
     python3 \
     python3-pip \
     g++-10 \
