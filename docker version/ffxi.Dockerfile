@@ -1,15 +1,28 @@
-# Utiliser l'image de base Ubuntu Jammy
+# Utiliser l'image de base Ubuntu avec systemd
 FROM ubuntu:jammy
 
 # Créer un utilisateur non-root et un groupe
-RUN useradd -m -s /bin/bash vanadielxi
+RUN useradd -m -s /bin/bash vanadielxi && \
+    echo "vanadielxi:vanadielxi" | chpasswd && \
+    apt-get update && apt-get install -y sudo
+	
+# Ajouter l'utilisateur au groupe sudo
+RUN usermod -aG sudo vanadielxi
 
-# Mettre à jour les paquets et installer des dépendances
-RUN apt-get update && apt-get install -y \
+# Définir le répertoire de travail
+WORKDIR /Vanadiel_XI
+
+## Installer les dépendances nécessaires
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    g++ \
+    systemd \
     git \
     nano \
     python3 \
     python3-pip \
+	python3-dev \
     g++-10 \
     cmake \
     make \
@@ -21,10 +34,8 @@ RUN apt-get update && apt-get install -y \
     libmariadb-dev \
     binutils \
     binutils-dev \
+    sudo \
     && apt-get clean && rm -rf /var/lib/apt/lists/*  # Nettoyer les fichiers temporaires
-
-# Définir le répertoire de travail
-WORKDIR /Vanadiel_XI
 
 # Cloner le dépôt avec les sous-modules
 # Cette étape se fait avec l'utilisateur root, mais il ne pourra pas écrire dans le répertoire du projet par la suite.
@@ -50,4 +61,4 @@ RUN cmake .. && make -j$(nproc)
 EXPOSE 80 54230
 
 # Commande à exécuter lorsque le conteneur démarre
-CMD ["bash"]
+CMD ["/lib/systemd/systemd"]
