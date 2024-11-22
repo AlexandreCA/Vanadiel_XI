@@ -4,9 +4,6 @@
 -- Starts A Thirst for the Ages, A Thirst for the Eons, A Thirst for Eternity, and A Thirst Before Time
 -- !pos -36.5290 -0.1500 -24.5645 257
 -----------------------------------
-
-local zones[xi.zone.EASTERN_ADOULIN] = zoneszones[xi.zone.EASTERN_ADOULIN]
-
 ---@type TNpcEntity
 local entity = {}
 
