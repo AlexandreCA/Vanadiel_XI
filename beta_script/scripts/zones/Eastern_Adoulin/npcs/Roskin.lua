@@ -2,7 +2,7 @@
 -- Area: Eastern Adoulin (257)
 -- NPC: Roskin
 -- Starts A Thirst for the Ages, A Thirst for the Eons, A Thirst for Eternity, and A Thirst Before Time
--- !pos -34.950 -0.150 -25.140 
+-- !pos -36.5290 -0.1500 -24.5645 257
 -----------------------------------
 
 local zones[xi.zone.EASTERN_ADOULIN] = zoneszones[xi.zone.EASTERN_ADOULIN]

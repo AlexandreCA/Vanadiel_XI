@@ -2,7 +2,7 @@
 -- Zone : Eastern Adoulin (257)
 -- NPC : Roskin
 -- Type : Quête A Thirst for the Eons (non répétable)
--- Position : !pos -34.950 -0.150 -25.140 257
+-- !pos -36.5290 -0.1500 -24.5645 257
 -----------------------------------
 
 ---@type TNpcEntity
