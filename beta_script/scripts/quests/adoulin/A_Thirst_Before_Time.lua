@@ -19,7 +19,7 @@ end
 
 -- Première étape : Rencontre avec Roskin pour obtenir l'Imprint Device S
 entity.onTalkToRoskinFirstTime = function(player)
-    player:addKeyItem(1234)  -- Remise de l'objet clé : Imprint Device S
+    player:addKeyItem(2614)  -- Remise de l'objet clé : Imprint Device S
     player:startEvent(2)  -- Cutscene d'activation
 end
 
@@ -40,13 +40,13 @@ end
 
 -- Après le combat contre Inquisitor Mortuus, obtenir le Weathered Haverton hat
 entity.onFightInquisitorMortuus = function(player)
-    player:addKeyItem(5678)  -- Remise de l'objet clé : Weathered Haverton hat
+    player:addKeyItem(2842)  -- Remise de l'objet clé : Weathered Haverton hat
     player:startEvent(6)  -- Cutscene après le combat avec Balamor, Oston, Lola et Palomel
 end
 
 -- Après le combat, obtenir le Forgotten Memory
 entity.onObtainForgottenMemory = function(player)
-    player:addKeyItem(9101)  -- Remise de l'objet clé : Forgotten Memory
+    player:addKeyItem(2840)  -- Remise de l'objet clé : Forgotten Memory
     player:startEvent(7)  -- Final cutscene
 end
 

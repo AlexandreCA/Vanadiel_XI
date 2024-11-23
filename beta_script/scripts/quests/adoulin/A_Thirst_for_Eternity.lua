@@ -16,7 +16,7 @@ end
 -- Question de Roskin pour l'activation
 entity.onRoskinQuestion = function(player, npc, answer)
     if answer == 1 then  -- Choisir la première réponse pour activer correctement la quête
-        player:addKeyItem(1234)  -- Remise de l'objet clé : Elder Wooden Box
+        player:addKeyItem(2613)  -- Remise de l'objet clé : Elder Wooden Box
         player:startEvent(2)  -- Passage à l'étape suivante
     else
         player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.ROSKIN_QUEST_ALREADY_COMPLETED)  -- Message d'erreur
@@ -25,7 +25,7 @@ end
 
 -- Étape de la quête : Rencontre avec Palomel
 entity.onTalkToPalomel = function(player)
-    player:addKeyItem(5678)  -- Remise de l'objet clé : Imprint Device S
+    player:addKeyItem(2614)  -- Remise de l'objet clé : Imprint Device S
     player:startEvent(3)  -- Passage à l'étape suivante
 end
 
@@ -41,25 +41,25 @@ end
 
 -- Restauration des archives : Ceizak Battlegrounds
 entity.onVisitCeizak = function(player)
-    player:addKeyItem(9101)  -- Remise de l'objet clé : Record of a thousand lights
+    player:addKeyItem(2618)  -- Remise de l'objet clé : Record of a thousand lights
     player:startEvent(6)  -- Passer à l'étape suivante
 end
 
 -- Restauration des archives : Cirdas Caverns
 entity.onVisitCirdas = function(player)
-    player:addKeyItem(9102)  -- Remise de l'objet clé : Record of a cavernous foray
+    player:addKeyItem(2616)  -- Remise de l'objet clé : Record of a cavernous foray
     player:startEvent(7)  -- Passer à l'étape suivante
 end
 
 -- Visite de la station frontière de Yorcia Weald
 entity.onVisitYorcia = function(player)
-    player:addKeyItem(9103)  -- Remise de l'objet clé : Record of the generals' foray
+    player:addKeyItem(2615)  -- Remise de l'objet clé : Record of the generals' foray
     player:startEvent(8)  -- Passer à l'étape suivante
 end
 
 -- Visite de Kamihr Drifts
 entity.onVisitKamihr = function(player)
-    player:addKeyItem(9104)  -- Remise de l'objet clé : Record of the knight in black
+    player:addKeyItem(2617)  -- Remise de l'objet clé : Record of the knight in black
     player:startEvent(9)  -- Final cutscene et récompense
 end
 

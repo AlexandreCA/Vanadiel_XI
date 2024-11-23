@@ -17,9 +17,9 @@ entity.onTrade = function(player, npc, trade)
     end
 
     -- Vérifier si le joueur a donné l'objet "Ulbuconut Milk" ou "Ulbuconut Milk +1"
-    if trade:hasItemQty(638, 1) or trade:hasItemQty(639, 1) then
+    if trade:hasItemQty(5976, 1) or trade:hasItemQty(5977, 1) then
         -- Vérifier si le joueur a le Key Item "Dictum on Colonization"
-        if player:hasKeyItem(19616) then
+        if player:hasKeyItem(2587 ) then
             if player:getVar("RoskinQuestCompletedEons") == 1 then
                 player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.ROSKIN_QUEST_ALREADY_COMPLETED_EONS)
                 return
@@ -28,12 +28,12 @@ entity.onTrade = function(player, npc, trade)
             trade:confirm()
 
             -- Ajouter les Key Items nécessaires pour la quête
-            player:addKeyItem(19610)  -- Copy of "Wrath of the Land"
-            player:addKeyItem(19612)  -- Report of a Sorcerous Nation
-            player:addKeyItem(19611)  -- Copy of "The Verdancy"
-            player:addKeyItem(19614)  -- Giant Sheep Export Record
-            player:addKeyItem(19616)  -- Dictum on Colonization
-            player:addKeyItem(19624)  -- Copy of "Adoulin's Patroness" (optionnel pour CS amusant)
+            player:addKeyItem(2580)  -- Copy of "Wrath of the Land"
+            player:addKeyItem(2584)  -- Report of a Sorcerous Nation
+            player:addKeyItem(2585)  -- Copy of "The Verdancy"
+            player:addKeyItem(2586)  -- Giant Sheep Export Record
+            player:addKeyItem(2587)  -- Dictum on Colonization
+            player:addKeyItem(2269)  -- Copy of "Adoulin's Patroness" (optionnel pour CS amusant)
             player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.KEYITEMS_RECEIVED_EONS)
             player:startEvent(6)  -- ID de la cutscene associée pour choisir les items
             player:setVar("RoskinLastInteraction", os.time())
@@ -60,14 +60,14 @@ entity.onTrigger = function(player, npc)
             return
         end
 
-        if not player:hasKeyItem(19610) then  -- Copy of "Wrath of the Land"
+        if not player:hasKeyItem(2580) then  -- Copy of "Wrath of the Land"
             -- Ajouter les Key Items nécessaires pour la quête
-            player:addKeyItem(19610)  -- Copy of "Wrath of the Land"
-            player:addKeyItem(19612)  -- Report of a Sorcerous Nation
-            player:addKeyItem(19611)  -- Copy of "The Verdancy"
-            player:addKeyItem(19614)  -- Giant Sheep Export Record
-            player:addKeyItem(19616)  -- Dictum on Colonization
-            player:addKeyItem(19624)  -- Copy of "Adoulin's Patroness" (optionnel pour CS amusant)
+            player:addKeyItem(2580)  -- Copy of "Wrath of the Land"
+            player:addKeyItem(2584)  -- Report of a Sorcerous Nation
+            player:addKeyItem(2585)  -- Copy of "The Verdancy"
+            player:addKeyItem(2586)  -- Giant Sheep Export Record
+            player:addKeyItem(2587)  -- Dictum on Colonization
+            player:addKeyItem(2269)  -- Copy of "Adoulin's Patroness" (optionnel pour CS amusant)
             player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.KEYITEMS_RECEIVED_EONS)
             player:startEvent(6)  -- ID de la cutscene associée pour choisir les items
             player:setVar("RoskinLastInteraction", os.time())
