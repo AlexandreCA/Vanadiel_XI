@@ -22,8 +22,10 @@ entity.onTrade = function(player, npc, trade)
             player:addKeyItem(2265)  -- Royal Fiat banning colonization
             player:addKeyItem(2266)  -- Record of the 17th Assembly
             player:addKeyItem(2267)  -- Copy of the alliance agreement
+			player:addKeyItem(2268)  -- ULBUKAN_NAVIGATION_CHART 
+            player:addKeyItem(2269)  -- COPY_OF_ADOULINS_PATRONESS 
             player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.KEYITEMS_RECEIVED)
-            player:startEvent(5032)  -- ID de la cutscene associée
+            player:startEvent(5052)  -- ID de la cutscene associée
             player:setVar("RoskinLastInteraction", os.time())
         else
             player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.MISSING_PERMIT)
@@ -35,7 +37,7 @@ end
 
 -- Fonction appelée lorsque le joueur interagit avec l'NPC
 entity.onTrigger = function(player, npc)
-    if player:hasKeyItem(2156) then  -- Adoulinian Charter Permit
+    if player:hasKeyItem(2894) then  -- Adoulinian Charter Permit
         if player:getVar("RoskinQuestCompleted") == 1 then
             player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.ROSKIN_QUEST_ALREADY_COMPLETED)
             return
@@ -45,6 +47,8 @@ entity.onTrigger = function(player, npc)
             player:addKeyItem(2265)  -- Royal Fiat banning colonization
             player:addKeyItem(2266)  -- Record of the 17th Assembly
             player:addKeyItem(2267)  -- Copy of the alliance agreement
+            player:addKeyItem(2268)  -- ULBUKAN_NAVIGATION_CHART 
+            player:addKeyItem(2269)  -- COPY_OF_ADOULINS_PATRONESS 
             player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.KEYITEMS_RECEIVED)
             player:startEvent(5032)  -- ID de la cutscene associée
             player:setVar("RoskinLastInteraction", os.time())
