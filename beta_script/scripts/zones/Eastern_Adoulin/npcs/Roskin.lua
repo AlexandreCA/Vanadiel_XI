@@ -9,7 +9,7 @@ local entity = {}
 
 -- Trade handling
 entity.onTrade = function(player, npc, trade)
-    if trade:hasItemQty(12345, 1) and player:getVar("AThirstForTheAgesStarted") == 1 then
+    if trade:hasItemQty(5944, 1) and player:getVar("AThirstForTheAgesStarted") == 1 then
         player:tradeComplete()
         player:messageSpecial(zones[xi.zone.EASTERN_ADOULIN].text.A_THIRST_FOR_THE_AGES_COMPLETE)
         player:setVar("AThirstForTheAgesCompleted", 1)
