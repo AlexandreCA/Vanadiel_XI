@@ -46,7 +46,7 @@ entity.onTrigger = function(player, npc)
             player:addKeyItem(2266)  -- Record of the 17th Assembly
             player:addKeyItem(2267)  -- Copy of the alliance agreement
             player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.KEYITEMS_RECEIVED)
-            player:startEvent(4)  -- ID de la cutscene associée
+            player:startEvent(5032)  -- ID de la cutscene associée
             player:setVar("RoskinLastInteraction", os.time())
         else
             player:messageSpecial(zones[player:EASTERN_ADOULIN()].text.ALREADY_HAS_KEYITEMS)
