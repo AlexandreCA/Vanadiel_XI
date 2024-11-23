@@ -22,7 +22,7 @@ end
 -- Trigger handling
 entity.onTrigger = function(player, npc)
     if player:getVar("AThirstForTheAgesCompleted") == 0 and player:getVar("AThirstForTheAgesStarted") == 1 then
-        player:startEvent(3031)
+        player:startEvent(5032)
     else
         player:startEvent(5030)
     end
