@@ -63,25 +63,6 @@
 			COMMON_SENSE_SURVIVAL          			= 13891, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network.
 		},
 		npc =
-		{
-			[17830083] = { -- ID de Roskin
-            onTrigger = function(player, npc)
-                -- Vérifie si la quête "A Thirst Before Time" a été complétée
-                if player:getVar("AThirstBeforeTimeCompleted") == 1 then
-                    player:messageSpecial(zones[xi.zone.EASTERN_ADOULIN].text.ROSKIN_QUEST_JUST_COMPLETED)
-                else
-                    player:startEvent(6) -- Lance l'événement pour "A Thirst Before Time"
-                end
-            end,
-
-            onEventFinish = function(player, csid, option, npc)
-                if csid == 6 then
-                    -- Ajouter la récompense pour la quête "A Thirst Before Time"
-                    player:addCurrency("bayld", 10000) -- Récompense de bayld
-                    player:setVar("AThirstBeforeTimeCompleted", 1) -- Marquer la quête comme terminée
-                    player:messageSpecial(zones[xi.zone.EASTERN_ADOULIN].text.ROSKIN_QUEST_COMPLETE) -- Message de fin de quête
-                end
-            end,
-        },
+		{    
     },
 }

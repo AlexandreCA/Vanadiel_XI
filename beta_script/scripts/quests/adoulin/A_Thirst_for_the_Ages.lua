@@ -41,7 +41,7 @@ entity.onTrigger = function(player, npc)
             return
         end
 
-        if not player:hasKeyItem(1234) then
+        if not player:hasKeyItem(2156) then
             player:addKeyItem(2265)  -- Royal Fiat banning colonization
             player:addKeyItem(2266)  -- Record of the 17th Assembly
             player:addKeyItem(2267)  -- Copy of the alliance agreement
