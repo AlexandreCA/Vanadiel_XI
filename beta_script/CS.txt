@@ -1,0 +1,33 @@
+Roskin: 115;116;120;
+Yocile: 123;
+Palomel: 43;124;
+Greebly: 125;
+Fremillia: 111;112;114;121;122;127;130;135;138;
+Ploh Trishbahk: 49;107;108;109;113;114;126;
+Eternal flame: 110;
+Lola: 106;
+Oscairn: 44;90;91;105;
+Estelle: 96;101;102;103;104;
+Margret: 97;100;
+??: 99;
+Chumli-Mojumli: 48;98;
+Rigobertine: 46;89;93;94;95;
+Amchuchu: 92;
+Runje Desaali: 88;117;118;119;131;132;133;134;
+Nhili Uvolep: 33;34;35;36;37;38;39; 40;41;45;86;87;
+Octavien: 23;24;25;26;27;28;29;55;56;57;58;59;60;61;62;63;64;65;66;67;68;69;70;71;72;73;74;75;76;77;78;79;80;81;82;85;136;
+Malgrom: 84;
+Bernegeois: 83;
+Zaffeld: 31;32;128;129;
+Sharuru: 50;51;52;53;54;
+Oingo-Zoingo: 47;
+Jozhud: 42;
+Dimmian: 30;
+Ysadel: 11;
+Bheva Grantih: 5;
+Inthius: 4;
+Terianne: 2;
+
+
+
+

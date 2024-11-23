@@ -49,7 +49,7 @@ entity.onTrigger = function(player, npc)
     elseif player:getVar("AThirstBeforeTimeCompleted") == 0 and player:getVar("AThirstBeforeTimeStarted") == 1 then
         player:startEvent(40) -- Continuer "A Thirst Before Time"
     else
-        player:startEvent(5) -- Offrir les quêtes disponibles
+        player:startEvent(115) -- Offrir les quêtes disponibles
     end
 end
 
