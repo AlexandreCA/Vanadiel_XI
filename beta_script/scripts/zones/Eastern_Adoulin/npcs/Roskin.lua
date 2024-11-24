@@ -4,7 +4,7 @@
 -- Manages quests: A Thirst for the Ages, Eons, Eternity, and Before Time
 -- !pos -36.5290 -0.1500 -24.5645 257
 -----------------------------------
-local ID = require("scripts/zones/Eastern_Adoulin/IDs")
+local ID = zones[xi.zone.EASTERN_ADOULIN]
 -----------------------------------
 
 ---@type TNpcEntity
@@ -12,13 +12,11 @@ local entity = {}
 
 -- Quand le joueur parle à Roskin
 entity.onTrigger = function(player, npc)
-    -- Si la quête n'a pas encore été lancée
-    if player:getVar("AThirstForTheAgesStarted") == 0 then
+    -- A THIRST FOR THE AGES
+    local cotrQuestStatus = player:getQuestStatus(xi.questLog.ADOULIN, xi.quest.id.adoulin.A_THIRST_FOR_THE_AGES)
+    if cotrQuestStatus == xi.questStatus.QUEST_AVAILABLE then
         -- Lancer la CS de début de quête
         player:startEvent(5030)
-    else
-        -- Si la quête a déjà été commencée, ne rien faire
-        player:messageSpecial("La quête a déjà commencé.")
     end
 end
 
@@ -38,17 +36,11 @@ entity.onTrade = function(player, npc, trade)
 end
 
 -- Quand la CS se termine
-entity.onEventFinish = function(player, csid, option)
-    if csid == 5030 then
-        -- Marquer la quête comme commencée
-        player:setVar("AThirstForTheAgesStarted", 1)
-        player:messageSpecial(ID.text.A_THIRST_FOR_THE_AGES_START)
-    elseif csid == 5032 then
-        -- Marquer la quête comme complétée
-        player:setVar("AThirstForTheAgesCompleted", 1)
-        player:messageSpecial(ID.text.A_THIRST_FOR_THE_AGES_COMPLETE)
-        player:addCurrency("bayld", 10000)  -- Récompense (exemple)
+entity.onEventFinish = function(player, csid, option, npc)
+    -- A THIRST FOR THE AGES
+    if csid == 5032 then
     end
 end
 
 return entity
+
