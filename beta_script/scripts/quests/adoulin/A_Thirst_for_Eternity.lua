@@ -79,15 +79,19 @@ end
 entity.onTalkToQuwi = function(player)
     local quwiState = player:getCharVar("QuwiState")  -- Récupère l'état actuel de la quête de Quwi
 
-    if quwiState == 2 then
+    if quwiState == 1 then
         -- Lorsque l'état est 2, l'événement 152 est déclenché
         player:startEvent(152)
 	end
 end
 
 -- Retour à Roskin pour des instructions supplémentaires (optionnel)
-entity.onReturnToRoskin = function(player)
-    player:startEvent(5129)  -- Roskin vous parle de l'utilisation de l'appareil dans diverses zones
+entity.onTalkToRoskin = function(player)
+    local roskinState = player:getCharVar("RoskinState")  -- Récupère l'état actuel de la quête de Roskin
+
+    if roskinState == 1 then
+        -- Lorsque l'état est 1, l'événement 5129 est déclenché
+        player:startEvent(5129)
     end
 end
 
@@ -118,7 +122,7 @@ entity.onVisitKamihr = function(player)
     player:startEvent(59)  
     end
 end
-
+----------------------------------------------------------------------------------------------------------------- Ou j'en suis rendu
 -- CS avec Roskin
 entity.onTalkToRoskin = function(player)
     player:addBayld(8000) -- Récompense : 8000 Baylds

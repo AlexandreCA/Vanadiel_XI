@@ -40,8 +40,12 @@ zones[xi.zone.EASTERN_ADOULIN] =
     {
     	[17830083] = "Roskin",
 		[17830088] = "Palomel",
+		[17846818] = "Mnemonic_Pool",
+		[17846826] = "???",
+		[17855091] = "Mnemonic_Pool",
+		[17871250] = "Mnemonic_Pool",
+		[17883960] = "Mnemonic_Pool",
 		[17940504] = "History",
-		
     },
 }
 
