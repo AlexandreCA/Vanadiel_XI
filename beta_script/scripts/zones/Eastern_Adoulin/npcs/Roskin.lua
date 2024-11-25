@@ -4,7 +4,7 @@
 -- Manages quests: A Thirst for the Ages, Eons, Eternity, and Before Time
 -- !pos -36.5290 -0.1500 -24.5645 257
 -----------------------------------
-local ID = zones[xi.zone.EASTERN_ADOULIN]
+local ID = require("scripts/zones/Eastern_Adoulin/IDs")
 -----------------------------------
 
 ---@type TNpcEntity
@@ -12,14 +12,13 @@ local entity = {}
 
 -- Quand le joueur parle à Roskin
 entity.onTrigger = function(player, npc)
-    -- Vérifier si la quête est disponible ou acceptée
-    local cotrQuestStatus = player:getQuestStatus(xi.questLog.ADOULIN, xi.quest.id.adoulin.A_THIRST_FOR_THE_AGES)
-    if cotrQuestStatus == xi.questStatus.QUEST_AVAILABLE then
-        -- Lancer la CS de début de quête (5030)
+    -- Si la quête n'a pas encore été lancée
+    if player:getVar("AThirstForTheAgesStarted") == 0 then
+        -- Lancer la CS de début de quête
         player:startEvent(5030)
-    elseif cotrQuestStatus == xi.questStatus.QUEST_ACCEPTED then
-        -- Si la quête est déjà acceptée, lancer la CS 5033 pour demander les Keyitems
-        player:startEvent(5033)
+    else
+        -- Si la quête a déjà été commencée, ne rien faire
+        player:messageSpecial("La quête a déjà commencé.")
     end
 end
 
@@ -29,27 +28,27 @@ entity.onTrade = function(player, npc, trade)
     if trade:hasItemQty(5944, 1) then
         -- Compléter l'échange
         player:tradeComplete()
+
         -- Lancer la CS 5032 après l'échange
         player:startEvent(5032)
+    else
+        -- Si l'item n'est pas celui attendu, afficher un message
+        player:messageSpecial(ID.text.WRONG_ITEM)
     end
-end    
+end
 
--- Quand la CS 5032 se termine
-entity.onEventFinish = function(player, csid, option, npc)
-    if csid == 5032 then
-        -- Après l'échange, on attend que le joueur reparle au NPC pour démarrer la CS 5033
-        -- Cela n'a pas besoin de faire d'autres actions ici
-    elseif csid == 5033 then
-        -- Vérifier si le joueur possède tous les Keyitems
-        if player:hasKeyItem(2265) and player:hasKeyItem(2266) and player:hasKeyItem(2267) and player:hasKeyItem(2268) and player:hasKeyItem(2269) then
-            -- Si tous les keyitems sont présents, lancer la CS 5034
-            player:startEvent(5034)
-        else
-            -- Si le joueur n'a pas tous les keyitems, afficher un message d'erreur
-            player:messageSpecial(ID.text.MISSING_KEYITEMS)
-        end
+-- Quand la CS se termine
+entity.onEventFinish = function(player, csid, option)
+    if csid == 5030 then
+        -- Marquer la quête comme commencée
+        player:setVar("AThirstForTheAgesStarted", 1)
+        player:messageSpecial(ID.text.A_THIRST_FOR_THE_AGES_START)
+    elseif csid == 5032 then
+        -- Marquer la quête comme complétée
+        player:setVar("AThirstForTheAgesCompleted", 1)
+        player:messageSpecial(ID.text.A_THIRST_FOR_THE_AGES_COMPLETE)
+        player:addCurrency("bayld", 10000)  -- Récompense (exemple)
     end
 end
 
 return entity
-
