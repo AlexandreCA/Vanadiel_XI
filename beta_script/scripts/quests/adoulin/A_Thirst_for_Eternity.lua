@@ -122,80 +122,60 @@ entity.onVisitKamihr = function(player)
     player:startEvent(59)  
     end
 end
------------------------------------------------------------------------------------------------------------------ Ou j'en suis rendu
+
 -- CS avec Roskin
 entity.onTalkToRoskin = function(player)
-    player:addBayld(8000) -- Récompense : 8000 Baylds
-    player:startEvent(5130)  -- Activation de la CS
+    local roskinState = player:getCharVar("RoskinState")  -- Récupère l'état de Roskin
+    if roskinState == 0 and answer == nil then
+        player:addBayld(8000)  -- Récompense : 8000 Baylds
+        player:startEvent(5130)  -- Activation de la scène (CS)
+		player:addTitle(1234)  -- Attribue le titre "Thousand-Year Traveler"
+        player:setCharVar("RoskinState", 1)  -- Met à jour l'état de la quête à 1
     end
 end
 
--- Rencontre avec Quwi Orihbhe à Rabao
-entity.onQuwiQuestion = function(player, npc, answer)
-    local quwiState = player:getCharVar("QuwiState")
+entity.onTalkToRoskin = function(player)
+	player:startEvent(5131)
+end
 
-    -- Première interaction : pose la question
-    if quwiState == 0 and answer == nil then  
-        player:startEvent(151)                -- Lancer l'événement 151 (question de Quwi)
-        player:setCharVar("QuwiState", 1)     -- Met à jour l'état du joueur à 1
+-- CS avec Palomel
+entity.onTalkToPalomel = function(player)
+    local palomelState = player:getCharVar("PalomelState")  
+    if palomelState == 1 then
+    player:startEvent(5132) 
+end
 
-    -- Le joueur répond à la question
-    elseif quwiState == 1 then
-        if answer == 1 then
-            player:startEvent(152)            -- Lancer l'événement 152 si réponse 1
-            player:setCharVar("QuwiState", 2) -- Met à jour l'état du joueur à 2
-        elseif answer == 2 then
-            player:startEvent(153)            -- Lancer l'événement 153 si réponse 2
-            player:setCharVar("QuwiState", 3) -- Met à jour l'état du joueur à 3
-        end
-    end
+entity.onTalkToPalomel = function(player)
+	player:startEvent(5119)
+end
+
+entity.onTalkToRoskin = function(player)
+	local roskinState = player:getCharVar("RoskinState")
+	if roskinState == 0 and answer == nil then
+	player:startEvent(5200)
+	player:setCharVar("RoskinState", 1)  -- Met à jour l'état de la quête à 1
+end
+
+entity.onTalkToRoskin = function(player)
+	player:startEvent(5201)
 end
 
 entity.onHistoryQuestion = function(player, npc, answer)
     local historyState = player:getCharVar("HistoryState")
-
-    -- Première question (état 0) : Lancer l'événement et attendre la réponse
     if historyState == 0 and answer == nil then
         player:startEvent(37)  -- Lancer l'événement de la première question
         player:setCharVar("HistoryState", 1)  -- Passer à l'état 1 après la première question
-
-    -- Après la première réponse (état 1)
-    elseif historyState == 1 then
-        if answer == 1 then
-            player:setCharVar("HistoryState", 0)  -- Réinitialiser à l'état 0 si la réponse est 1
-        elseif answer == 2 then
-            player:setCharVar("HistoryState", 0)  -- Réinitialiser à l'état 0 si la réponse est 2
-        elseif answer == 3 then
-            player:setCharVar("HistoryState", 2)  -- Passer à l'état 2 si la réponse est 3
-            player:startEvent(37)  -- Relancer l'événement 37 pour la suite des questions
-        end
-
-    -- Branche supplémentaire après la réponse 3 (état 2)
-    elseif historyState == 2 then
-        if answer == 1 then
-            player:setCharVar("HistoryState", 3)  -- Passer à l'état 3 si la réponse est 1
-        elseif answer == 2 then
-            player:setCharVar("HistoryState", 4)  -- Passer à l'état 4 si la réponse est 2
-            player:startEvent(37)  -- Relancer l'événement 37 pour la suite des questions
-        end
-
-    -- Branche finale après les réponses des états 3 et 4
-    elseif historyState == 3 then
-        if answer == 1 then
-            player:setCharVar("HistoryState", 5)  -- Passer à l'état 5 si la réponse est 1
-        elseif answer == 2 then
-            player:setCharVar("HistoryState", 6)  -- Passer à l'état 6 si la réponse est 2
-        end
-    elseif historyState == 4 then
-        if answer == 1 then
-            player:setCharVar("HistoryState", 5)  -- Passer à l'état 5 si la réponse est 1
-        elseif answer == 2 then
-            player:setCharVar("HistoryState", 6)  -- Passer à l'état 6 si la réponse est 2
-        end
-    end
+	end
 end
 
-
+entity.onHistoryQuestion = function(player, npc, answer)
+    local historyState = player:getCharVar("HistoryState")
+    if historyState == 0 and answer == nil then
+        player:startEvent(1003)  
+        player:setCharVar("HistoryState", 1)  
+	end
+end
+		
 entity.onTalkToRoskin = function(player)
     local soskinState = player:getCharVar("SoskinState")  -- Récupère l'état de l'événement de Soskin
     local lastTalkTime = player:getCharVar("LastTalkTime")  -- Récupère le temps de la dernière interaction (en heures de jeu)
