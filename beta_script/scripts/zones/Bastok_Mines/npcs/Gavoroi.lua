@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: Bastok Mines
---  NPC: Gavaroi
+--  NPC: Gavoroi
 -----------------------------------
 local ID = zones[xi.zone.BASTOK_MINES]
 -----------------------------------
