@@ -4,6 +4,37 @@
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
+local ID = zones[xi.zone.VELUGANNON_PALACE]
+
+-- Spawn points from nm_spawn_points.sql
+local spawnPoints =
+{
+    blueShort   = {x = -196, y = 0,  z = 389},
+    blueLong    = {x = -121, y = 16, z = 420},
+    yellowShort = {x =  191, y = 0,  z = 399},
+    yellowLong  = {x =  141, y = 16, z = 440},
+}
+
+local pathingDirection =
+{
+    TO_EAST = 0,
+    TO_WEST = 1,
+}
+
+local currentDirection = pathingDirection.TO_EAST
+
+local paths =
+{
+    BLUE_TO_BASEMENT   = 1,
+    BLUE_TO_BLUE       = 2,
+    BLUE_TO_YELLOW     = 3,
+    YELLOW_TO_YELLOW   = 4,
+    YELLOW_TO_BASEMENT = 5,
+    BLUE_SPAWN_SHORT   = 6,
+    BLUE_SPAWN_LONG    = 7,
+    YELLOW_SPAWN_SHORT = 8,
+    YELLOW_SPAWN_LONG  = 9,
+}
 
 local pathNodes =
 {
