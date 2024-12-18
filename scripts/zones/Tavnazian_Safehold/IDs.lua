@@ -25,7 +25,6 @@ zones[xi.zone.TAVNAZIAN_SAFEHOLD] =
         OBTAIN_SCYLDS                  = 6749,  -- You obtain <number> [scyld/scylds]! Current balance: <number> [scyld/scylds].
         HUNT_CANCELED                  = 6753,  -- Hunt canceled.
         FISHING_MESSAGE_OFFSET         = 10272, -- You can't fish here.
-        NOTHING_OUT_OF_THE_ORDINARY    = 10840, -- There is nothing out of the ordinary here.
         NOMAD_MOOGLE_DIALOG            = 10904, -- I'm a traveling moogle, kupo. I help adventurers in the Outlands access items they have stored in a Mog House elsewhere, kupo.
         NILEROUCHE_SHOP_DIALOG         = 10912, -- Hello, traveler! Please have a look at these fine Tavnazian-built products!
         MAZUROOOZURO_SHOP_DIALOG       = 10913, -- Hidely-howdy-ho! I'll sell you what I've got if you fork over enough dough!
