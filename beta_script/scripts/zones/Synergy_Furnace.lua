@@ -7,7 +7,7 @@
 ---@type TNpcEntity
 local entity = {}
 
--- Constants for Synergy management in Bastok Markets
+-- Constants for Synergy management in Bastok Mines
 local SYNERGY_CRUCIBLE_KEY_ITEM_ID = 1234 
 local ITEM_ID_2768 = 2768 
 local ITEM_BEHEMOTH_KNIFE = 2769 -- Behemoth Knife ID
@@ -31,6 +31,22 @@ local SELECT_AN_ACTION_ID = 4509
 -- Element types
 local ELEMENTS = {"Fire", "Ice", "Wind", "Earth", "Lightning", "Water", "Light", "Dark"}
 
+-- Constants for skill up ranges and training
+local SYNERGY_LEVEL_CAP = 80
+local SYNERGY_TRAINING_INTERVAL = 5 -- Training every 5 levels
+local SAFE_RECIPE_GAP = 5 -- Gap between player's skill and recipe skill for efficient skill up
+
+-- Recipe for skill up
+local RECIPE_ORANGE_JUICE = {name = "Orange Juice", ingredients = {SARUTA_ORANGE_ID, 4}, element = "Water", level = 1}
+
+-- Helper function to find index of an element in a table
+function table.indexOf(t, element)
+    for i, v in ipairs(t) do
+        if v == element then return i end
+    end
+    return nil
+end
+
 -- Function to handle interaction with the Synergy Furnace
 entity.onTrigger = function(player, npc)
     if not player:hasKeyItem(SYNERGY_CRUCIBLE_KEY_ITEM_ID) then
@@ -47,36 +63,41 @@ entity.onEventFinish = function(player, csid, option, npc)
     if csid == 4500 then
         player:startEvent(SELECT_AN_ACTION_ID)
     elseif csid == SELECT_AN_ACTION_ID then
-        if option == 1 then -- Add fewell
-            if player:getCurrency("GIL") >= FEWELL_COST then
-                player:removeCurrency("GIL", FEWELL_COST)
-                player:addSynergyFewell(player:chooseElement())
-                player:addKeyItem(TOTAL_FEWELL_FED_ID)
-                player:manageMaterialsForSynergy() -- Manage materials for skill up
-                player:attemptSynergySkillUp() -- Attempt skill up on every fewell addition
+        local recipe = player:chooseRecipe()
+        if recipe and player:isRecipeWithinSafeRange(recipe.level) then
+            if option == 1 then -- Add fewell
+                if player:getCurrency("GIL") >= FEWELL_COST then
+                    player:removeCurrency("GIL", FEWELL_COST)
+                    player:manageElementalBalance(recipe)
+                    player:addKeyItem(TOTAL_FEWELL_FED_ID)
+                    player:manageMaterialsForSynergy() -- Manage materials for skill up
+                    player:attemptSynergySkillUp(recipe) -- Attempt skill up on every fewell addition
+                end
+            elseif option == 2 then -- Purge impurity
+                if player:getSynergyImpurity() > 0 then
+                    player:purgeSynergyImpurity()
+                end
+            elseif option == 3 then -- Release pressure
+                if player:getSynergyPressure() > 0 then
+                    player:releaseSynergyPressure()
+                end
+            elseif option == 4 then -- Finalize Synergy
+                if player:checkSynergyBalance() then
+                    player:finalizeSynergy()
+                    -- Don't actually finalize if skill up is the goal, just simulate failure for skill up
+                    player:failureSynergy()
+                    player:attemptSynergySkillUp(recipe) -- Skill up attempt after simulated failure
+                else
+                    player:failureSynergy()
+                    player:attemptSynergySkillUp(recipe) -- Skill up attempt even on failure to simulate learning from mistakes
+                end
+            elseif option == 5 then -- Relinquish claim
+                player:startEvent(RELINQUISH_CLAIM_ID)
+            elseif option == 6 then -- Remove apertures
+                player:startEvent(ITEM_REQUIRED_ID)
             end
-        elseif option == 2 then -- Purge impurity
-            if player:getSynergyImpurity() > 0 then
-                player:purgeSynergyImpurity()
-            end
-        elseif option == 3 then -- Release pressure
-            if player:getSynergyPressure() > 0 then
-                player:releaseSynergyPressure()
-            end
-        elseif option == 4 then -- Finalize Synergy
-            if player:checkSynergyBalance() then
-                player:finalizeSynergy()
-                -- Don't actually finalize if skill up is the goal, just simulate failure for skill up
-                player:failureSynergy()
-                player:attemptSynergySkillUp() -- Skill up attempt after simulated failure
-            else
-                player:failureSynergy()
-                player:attemptSynergySkillUp() -- Skill up attempt even on failure to simulate learning from mistakes
-            end
-        elseif option == 5 then -- Relinquish claim
-            player:startEvent(RELINQUISH_CLAIM_ID)
-        elseif option == 6 then -- Remove apertures
-            player:startEvent(ITEM_REQUIRED_ID)
+        else
+            -- Inform player that the recipe is not within the safe level range
         end
     elseif csid == ITEM_REQUIRED_ID then
         player:startEvent(4506)
@@ -186,14 +207,20 @@ function player:hasRemovableApertures()
     return player.synergyState and player.synergyState.apertures ~= nil
 end
 
-function player:attemptSynergySkillUp()
-    if player:hasItem(ITEM_BEHEMOTH_KNIFE) or player:hasItem(ITEM_BRASS_JADAGNA) then
+function player:attemptSynergySkillUp(recipe)
+    local skillUpChance = player:hasItem(SYNERGY_CUFFS_ID) and 0.2 or 0.1  -- Bonus if wearing Synergy Cuffs
+    if player:isIdealToolForSkillUp() then
         if player:hasItem(MORANT_75_ID) then
-            -- Simulate the thwacking process for skill up
-            local skillUpChance = player:hasItem(SYNERGY_CUFFS_ID) and 0.2 or 0.1  -- Bonus if wearing Synergy Cuffs
             if math.random() < skillUpChance then
                 local currentSkill = player:getSynergyRank()
-                player:setSynergyRank(currentSkill + 0.1) -- Increase skill by small amount
+                if currentSkill < SYNERGY_LEVEL_CAP then
+                    player:setSynergyRank(math.min(SYNERGY_LEVEL_CAP, currentSkill + 0.1)) -- Increase skill by small amount up to cap
+                end
+            end
+            
+            -- Check for training opportunity
+            if math.floor(player:getSynergyRank()) % SYNERGY_TRAINING_INTERVAL == 0 then
+                player:offerSynergyTraining()
             end
             
             -- Use Revertant if available to reset without material loss
@@ -201,17 +228,11 @@ function player:attemptSynergySkillUp()
                 player:removeItem(REVERTANT_ID, 1)
                 player:startSynergy() -- Reset Synergy state
             end
-        else
-            -- Inform player they need Morant 75 for skill up
         end
-    else
-        -- Inform player they need a Behemoth Knife or Brass Jadagna
     end
 end
 
 function player:setSynergyRank(newRank)
-    -- Here you would set the new Synergy Rank for the player
-    -- This might involve updating a database or player state in the game
     player:setKeyItemCount(SYNERGY_RANK_ID, newRank)
 end
 
@@ -220,9 +241,58 @@ function player:manageMaterialsForSynergy()
         -- Simulate crafting Orange Juice for Cinders
         player:removeItem(SARUTA_ORANGE_ID, 4)
         player:addCurrency("CINDERS", 125)
-    else
-        -- Inform player they need Saruta Oranges
     end
+end
+
+function player:chooseRecipe()
+    local currentSkill = player:getSynergyRank()
+    if currentSkill <= 40 then
+        return RECIPE_ORANGE_JUICE
+    else
+        -- Add more recipes here for higher skill levels
+        return nil -- No suitable recipe
+    end
+end
+
+function player:manageElementalBalance(recipe)
+    local balance = player:getSynergyElementalLevels()
+    local elementIndex = table.indexOf(ELEMENTS, recipe.element)
+    if balance[elementIndex] < 1 then
+        player:addSynergyFewell(recipe.element) -- Add the needed element
+    end
+end
+
+function player:isRecipeWithinSafeRange(recipeLevel)
+    local currentSkill = player:getSynergyRank()
+    return recipeLevel <= currentSkill + SAFE_RECIPE_GAP
+end
+
+function player:isIdealToolForSkillUp()
+    local currentSkill = player:getSynergyRank()
+    if currentSkill <= 40 then
+        return player:hasItem(ITEM_BRASS_JADAGNA)
+    else
+        return player:hasItem(ITEM_BEHEMOTH_KNIFE)
+    end
+end
+
+function player:handleThwack()
+    if player:getSynergyPressure() > 50 then
+        player:releaseSynergyPressure()
+    elseif player:getSynergyImpurity() > 5 then
+        player:purgeSynergyImpurity()
+    end
+end
+
+function player:offerSynergyTraining()
+    -- In an actual game, you'd show a dialog or event for training selection
+    -- For simplicity, we'll assume 'Pressure Handle' is always chosen or improved automatically
+    player:improveSynergySkill("Pressure Handle")
+end
+
+function player:improveSynergySkill(skillName)
+    -- This would typically update player's skill data in whatever system is storing it
+    -- For example, increasing 'Pressure Handle' skill
 end
 
 return entity
