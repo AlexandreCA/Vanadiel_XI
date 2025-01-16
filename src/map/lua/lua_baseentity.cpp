@@ -8718,6 +8718,62 @@ void CLuaBaseEntity::setJobPoints(uint16 amount)
 }
 
 /************************************************************************
+ *  Function: addJobPoints()
+ *  Purpose : Adds job points to a player based on job, amount entered
+ *  Example : player:addJobPoints(17, 30)
+ *  Notes   : Used for GM command
+ ************************************************************************/
+void CLuaBaseEntity::addJobPoints(uint8 jobID, uint16 amount)
+{
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        ShowDebug("Warning: Attempt to add Job Points for non-PC type!");
+        return;
+    }
+
+    CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+
+    PChar->PJobPoints->AddJobPoints(jobID, amount);
+    PChar->pushPacket<CMenuJobPointsPacket>(PChar);
+}
+
+/************************************************************************
+ *  Function: delJobPoints()
+ *  Purpose : Deletes job points from a player based on job, amount entered
+ *  Example : player:delJobPoints(17, 30)
+ *  Notes   : Used in NPC Oboro
+ ************************************************************************/
+void CLuaBaseEntity::delJobPoints(uint8 jobID, uint16 amount)
+{
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        ShowDebug("Warning: Attempt to delete Job Points from non-PC type!");
+        return;
+    }
+
+    CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+
+    PChar->PJobPoints->DelJobPoints(jobID, amount);
+    PChar->pushPacket<CMenuJobPointsPacket>(PChar);
+}
+
+/************************************************************************
+ *  Function: getJobPoints()
+ *  Purpose : Gets the jobs points from a player based on a specific job entered
+ *  Example : player:getJobPoints(17)
+ *  Notes   : Used in NPC Oboro
+ ************************************************************************/
+uint16 CLuaBaseEntity::getJobPoints(JOBTYPE jobID)
+{
+    if (m_PBaseEntity->objtype == TYPE_PC)
+    {
+        CCharEntity* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+        return PChar->PJobPoints->GetJobPointsByJob(jobID);
+    }
+    return 0;
+}
+
+/************************************************************************
  *  Function: masterJob()
  *  Purpose : Fully masters / unlocks player's current job
  *  Example : player:masterJob()
@@ -9745,6 +9801,27 @@ void CLuaBaseEntity::setMP(int32 value)
 
     PBattle->health.mp = 0;
     PBattle->addMP(value);
+}
+
+/************************************************************************
+ *  Function: setMaxMP()
+ *  Purpose : Sets the Maximum Mana Points of an Entity
+ *  Example : player:setMaxMP(100)
+ *  Notes   :
+ ************************************************************************/
+
+void CLuaBaseEntity::setMaxMP(int32 value)
+{
+    if (m_PBaseEntity->objtype == TYPE_NPC)
+    {
+        ShowWarning("Invalid Entity (NPC: %s) calling function.", m_PBaseEntity->getName());
+        return;
+    }
+
+    auto* PBattle = static_cast<CBattleEntity*>(m_PBaseEntity);
+
+    PBattle->health.maxmp = std::max(0, value);
+    PBattle->UpdateHealth();
 }
 
 /************************************************************************
@@ -16353,7 +16430,7 @@ void CLuaBaseEntity::spawn(sol::object const& despawnSec, sol::object const& res
 
 /************************************************************************
  *  Function: isSpawned()
- *  Purpose : Returns true if a Mob is already spawned
+ *  Purpose : Returns true if a Mob or NPC is spawned or visible
  *  Example : if mob:isSpawned() then
  *  Notes   :
  ************************************************************************/
@@ -16366,9 +16443,13 @@ bool CLuaBaseEntity::isSpawned()
     {
         return static_cast<CMobEntity*>(m_PBaseEntity)->PAI->IsSpawned();
     }
+    else if (CNpcEntity* PNpcEntity = dynamic_cast<CNpcEntity*>(m_PBaseEntity))
+    {
+        return PNpcEntity->status != STATUS_TYPE::DISAPPEAR;
+    }
     else
     {
-        ShowError("CLuaBaseEntity::isSpawned() called on entity that is not a PMobEntity.");
+        ShowError("CLuaBaseEntity::isSpawned() called on entity that is not a CMobEntity or CNpcEntity.");
     }
     return false;
 }
@@ -18737,6 +18818,9 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("addCapacityPoints", CLuaBaseEntity::addCapacityPoints);
     SOL_REGISTER("setCapacityPoints", CLuaBaseEntity::setCapacityPoints);
     SOL_REGISTER("setJobPoints", CLuaBaseEntity::setJobPoints);
+    SOL_REGISTER("addJobPoints", CLuaBaseEntity::addJobPoints);
+    SOL_REGISTER("delJobPoints", CLuaBaseEntity::delJobPoints);
+    SOL_REGISTER("getJobPoints", CLuaBaseEntity::getJobPoints);
     SOL_REGISTER("masterJob", CLuaBaseEntity::masterJob);
 
     SOL_REGISTER("getGil", CLuaBaseEntity::getGil);
@@ -18786,6 +18870,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getBaseMP", CLuaBaseEntity::getBaseMP);
     SOL_REGISTER("addMP", CLuaBaseEntity::addMP);
     SOL_REGISTER("setMP", CLuaBaseEntity::setMP);
+    SOL_REGISTER("setMaxMP", CLuaBaseEntity::setMaxMP);
     SOL_REGISTER("restoreMP", CLuaBaseEntity::restoreMP);
     SOL_REGISTER("delMP", CLuaBaseEntity::delMP);
 
