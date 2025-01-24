@@ -1728,7 +1728,7 @@ void CLuaBaseEntity::lookAt(sol::object const& arg0, sol::object const& arg1, so
     }
 
     // Avoid unpredictable results if we're too close.
-    if (!distanceWithin(m_PBaseEntity->loc.p, point, 0.1f, true))
+    if (!isWithinDistance(m_PBaseEntity->loc.p, point, 0.1f, true))
     {
         m_PBaseEntity->loc.p.rotation = worldAngle(m_PBaseEntity->loc.p, point);
         m_PBaseEntity->updatemask |= UPDATE_POS;
@@ -1745,30 +1745,37 @@ void CLuaBaseEntity::lookAt(sol::object const& arg0, sol::object const& arg1, so
 
 void CLuaBaseEntity::facePlayer(CLuaBaseEntity* PLuaBaseEntity, sol::object const& nonGlobal)
 {
-    CCharEntity* PChar = static_cast<CCharEntity*>(PLuaBaseEntity->GetBaseEntity());
-
-    if (PChar)
+    if (PLuaBaseEntity)
     {
-        bool onePersonOnly = nonGlobal.get_type() == sol::type::boolean ? nonGlobal.as<bool>() : true;
+        CCharEntity* PChar = dynamic_cast<CCharEntity*>(PLuaBaseEntity->GetBaseEntity());
 
-        if (onePersonOnly)
+        if (PChar)
         {
-            auto storedRotation           = m_PBaseEntity->loc.p.rotation;
-            m_PBaseEntity->loc.p.rotation = worldAngle(m_PBaseEntity->loc.p, PChar->loc.p);
-            // Update 1 player's client only
-            PChar->updateEntityPacket(m_PBaseEntity, static_cast<ENTITYUPDATE>(ENTITY_UPDATE), UPDATE_POS);
-            // Now that the packet is sent to that 1 player, turn this back.
-            m_PBaseEntity->loc.p.rotation = storedRotation;
+            bool onePersonOnly = nonGlobal.get_type() == sol::type::boolean ? nonGlobal.as<bool>() : true;
+
+            if (onePersonOnly)
+            {
+                auto storedRotation           = m_PBaseEntity->loc.p.rotation;
+                m_PBaseEntity->loc.p.rotation = worldAngle(m_PBaseEntity->loc.p, PChar->loc.p);
+                // Update 1 player's client only
+                PChar->updateEntityPacket(m_PBaseEntity, static_cast<ENTITYUPDATE>(ENTITY_UPDATE), UPDATE_POS);
+                // Now that the packet is sent to that 1 player, turn this back.
+                m_PBaseEntity->loc.p.rotation = storedRotation;
+            }
+            else
+            {
+                m_PBaseEntity->loc.p.rotation = worldAngle(m_PBaseEntity->loc.p, PChar->loc.p);
+                m_PBaseEntity->updatemask |= UPDATE_POS;
+            }
         }
         else
         {
-            m_PBaseEntity->loc.p.rotation = worldAngle(m_PBaseEntity->loc.p, PChar->loc.p);
-            m_PBaseEntity->updatemask |= UPDATE_POS;
+            ShowError("non-player entity used as param in CLuaBaseEntity::facePlayer call");
         }
     }
     else
     {
-        ShowError("missing or invalid entity in function call.");
+        ShowError("missing entity to CLuaBaseEntity::facePlayer call");
     }
 }
 
@@ -1813,7 +1820,7 @@ bool CLuaBaseEntity::atPoint(sol::variadic_args va)
         pos.z = vec[2];
     }
 
-    return distanceWithin(m_PBaseEntity->loc.p, pos, 0.01f);
+    return isWithinDistance(m_PBaseEntity->loc.p, pos, 0.01f);
 }
 
 /************************************************************************
@@ -2393,7 +2400,7 @@ void CLuaBaseEntity::changeMusic(uint16 blockID, uint16 musicTrackID)
 /************************************************************************
  *  Function: sendMenu()
  *  Purpose : Sends a menu to the PC (Ex: Auction, Mog House, Shop)
- *  Example : player:sendMenu(3)
+ *  Example : player:sendMenu(xi.menuType.AUCTION)
  ************************************************************************/
 
 void CLuaBaseEntity::sendMenu(uint32 menu)
@@ -10916,7 +10923,7 @@ void CLuaBaseEntity::forMembersInRange(float range, sol::function function)
     // clang-format off
     target->ForParty([&target, &range, &function](CBattleEntity* member)
     {
-        if (target->loc.zone == member->loc.zone && distanceSquared(target->loc.p, member->loc.p) < (range * range))
+        if (target->loc.zone == member->loc.zone && isWithinDistance(target->loc.p, member->loc.p, range))
         {
             function(CLuaBaseEntity(member));
         }
@@ -12805,12 +12812,11 @@ void CLuaBaseEntity::transferEnmity(CLuaBaseEntity* entity, uint8 percent, float
 
     if (PIterEntity)
     {
-        for (auto&& mob_pair : PIterEntity->SpawnMOBList)
+        FOR_EACH_PAIR_CAST_SECOND(CMobEntity*, PMob, PIterEntity->SpawnMOBList)
         {
-            if (distanceSquared(mob_pair.second->loc.p, PEntity->loc.p) < (range * range))
+            if (isWithinDistance(PMob->loc.p, PEntity->loc.p, range))
             {
-                battleutils::TransferEnmity(static_cast<CBattleEntity*>(PEntity), static_cast<CBattleEntity*>(m_PBaseEntity),
-                                            static_cast<CMobEntity*>(mob_pair.second), percent);
+                battleutils::TransferEnmity(static_cast<CBattleEntity*>(PEntity), static_cast<CBattleEntity*>(m_PBaseEntity), PMob, percent);
             }
         }
     }
@@ -14507,7 +14513,21 @@ uint16 CLuaBaseEntity::getWeaponDmg()
         return 0;
     }
 
-    return static_cast<CBattleEntity*>(m_PBaseEntity)->GetMainWeaponDmg();
+    uint16 weaponDamage = 0;
+
+    // TODO: Determine if trusts and player fellows use mob or player damage formula
+    if (m_PBaseEntity->objtype == TYPE_MOB ||
+        m_PBaseEntity->objtype == TYPE_PET)
+    {
+        auto* PMob   = static_cast<CMobEntity*>(m_PBaseEntity);
+        weaponDamage = mobutils::GetWeaponDamage(PMob, SLOT_MAIN);
+    }
+    else
+    {
+        weaponDamage = static_cast<CBattleEntity*>(m_PBaseEntity)->GetMainWeaponDmg();
+    }
+
+    return weaponDamage;
 }
 
 /************************************************************************
@@ -18041,6 +18061,21 @@ int16 CLuaBaseEntity::getTHlevel()
 }
 
 /************************************************************************
+ *  Function: setTHlevel()
+ *  Purpose : set mob's Treasure Hunter tier
+ *  Example : target:setTHlevel(5)
+ ************************************************************************/
+
+void CLuaBaseEntity::setTHlevel(int16 newLevel)
+{
+    if (m_PBaseEntity->objtype == TYPE_MOB)
+    {
+        CMobEntity* PMob = static_cast<CMobEntity*>(m_PBaseEntity);
+        PMob->m_THLvl    = newLevel;
+    }
+}
+
+/************************************************************************
  *  Function: getAvailableTraverserStones()
  *  Purpose : Returns the number of Traverser Stones available for claim
  *  Note: Does not yet account for KI reduction
@@ -19427,6 +19462,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getDespoilDebuff", CLuaBaseEntity::getDespoilDebuff);
     SOL_REGISTER("itemStolen", CLuaBaseEntity::itemStolen);
     SOL_REGISTER("getTHlevel", CLuaBaseEntity::getTHlevel);
+    SOL_REGISTER("setTHlevel", CLuaBaseEntity::setTHlevel);
 
     SOL_REGISTER("getPlayerTriggerAreaInZone", CLuaBaseEntity::getPlayerTriggerAreaInZone);
     SOL_REGISTER("updateToEntireZone", CLuaBaseEntity::updateToEntireZone);
