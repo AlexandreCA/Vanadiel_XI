@@ -540,6 +540,7 @@ enum class Mod
     SHARPSHOT               = 314,  //
     TRUE_SHOT_EFFECT        = 1053, // TODO: True Shot Ranged Damage increase (percent)
     DEAD_AIM_EFFECT         = 1054, // TODO: Dead Aim Critical Damage increase (percent)
+    BOUNTY_SHOT_TH_BONUS    = 826,  // Boosts base TH level of bounty shot
 
     // Samurai
     WARDING_CIRCLE_DURATION   = 95,   // Warding Circle extended duration in seconds
@@ -715,6 +716,7 @@ enum class Mod
 
     // Geo
     CARDINAL_CHANT       = 959,
+    CARDINAL_CHANT_BONUS = 1132, // Geomancy galero
     INDI_DURATION        = 960,
     GEOMANCY_BONUS       = 961, // Used to increase potency of "Geomancy +" items (only the highest value is counted)
     WIDENED_COMPASS      = 962,
@@ -1072,8 +1074,7 @@ enum class Mod
     // The spares take care of finding the next ID to use so long as we don't forget to list IDs that have been freed up by refactoring.
     // 570 through 825 used by WS DMG mods these are not spares.
     //
-    // SPARE ID: 826
-    // SPARE IDs: 1132 and onward
+    // SPARE IDs: 1133 and onward
 };
 
 // temporary workaround for using enum class as unordered_map key until compilers support it
