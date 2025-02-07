@@ -389,7 +389,8 @@ end
 ---@param tpFactor number
 ---@param isWeaponskill boolean
 ---@param weaponSlot xi.slot
-xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAttackMod, isCritical, applyLevelCorrection, tpIgnoresDefense, tpFactor, isWeaponskill, weaponSlot)
+---@param isCannonball boolean
+xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAttackMod, isCritical, applyLevelCorrection, tpIgnoresDefense, tpFactor, isWeaponskill, weaponSlot, isCannonball)
     local pDif = 0
 
     ----------------------------------------
@@ -421,6 +422,10 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
         targetDefense = math.floor(targetDefense * ignoreDefenseFactor)
     end
 
+    if isCannonball then
+        actorAttack = actor:getStat(xi.mod.DEF)
+    end
+
     -- Actor Attack / Target Defense ratio
     baseRatio = actorAttack / targetDefense
 
@@ -433,7 +438,7 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
     local levelDifFactor = 0
 
     if applyLevelCorrection then
-        levelDifFactor = (target:getMainLvl() - actor:getMainLvl()) * 0.05
+        levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * 0.05
     end
 
     -- Only players suffer from negative level difference.
@@ -444,7 +449,15 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
         levelDifFactor = 0
     end
 
-    local cRatio = utils.clamp(baseRatio - levelDifFactor, 0, 10) -- Clamp for the lower limit, mainly.
+    -- Players do not get positive level correction, only monsters
+    if
+        actor:isPC() and
+        levelDifFactor > 0
+    then
+        levelDifFactor = 0
+    end
+
+    local cRatio = utils.clamp(baseRatio + levelDifFactor, 0, 10) -- Clamp for the lower limit, mainly.
 
     ----------------------------------------
     -- Step 3: wRatio and pDif Caps (Melee)
@@ -498,7 +511,7 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
 
     -- Crit damage bonus is a final modifier
     if isCritical then
-        local critDamageBonus = utils.clamp(actor:getMod(xi.mod.CRIT_DMG_INCREASE) - target:getMod(xi.mod.CRIT_DEF_BONUS), 0, 100)
+        local critDamageBonus = utils.clamp(actor:getMod(xi.mod.CRIT_DMG_INCREASE) + actor:getMod(xi.mod.RANGED_CRIT_DMG_INCREASE) - target:getMod(xi.mod.CRIT_DEF_BONUS), 0, 100)
         pDif                  = pDif * (100 + critDamageBonus) / 100
     end
 
@@ -514,7 +527,8 @@ end
 ---@param tpIgnoresDefense boolean
 ---@param tpFactor number
 ---@param isWeaponskill boolean
-xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsAttackMod, isCritical, applyLevelCorrection, tpIgnoresDefense, tpFactor, isWeaponskill)
+---@param bonusRangedAttack integer
+xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsAttackMod, isCritical, applyLevelCorrection, tpIgnoresDefense, tpFactor, isWeaponskill, bonusRangedAttack)
     local pDif = 0
 
     ----------------------------------------
@@ -538,7 +552,7 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
     end
 
     -- TODO: it is unknown if ws attack mod and flourish bonus are additive or multiplicative
-    actorAttack = math.max(1, math.floor(actor:getStat(xi.mod.RATT) * wsAttackMod * flourishBonus))
+    actorAttack = math.max(1, math.floor((actor:getStat(xi.mod.RATT) + bonusRangedAttack) * wsAttackMod * flourishBonus))
 
     -- Target Defense Modifiers.
     local ignoreDefenseFactor = 1
@@ -560,7 +574,7 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
     local levelDifFactor = 0
 
     if applyLevelCorrection then
-        levelDifFactor = (target:getMainLvl() - actor:getMainLvl()) * 0.05
+        levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * 0.05
     end
 
     -- Only players suffer from negative level difference.
@@ -571,7 +585,15 @@ xi.combat.physical.calculateRangedPDIF = function(actor, target, weaponType, wsA
         levelDifFactor = 0
     end
 
-    local cRatio = utils.clamp(baseRatio - levelDifFactor, 0, 10) -- Clamp for the lower limit, mainly.
+    -- Players do not get positive level correction, only monsters
+    if
+        actor:isPC() and
+        levelDifFactor > 0
+    then
+        levelDifFactor = 0
+    end
+
+    local cRatio = utils.clamp(baseRatio + levelDifFactor, 0, 10) -- Clamp for the lower limit, mainly.
 
     -- TODO: Presumably, pets get a Cap here if the target checks as 'Too Weak'. More info needed.
 
