@@ -22,6 +22,7 @@ zones[xi.zone.WEST_SARUTABARUTA] =
         FISHING_MESSAGE_OFFSET        = 7064,  -- You can't fish here.
         DIG_THROW_AWAY                = 7077,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
         FIND_NOTHING                  = 7079,  -- You dig and you dig, but find nothing.
+		FOUND_ITEM_WITH_EASE          = 7155,  -- It appears your chocobo found this item with ease.
         CONQUEST_BASE                 = 7164,  -- Tallying conquest results...
         SIGN_1                        = 7393,  -- Northeast: Central Tower, Horutoto Ruins Northwest: Giddeus South: Port Windurst
         SIGN_3                        = 7394,  -- East: East Sarutabaruta West: Giddeus
