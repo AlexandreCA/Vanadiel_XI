@@ -32,6 +32,7 @@ zones[xi.zone.APOLLYON] =
         GATE_OPEN                     = 7560, -- vortex materializes...
     },
     mob =
+	{
 	    CS_CARNAGECHIEF_JACKBODOKK = GetFirstID('Carnagechief_Jackbodokk'),
         CS_DEE_WAPA_THE_DESOLATOR  = GetFirstID('Dee_Wapa_the_Desolator'),
         CS_NAQBA_CHIRURGEON        = GetFirstID('NaQba_Chirurgeon'),
