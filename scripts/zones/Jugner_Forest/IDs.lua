@@ -26,6 +26,7 @@ zones[xi.zone.JUGNER_FOREST] =
         FIND_NOTHING                  = 7734,  -- You dig and you dig, but find nothing.
         AMK_DIGGING_OFFSET            = 7800,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
 		FOUND_ITEM_WITH_EASE          = 7810,  -- It appears your chocobo found this item with ease.
+		SIGNPOST_NEW                  = 7892, -- The signpost looks as good as new!
         LOGGING_IS_POSSIBLE_HERE      = 7912,  -- Logging is possible here if you have <item>.
         VOIDWALKER_OBTAIN_KI          = 7919,  -- Obtained key item: <keyitem>!
         CONQUEST                      = 8063,  -- You've earned conquest points!
