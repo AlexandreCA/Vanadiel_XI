@@ -12879,6 +12879,12 @@ void CLuaBaseEntity::updateEnmityFromDamage(CLuaBaseEntity* PEntity, int32 damag
 {
     auto* PBaseMob = static_cast<CMobEntity*>(m_PBaseEntity);
 
+    if (m_PBaseEntity->id == PEntity->getID())
+    {
+        ShowWarning(fmt::format("updateEnmityFromDamage(): Attempting to add enmity from damage to self ({}, {})!", PEntity->getName(), PEntity->getID()));
+        return;
+    }
+
     // This is a mob attacking a target and losing enmity from doing damage
     if (m_PBaseEntity->objtype == TYPE_PC || m_PBaseEntity->objtype == TYPE_PET || (m_PBaseEntity->objtype == TYPE_MOB && PBaseMob->isCharmed))
     {
@@ -17890,7 +17896,7 @@ void CLuaBaseEntity::drawIn(sol::variadic_args va)
     CBaseEntity*   PBaseEntity = PLuaBaseEntity->m_PBaseEntity;
     CBattleEntity* PTarget     = nullptr;
 
-    if (PBaseEntity)
+    if (PBaseEntity && PBaseEntity->getZone() == m_PBaseEntity->getZone())
     {
         PTarget = dynamic_cast<CBattleEntity*>(PBaseEntity);
     }
