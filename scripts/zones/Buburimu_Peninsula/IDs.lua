@@ -37,6 +37,7 @@ zones[xi.zone.BUBURIMU_PENINSULA] =
         LOGGING_IS_POSSIBLE_HERE       = 7411,  -- Logging is possible here if you have <item>.
         CONQUEST                       = 7427,  -- You've earned conquest points!
         GARRISON_BASE                  = 7797,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
+		TIME_ELAPSED                   = 7893,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)																																									
         YOU_CANNOT_ENTER_DYNAMIS       = 7903,  -- You cannot enter Dynamis - [Dummy/San d'Oria/Bastok/Windurst/Jeuno/Beaucedine/Xarcabard/Valkurm/Buburimu/Qufim/Tavnazia] for <number> [day/days] (Vana'diel time).
         PLAYERS_HAVE_NOT_REACHED_LEVEL = 7905,  -- Players who have not reached level <number> are prohibited from entering Dynamis.
         DYNA_NPC_DEFAULT_MESSAGE       = 8027,  -- There is a strange symbol drawn here. A haunting chill sweeps through you as you gaze upon it...

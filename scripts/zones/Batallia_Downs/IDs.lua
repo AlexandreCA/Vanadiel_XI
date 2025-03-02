@@ -30,6 +30,7 @@ zones[xi.zone.BATALLIA_DOWNS] =
         NO_GRASS_GROWING_HERE         = 7493,  -- There is no grass growing here...
         YOU_ARE_BEING_ATTACKED        = 7630,  -- You are being attacked!
         YOU_FIND_NOTHING              = 7633,  -- You find nothing.
+		TIME_ELAPSED                  = 7698,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)																																								   
         PLAYER_OBTAINS_ITEM           = 7705,  -- <name> obtains <item>!
         UNABLE_TO_OBTAIN_ITEM         = 7706,  -- You were unable to obtain the item.
         PLAYER_OBTAINS_TEMP_ITEM      = 7707,  -- <name> obtains the temporary item: <item>!
