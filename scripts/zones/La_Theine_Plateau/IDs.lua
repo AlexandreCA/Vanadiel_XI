@@ -39,6 +39,7 @@ zones[xi.zone.LA_THEINE_PLATEAU] =
         GOBLIN_SLIPPED_AWAY           = 7753,  -- The Goblin slipped away when you were not looking...
         TELEPOINT_HAS_BEEN_SHATTERED  = 7763,  -- The telepoint has been shattered into a thousand pieces...
         BROKEN_EGG                    = 7834,  -- There is a broken egg on the ground here. Perhaps there is a nest in the boughs of this tree.
+		TIME_ELAPSED                  = 7854,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)																																								   
         CHOCOBO_TRACKS                = 7895,  -- There are chocobo tracks on the ground here.
         PLAYER_OBTAINS_ITEM           = 7914,  -- <name> obtains <item>!
         UNABLE_TO_OBTAIN_ITEM         = 7915,  -- You were unable to obtain the item.
