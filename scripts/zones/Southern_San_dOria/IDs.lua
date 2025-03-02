@@ -61,6 +61,7 @@ zones[xi.zone.SOUTHERN_SAN_DORIA] =
 		TAUMILA_DIALOG                 = 7994,  -- I am Taumila, the owner of this establishment. Talk to the lady behind the counter if you wish to make a purchase.
         LUSIANE_SHOP_DIALOG            = 7994,  -- Hello! Let Taumila's handle all your sundry needs!
         OSTALIE_SHOP_DIALOG            = 7995,  -- Welcome, customer. Please have a look.
+		HELBORT_ORDERS                 = 8012,  -- It's an urgent order, so go as soon as you can. Remember, give the order to the free trader Alexius in Jugner Forest.																																								
         ASH_THADI_ENE_SHOP_DIALOG      = 8016,  -- Welcome to Helbort's Blades!
         NOTHING_TO_REPORT              = 8034,  -- Nothing to report!
         TRIAL_IS_DIFFICULT             = 8036,  -- The trial is difficult, but those who pass may become true knights. Good luck to you.
@@ -135,8 +136,11 @@ zones[xi.zone.SOUTHERN_SAN_DORIA] =
             [17719306] = 46, -- Apairemant
             [17719493] = 49, -- Pourette
         },
-        LUSIANE  = GetFirstID('Lusiane'),
-        ARPETION = GetFirstID('Arpetion'),
+        LUSIANE   = GetFirstID('Lusiane'),
+        ARPETION  = GetFirstID('Arpetion'),
+		CAMEREINE = GetFirstID('Camereine'),
+        EMOUSSINE = GetFirstID('Emoussine'),
+        MEUNEILLE = GetFirstID('Meuneille'),																	
     },
 }
 

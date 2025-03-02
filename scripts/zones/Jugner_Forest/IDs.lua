@@ -27,10 +27,12 @@ zones[xi.zone.JUGNER_FOREST] =
         AMK_DIGGING_OFFSET            = 7800,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
 		FOUND_ITEM_WITH_EASE          = 7810,  -- It appears your chocobo found this item with ease.
 		SIGNPOST_NEW                  = 7892, -- The signpost looks as good as new!
+		ALEXIUS_ORDERS                = 7905, -- Take that ${keyitem} back and hand it to the master at the weapons shop. Got it?																														 
         LOGGING_IS_POSSIBLE_HERE      = 7912,  -- Logging is possible here if you have <item>.
         VOIDWALKER_OBTAIN_KI          = 7919,  -- Obtained key item: <keyitem>!
         CONQUEST                      = 8063,  -- You've earned conquest points!
         GARRISON_BASE                 = 8431,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
+		TIME_ELAPSED                  = 8493,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)																		   
         PLAYER_OBTAINS_ITEM           = 8654,  -- <name> obtains <item>!
         UNABLE_TO_OBTAIN_ITEM         = 8655,  -- You were unable to obtain the item.
         PLAYER_OBTAINS_TEMP_ITEM      = 8656,  -- <name> obtains the temporary item: <item>!
@@ -99,6 +101,7 @@ zones[xi.zone.JUGNER_FOREST] =
     {
         OVERSEER_BASE = GetFirstID('Chaplion_RK'),
         LOGGING       = GetTableOfIDs('Logging_Point'),
+		SIGNPOST      = GetTableOfIDs('Signpost'),										  
     },
 }
 
