@@ -60,27 +60,21 @@ namespace
 
     auto getZMQRoutingId() -> uint64
     {
-        // Original IPP/RoutingId logic
-
-        uint64 ipp  = map_ip.s_addr;
-        uint64 port = map_port;
+        auto ip   = gMapIPP.getIP();
+        auto port = gMapIPP.getPort();
 
         // if no ip/port were supplied, set to 1 (0 is not valid for an identity)
-        if (map_ip.s_addr == 0 && map_port == 0)
+        if (ip == 0 && port == 0)
         {
             const auto rset = db::preparedStmt("SELECT zoneip, zoneport FROM zone_settings GROUP BY zoneip, zoneport ORDER BY COUNT(*) DESC");
             if (rset && rset->rowsCount() && rset->next())
             {
-                const auto zoneip   = rset->get<std::string>("zoneip");
-                const auto zoneport = rset->get<uint16>("zoneport");
-
-                inet_pton(AF_INET, zoneip.c_str(), &ipp);
-                port = zoneport;
+                ip   = str2ip(rset->get<std::string>("zoneip"));
+                port = rset->get<uint16>("zoneport");
             }
         }
 
-        ipp |= (port << 32);
-
+        auto ipp = IPP(ip, port).getRawIPP();
         if (ipp == 0)
         {
             ShowWarning("ZMQ Routing ID IPP calculated as 0 - setting to 1. Check your zone_settings!");
@@ -239,7 +233,7 @@ void IPCClient::handleMessage_ChatMessageParty(const IPP& ipp, const ipc::ChatMe
     });
     if (PParty)
     {
-        PParty->PushPacket(message.senderId, 0, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_PARTY, message.message, message.gmLevel));
+        PParty->PushPacket(message.senderId, 0, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
     }
     // clang-format on
 }
@@ -274,7 +268,7 @@ void IPCClient::handleMessage_ChatMessageAlliance(const IPP& ipp, const ipc::Cha
     {
         for (const auto& currentParty : PAlliance->partyList)
         {
-            currentParty->PushPacket(message.senderId, 0, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_PARTY, message.message, message.gmLevel));
+            currentParty->PushPacket(message.senderId, 0, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
         }
     }
     // clang-format on
@@ -297,7 +291,7 @@ void IPCClient::handleMessage_ChatMessageUnity(const IPP& ipp, const ipc::ChatMe
 
     if (CUnityChat* PUnityChat = unitychat::GetUnityChat(message.unityLeaderId))
     {
-        PUnityChat->PushPacket(message.senderId, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_UNITY, message.message, message.gmLevel));
+        PUnityChat->PushPacket(message.senderId, std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
     }
 }
 
@@ -315,7 +309,7 @@ void IPCClient::handleMessage_ChatMessageYell(const IPP& ipp, const ipc::ChatMes
                 // Don't push to sender
                 if (PChar->id != message.senderId)
                 {
-                    PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_YELL, message.message, message.gmLevel));
+                    PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
                 }
             });
         }
@@ -332,7 +326,7 @@ void IPCClient::handleMessage_ChatMessageServerMessage(const IPP& ipp, const ipc
     {
         PZone->ForEachChar([&](CCharEntity* PChar)
         {
-            PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, MESSAGE_SYSTEM_1, message.message, message.gmLevel));
+            PChar->pushPacket(std::make_unique<CChatMessagePacket>(message.senderName, message.zoneId, message.messageType, message.message, message.gmLevel));
         });
     });
     // clang-format on
@@ -676,21 +670,17 @@ void IPCClient::handleMessage_KillSession(const IPP& ipp, const ipc::KillSession
 {
     TracyZoneScoped;
 
-    map_session_data_t* sessionToDelete = nullptr;
-
-    for (const auto& [_, session] : map_session_list)
+    if (auto sessionToDelete = gMapSessions.getSessionByCharId(message.victimId))
     {
-        if (session->charID == message.victimId)
+        if (sessionToDelete->blowfish.status == BLOWFISH_PENDING_ZONE)
         {
-            sessionToDelete = session;
-            break;
+            ShowDebugFmt("Closing session of charid {} on request of other process", message.victimId);
+            gMapSessions.destroySession(sessionToDelete);
         }
-    }
-
-    if (sessionToDelete && sessionToDelete->blowfish.status == BLOWFISH_PENDING_ZONE)
-    {
-        DebugSockets(fmt::format("Closing session of charid {} on request of other process", message.victimId));
-        map_close_session(server_clock::now(), sessionToDelete);
+        else
+        {
+            ShowDebugFmt("KillSession for charid {} not needed", message.victimId);
+        }
     }
 }
 
@@ -809,7 +799,7 @@ void IPCClient::handleMessage_EntityInformationResponse(const IPP& ipp, const ip
 
             PChar->clearPacketList();
 
-            charutils::SendToZone(PChar, ZoningType::Zoning, zoneutils::GetZoneIPP(PChar->loc.destination));
+            charutils::SendToZone(PChar, PChar->loc.destination);
         }
     }
 }
@@ -836,7 +826,7 @@ void IPCClient::handleMessage_SendPlayerToLocation(const IPP& ipp, const ipc::Se
 
         PChar->clearPacketList();
 
-        charutils::SendToZone(PChar, ZoningType::Zoning, zoneutils::GetZoneIPP(PChar->loc.destination));
+        charutils::SendToZone(PChar, PChar->loc.destination);
     }
 }
 

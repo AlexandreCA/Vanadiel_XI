@@ -223,13 +223,14 @@ namespace zoneutils
 
     auto GetZonesAssignedToThisProcess() -> std::vector<uint16>
     {
-        char address[INET_ADDRSTRLEN];
-        inet_ntop(AF_INET, &map_ip, address, INET_ADDRSTRLEN);
+        const auto ip    = gMapIPP.getIP();
+        const auto ipStr = gMapIPP.getIPString();
+        const auto port  = gMapIPP.getPort();
 
         const auto zonesQuery = fmt::format("SELECT zoneid "
                                             "FROM zone_settings "
                                             "WHERE IF({} <> 0, '{}' = zoneip AND {} = zoneport, TRUE)",
-                                            (uint32)map_ip.s_addr, address, map_port);
+                                            ip, ipStr, port);
 
         std::vector<uint16> zonesOnThisProcess;
 
@@ -476,7 +477,7 @@ namespace zoneutils
                             mainWeapon->setDelay((rset->get<uint16>("cmbDelay") * 1000) / 60);
                             mainWeapon->setBaseDelay((rset->get<uint16>("cmbDelay") * 1000) / 60);
 
-                            PMob->m_Behavior    = static_cast<BEHAVIOR>(rset->get<uint8>("behavior"));
+                            PMob->m_Behavior    = rset->get<uint16>("behavior");
                             PMob->m_Link        = rset->get<uint32>("links");
                             PMob->m_Type        = static_cast<MOBTYPE>(rset->get<uint32>("mobType"));
                             PMob->m_Immunity    = rset->get<uint32>("immunity");
@@ -1182,12 +1183,10 @@ namespace zoneutils
         const auto rset = db::preparedStmt(query, zoneID);
         if (rset && rset->rowsCount() && rset->next())
         {
-            const auto zoneip = rset->get<std::string>("zoneip");
+            const auto zoneip = str2ip(rset->get<std::string>("zoneip"));
             const auto port   = rset->get<uint16>("zoneport");
 
-            inet_pton(AF_INET, zoneip.c_str(), &ipp);
-
-            ipp |= (static_cast<uint64>(port) << 32);
+            ipp = IPP(zoneip, port).getRawIPP();
         }
         else
         {

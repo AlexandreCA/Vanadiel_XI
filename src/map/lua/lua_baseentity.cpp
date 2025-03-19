@@ -346,70 +346,64 @@ void CLuaBaseEntity::printToArea(std::string const& message, sol::object const& 
 
     if (messageRange == MESSAGE_AREA_SYSTEM)
     {
-        // TODO: Support messageLook
-
         message::send(ipc::ChatMessageServerMessage{
-            .senderId   = PChar->id,
-            .senderName = name,
-            .message    = message,
+            .senderId    = PChar->id,
+            .senderName  = name,
+            .message     = message,
+            .messageType = messageLook,
         });
     }
     else if (messageRange == MESSAGE_AREA_SAY)
     {
-        PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
         PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
     }
     else if (messageRange == MESSAGE_AREA_SHOUT)
     {
         PChar->loc.zone->PushPacket(PChar, CHAR_INSHOUT, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
-        PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
+        PChar->pushPacket(std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
     }
     else if (messageRange == MESSAGE_AREA_PARTY)
     {
-        if (PChar->PParty->m_PAlliance)
+        if (PChar->PParty && PChar->PParty->m_PAlliance)
         {
-            // TODO: Support messageLook
-
             message::send(ipc::ChatMessageAlliance{
-                .allianceId = PChar->PParty->m_PAlliance->m_AllianceID,
-                .senderId   = PChar->id,
-                .senderName = name,
-                .message    = message,
+                .allianceId  = PChar->PParty->m_PAlliance->m_AllianceID,
+                .senderId    = PChar->id,
+                .senderName  = name,
+                .message     = message,
+                .messageType = messageLook,
             });
         }
         else if (PChar->PParty)
         {
-            // TODO: Support messageLook
-
             message::send(ipc::ChatMessageParty{
-                .partyId    = PChar->PParty->GetPartyID(),
-                .senderId   = PChar->id,
-                .senderName = name,
-                .message    = message,
+                .partyId     = PChar->PParty->GetPartyID(),
+                .senderId    = PChar->id,
+                .senderName  = name,
+                .message     = message,
+                .messageType = messageLook,
             });
         }
     }
     else if (messageRange == MESSAGE_AREA_YELL)
     {
-        // TODO: Support messageLook
-
         message::send(ipc::ChatMessageYell{
-            .senderId   = PChar->id,
-            .senderName = name,
-            .message    = message,
+            .senderId    = PChar->id,
+            .senderName  = name,
+            .message     = message,
+            .messageType = messageLook,
         });
 
         PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
     }
     else if (messageRange == MESSAGE_AREA_UNITY)
     {
-        // TODO: Support messageLook
-
         message::send(ipc::ChatMessageUnity{
             .unityLeaderId = PChar->id,
             .senderId      = PChar->id,
             .senderName    = name,
             .message       = message,
+            .messageType   = messageLook,
         });
 
         PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<CChatMessagePacket>(PChar, messageLook, message, name));
@@ -13160,40 +13154,6 @@ sol::table CLuaBaseEntity::getNotorietyList()
 }
 
 /************************************************************************
- *  Function: setClaimable(...)
- *  Purpose : sets m_IsClaimable for a mob
- *  Example : mob:setClaimable(false)
- *  Notes   :
- ************************************************************************/
-
-void CLuaBaseEntity::setClaimable(bool claimable)
-{
-    if (auto* PMob = dynamic_cast<CMobEntity*>(m_PBaseEntity))
-    {
-        PMob->m_IsClaimable = claimable;
-        return;
-    }
-    ShowError("lua::setClaimable called on invalid entity");
-}
-
-/************************************************************************
- *  Function: getClaimable(...)
- *  Purpose : Returns whether or not a mob is claimable
- *  Example : local claimable = mob:getClaimable()
- *  Notes   : Defaults to true, as in the CMobEntity constructor
- ************************************************************************/
-
-bool CLuaBaseEntity::getClaimable()
-{
-    if (auto* PMob = dynamic_cast<CMobEntity*>(m_PBaseEntity))
-    {
-        return PMob->m_IsClaimable;
-    }
-    ShowError("lua::getClaimable called on invalid entity");
-    return true;
-}
-
-/************************************************************************
  *  Function: clearEnmityForEntity(...)
  *  Purpose :
  *  Example : mob:clearEnmityForEntity(player)
@@ -19554,8 +19514,6 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("updateClaim", CLuaBaseEntity::updateClaim);
     SOL_REGISTER("hasEnmity", CLuaBaseEntity::hasEnmity);
     SOL_REGISTER("getNotorietyList", CLuaBaseEntity::getNotorietyList);
-    SOL_REGISTER("setClaimable", CLuaBaseEntity::setClaimable);
-    SOL_REGISTER("getClaimable", CLuaBaseEntity::getClaimable);
     SOL_REGISTER("clearEnmityForEntity", CLuaBaseEntity::clearEnmityForEntity);
 
     // Status Effects
