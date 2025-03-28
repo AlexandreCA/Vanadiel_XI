@@ -36,18 +36,18 @@ zones[xi.zone.HAZHALM_TESTING_GROUNDS] =
         CHAMBER_OCCUPIED              = 8058, -- Currently, another expedition is occupying [/Rossweisse's Chamber/Grimgerde's Chamber/Siegrune's Chamber/Helmwige's Chamber/Schwertleite's Chamber/Waltraute's Chamber/Ortlinde's Chamber/Gerhilde's Chamber/Brunhilde's Chamber/Odin's Chamber/Odin's Chamber].
         GLOWING_LAMP_OBTAINED         = 8059, -- Time and destination have been recorded on your <item>.
         MISSING_FEATHERS              = 8060, -- You do not possess the items required for entry.
-        REQUIREMENTS_UNMET            = 8065, -- You do not meet the requirements for entry.
-        LAMP_POWER_FADED              = 8066, -- he power of the % has faded. You may no longer occupy this chamber.
-        TOO_MANY_ADVENTURERS          = 8068, -- There are too many adventurers in the chamber.
-        TIMEOUT_WARNING               = 8069, -- ---== Warning! ==---- Your reservation of this chamber will end in # [minute/minutes].
-        TIMEOUT_WARNING_SECONDS       = 8070, -- ---== Warning! ==---- Your reservation of this chamber will end in # [second/seconds].
-        EXPEDITION_INCAPACITATED_WARN = 8071, -- All expedition members have been incapacitated. Commencing emergency teleportation in # [minute/minutes].
-        EXPEDITION_INCAPACITATED      = 8072, -- All expedition members have been incapacitated. Commencing emergency teleportation.
-        CHAMBER_CLEARED               = 8075, -- [Rossweisse's Chamber/Grimgerde's Chamber/Siegrune's Chamber/Helmwige's Chamber/Schwertleite's Chamber/Waltraute's Chamber/Ortlinde's Chamber/Gerhilde's Chamber/Brunhilde's Chamber/Odin's Chamber/Odin's Chamber] has been cleared. Commencing teleportation in # [minute/minutes].
-        MEMBERS_ENGAGED_IN_BATTLE     = 8076, -- Other members currently engaged in battle. Entry denied.
-        AMPOULES_OBTAINED             = 8077, -- You obtain <number> ampoule[/s] of viscous therion ichor.
-        GROUP_LEADER_NOT_YET_ENTERED  = 8078, -- The group leader has not yet entered the chamber. Entry denied.
-        CLAIM_RELINQUISH              = 8080, -- Note that your claim over the area through your <item> will be relinquished if over <number> more minute[/s] pass from this point with no one inside.																																																															  
+        REQUIREMENTS_UNMET            = 8061, -- You do not meet the requirements for entry.
+        LAMP_POWER_FADED              = 8062, -- he power of the % has faded. You may no longer occupy this chamber.
+        TOO_MANY_ADVENTURERS          = 8064, -- There are too many adventurers in the chamber.
+        TIMEOUT_WARNING               = 8065, -- ---== Warning! ==---- Your reservation of this chamber will end in # [minute/minutes].
+        TIMEOUT_WARNING_SECONDS       = 8066, -- ---== Warning! ==---- Your reservation of this chamber will end in # [second/seconds].
+        EXPEDITION_INCAPACITATED_WARN = 8067, -- All expedition members have been incapacitated. Commencing emergency teleportation in # [minute/minutes].
+        EXPEDITION_INCAPACITATED      = 8068, -- All expedition members have been incapacitated. Commencing emergency teleportation.
+        CHAMBER_CLEARED               = 8071, -- [Rossweisse's Chamber/Grimgerde's Chamber/Siegrune's Chamber/Helmwige's Chamber/Schwertleite's Chamber/Waltraute's Chamber/Ortlinde's Chamber/Gerhilde's Chamber/Brunhilde's Chamber/Odin's Chamber/Odin's Chamber] has been cleared. Commencing teleportation in # [minute/minutes].
+        MEMBERS_ENGAGED_IN_BATTLE     = 8072, -- Other members currently engaged in battle. Entry denied.
+        AMPOULES_OBTAINED             = 8073, -- You obtain <number> ampoule[/s] of viscous therion ichor.
+        GROUP_LEADER_NOT_YET_ENTERED  = 8074, -- The group leader has not yet entered the chamber. Entry denied.
+        CLAIM_RELINQUISH              = 8076, -- Note that your claim over the area through your <item> will be relinquished if over <number> more minute[/s] pass from this point with no one inside.																																																															  
     },
     mob =
     {
