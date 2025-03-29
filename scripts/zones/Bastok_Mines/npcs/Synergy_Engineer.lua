@@ -17,7 +17,7 @@ entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
-    xi.synergy.onEventFinish(player, csid, option, npc)
+    xi.synergy.onEventFinishEngineer(player, csid, option, npc)
 end
 
 return entity
