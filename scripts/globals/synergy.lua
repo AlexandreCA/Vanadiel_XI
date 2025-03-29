@@ -557,3 +557,17 @@ xi.synergy.synergyFurnaceOnEventFinish = function(player, csid, option, npc)
         furnaceNpc:setLocalVar(vars.SYNERGY_FURNACE_STATE, furnaceStates.COMPLETED)
     end
 end
+
+xi.synergy.buySynergyCrucible = function(player, cost)
+    if player:hasKeyItem(xi.keyItem.SYNERGY_CRUCIBLE) then
+        return false -- Silencieux, géré par l'événement
+    end
+
+    if player:getGil() < cost then
+        return false -- Silencieux, géré par l'événement
+    end
+
+    player:delGil(cost)
+    npcUtil.giveKeyItem(player, xi.keyItem.SYNERGY_CRUCIBLE) -- Utilise npcUtil au lieu de addKeyItem
+    return true
+end
