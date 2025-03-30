@@ -20,7 +20,6 @@ entity.onEventFinish = function(player, csid, option, npc)
     if csid == 11001 and option == 3 then
         xi.synergy.buySynergyCrucible(player, 100)
     end
-    xi.synergy.onEventFinishEngineer(player, csid, option, npc)
 end
 
 return entity
