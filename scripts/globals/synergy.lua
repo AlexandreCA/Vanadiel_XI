@@ -561,7 +561,7 @@ end
 xi.synergy.buySynergyCrucible = function(player, cost)
     player:printToPlayer("Debug: Starting purchase attempt")
     
-    -- On commente cette vérification pour tester même si tu as le key item
+    -- Vérification désactivée pour tester
     -- if player:hasKeyItem(xi.keyItem.SYNERGY_CRUCIBLE) then
     --     player:printToPlayer("Debug: You already have the Synergy Crucible")
     --     return false
@@ -577,7 +577,7 @@ xi.synergy.buySynergyCrucible = function(player, cost)
     player:printToPlayer("Debug: Attempting to remove " .. cost .. " gil")
     player:delGil(cost)
     player:printToPlayer("Debug: Gil after removal: " .. player:getGil())
-    npcUtil.giveKeyItem(player, xi.keyItem.SYNERGY_CRUCIBLE) -- Ça ne fera rien si tu l’as déjà
+    npcUtil.giveKeyItem(player, xi.keyItem.SYNERGY_CRUCIBLE)
     player:printToPlayer("Debug: Key item given (or already owned)")
     return true
 end
