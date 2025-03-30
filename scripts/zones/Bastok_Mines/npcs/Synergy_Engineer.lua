@@ -10,11 +10,11 @@ entity.onTrade = function(player, npc, trade)
 end
 
 entity.onTrigger = function(player, npc)
-    player:startEvent(11001)
+    player:startEvent(11001, 1, 0, 5, 15498, 15499, 15500, 15501, 0))
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)
-    if csid == 11002 and option == 12 then
+    if csid == 11001 and option == 3 then
         xi.synergy.buySynergyCrucible(player, 100)
     end
 end
