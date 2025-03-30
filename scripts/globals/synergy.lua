@@ -562,27 +562,37 @@ end
 -- Synergy Engineer
 -----------------------------------
 
-xi.synergy.buySynergyCrucible = function(player, cost)
-    if player:hasKeyItem(xi.keyItem.SYNERGY_CRUCIBLE) then
+xi.synergy.replenishFewell = function(player, cost)
+    if not player:hasKeyItem(xi.keyItem.SYNERGY_CRUCIBLE) then
+        player:printToPlayer("You need a Synergy Crucible to replenish fewell")
         return false
     end
 
     local gil = player:getGil()
     if gil < cost then
+        player:printToPlayer("You don’t have enough gil")
+        return false
+    end
+
+    player:delGil(cost)
+    player:printToPlayer("Your Synergy Crucible has been replenished with fewell for " .. cost .. " gil")
+    return true
+end
+
+xi.synergy.buySynergyCrucible = function(player, cost)
+    if player:hasKeyItem(xi.keyItem.SYNERGY_CRUCIBLE) then
+        player:printToPlayer("You already have the Synergy Crucible")
+        return false
+    end
+
+    local gil = player:getGil()
+    if gil < cost then
+        player:printToPlayer("You don’t have enough gil")
         return false
     end
 
     player:delGil(cost)
     npcUtil.giveKeyItem(player, xi.keyItem.SYNERGY_CRUCIBLE)
+    player:printToPlayer("Purchased Synergy Crucible for " .. cost .. " gil")
     return true
 end
-
-xi.synergy.replenishFewell = function(player, cost, fewellType, amount, param1, param2, param3, param4, param5)
-    local gil = player:getGil()
-    if gil < cost then
-        return false
-    end
-    player:delGil(cost)
-    return true
-end
-
