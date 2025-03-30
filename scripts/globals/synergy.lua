@@ -577,3 +577,12 @@ xi.synergy.buySynergyCrucible = function(player, cost)
     return true
 end
 
+xi.synergy.replenishFewell = function(player, cost, fewellType, amount, param1, param2, param3, param4, param5)
+    local gil = player:getGil()
+    if gil < cost then
+        return false
+    end
+    player:delGil(cost)
+    return true
+end
+
