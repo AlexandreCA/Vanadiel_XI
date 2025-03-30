@@ -7,17 +7,22 @@
 local entity = {}
 
 entity.onTrade = function(player, npc, trade)
+    player:printToPlayer("Debug: Trade triggered")
 end
 
 entity.onTrigger = function(player, npc)
+    player:printToPlayer("Debug: Starting event 11001")
     player:startEvent(11001)
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)
+    player:printToPlayer("Debug: Event update - csid: " .. csid .. ", option: " .. option)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
+    player:printToPlayer("Debug: Event finished - csid: " .. csid .. ", option: " .. option)
     if csid == 11001 and option == 3 then
+        player:printToPlayer("Debug: Calling buySynergyCrucible")
         xi.synergy.buySynergyCrucible(player, 100)
     end
 end
