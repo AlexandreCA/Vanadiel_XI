@@ -17,6 +17,10 @@ end
 
 entity.onEventUpdate = function(player, csid, option, npc)
     player:printToPlayer("Debug: Event update - csid: " .. csid .. ", option: " .. option)
+    if csid == 11001 and option == 12 then
+        player:printToPlayer("Debug: Calling buySynergyCrucible for option 12")
+        xi.synergy.buySynergyCrucible(player, 100)
+    end
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
