@@ -21,10 +21,6 @@ end
 
 entity.onEventFinish = function(player, csid, option, npc)
     player:printToPlayer("Debug: Event finished - csid: " .. csid .. ", option: " .. option)
-    if csid == 11002 and option == 1 then
-        player:printToPlayer("Debug: You chose option " .. option .. ". Testing purchase...")
-        xi.synergy.buySynergyCrucible(player, 100)
-    end
 end
 
 return entity
