@@ -24,7 +24,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         if option == 3 then
             xi.synergy.buySynergyCrucible(player, 100)
         elseif option == 5 then
-            xi.synergy.replenishFewell(player, 5900, 1, 5, 15498, 15499, 15500, 15501, 0)
+            xi.synergy.replenishFewell(player, 1234, 1, 5, 15498, 15499, 15500, 15501, 0)
         end
     end
 end
