@@ -30,6 +30,7 @@ xi.synergy.replenishFewell = function(player, cost, fewellType, amount, param1, 
         return false
     end
     player:delGil(cost)
+    player:addItem(fewellType, amount)
     return true
 end
 
