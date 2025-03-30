@@ -558,6 +558,10 @@ xi.synergy.synergyFurnaceOnEventFinish = function(player, csid, option, npc)
     end
 end
 
+-----------------------------------
+-- Synergy Engineer
+-----------------------------------
+
 xi.synergy.buySynergyCrucible = function(player, cost)
     if player:hasKeyItem(xi.keyItem.SYNERGY_CRUCIBLE) then
         return false
