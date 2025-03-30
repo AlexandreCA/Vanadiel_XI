@@ -20,7 +20,24 @@ entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
-    xi.synergy.onEventFinishEngineer(player, csid, option, npc)
+    xi.synergy.onEventFinishEngineer = function(player, csid, option, npc)
+    if csid == 11001 then
+        if option == 3 then
+            xi.synergy.buySynergyCrucible(player, 100)
+        elseif option == 5 then
+            xi.synergy.replenishFewell(player, 5900, 1, 5, 15498, 15499, 15500, 15501, 0)
+        end
+    end
+end
+
+xi.synergy.replenishFewell = function(player, cost, fewellType, amount, param1, param2, param3, param4, param5)
+    local gil = player:getGil()
+    if gil < cost then
+        return false
+    end
+    player:delGil(cost)
+    player:addItem(fewellType, amount)
+    return true
 end
 
 return entity
