@@ -560,14 +560,14 @@ end
 
 xi.synergy.buySynergyCrucible = function(player, cost)
     if player:hasKeyItem(xi.keyItem.SYNERGY_CRUCIBLE) then
-        return false -- Silencieux, géré par l'événement
+        return false
     end
 
-    if player:getGil() < cost then
-        return false -- Silencieux, géré par l'événement
+    if player:getCurrency("gil") < cost then
+        return false
     end
 
-    player:delGil(cost)
-    npcUtil.giveKeyItem(player, xi.keyItem.SYNERGY_CRUCIBLE) -- Utilise npcUtil au lieu de addKeyItem
+    player:delCurrency("gil", cost)
+    npcUtil.giveKeyItem(player, xi.keyItem.SYNERGY_CRUCIBLE)
     return true
 end
