@@ -1,6 +1,6 @@
 -----------------------------------
--- Area: Bastok Mines
---  NPC: Synergy Engineer
+-- Zone : Mines de Bastok
+-- PNJ : Ingénieur de Synergie
 -- !pos -43.2409 0.000 -64.1494
 -----------------------------------
 ---@type TNpcEntity
@@ -20,7 +20,6 @@ entity.onEventUpdate = function(player, csid, option, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
-    xi.synergy.onEventFinishEngineer = function(player, csid, option, npc)
     if csid == 11001 then
         if option == 3 then
             xi.synergy.buySynergyCrucible(player, 100)
