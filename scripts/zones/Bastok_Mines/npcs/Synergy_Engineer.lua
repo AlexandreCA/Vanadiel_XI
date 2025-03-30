@@ -27,8 +27,8 @@ entity.onEventUpdate = function(player, csid, option, npc)
             player:printToPlayer("Debug: Player has SYNERGY_CRUCIBLE - Calling replenishFewell for option 3")
             xi.synergy.replenishFewell(player, 1234) -- Coût fixé à 1234 gils
         else
-            player:printToPlayer("Debug: Player does NOT have SYNERGY_CRUCIBLE - Calling buySynergyCrucible for option 3")
-            xi.synergy.buySynergyCrucible(player, 100)
+            player:printToPlayer("Debug: Player does NOT have SYNERGY_CRUCIBLE - Expected 'Acheter' but not triggered")
+            -- Pas d'appel à buySynergyCrucible pour l'instant, car l'option n'apparaît pas
         end
     end
 end
