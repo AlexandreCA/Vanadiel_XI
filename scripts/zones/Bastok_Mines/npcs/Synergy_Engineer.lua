@@ -12,11 +12,11 @@ end
 
 entity.onTrigger = function(player, npc)
     player:printToPlayer("Debug: Starting event 11001")
-    player:startEvent(11001)
+    player:startEvent(11002)
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)
-    if csid == 11001 and option == 12 then
+    if csid == 11002 and option == 12 then
         xi.synergy.buySynergyCrucible(player, 100)
     end
 end
