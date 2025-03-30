@@ -14,7 +14,7 @@ entity.onTrigger = function(player, npc)
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)
-    if csid == 11002 and option == 2 then
+    if csid == 11002 and option == 12 then
         xi.synergy.buySynergyCrucible(player, 100)
     end
 end
