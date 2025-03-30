@@ -559,15 +559,24 @@ xi.synergy.synergyFurnaceOnEventFinish = function(player, csid, option, npc)
 end
 
 xi.synergy.buySynergyCrucible = function(player, cost)
+    player:printToPlayer("Debug: Starting purchase attempt")
+    
     if player:hasKeyItem(xi.keyItem.SYNERGY_CRUCIBLE) then
+        player:printToPlayer("Debug: You already have the Synergy Crucible")
         return false
     end
 
-    if player:getCurrency("gil") < cost then
+    local gil = player:getCurrency("gil")
+    player:printToPlayer("Debug: You have " .. gil .. " gil, need " .. cost)
+    if gil < cost then
+        player:printToPlayer("Debug: Not enough gil detected")
         return false
     end
 
+    player:printToPlayer("Debug: Attempting to remove " .. cost .. " gil")
     player:delCurrency("gil", cost)
+    player:printToPlayer("Debug: Gil after removal: " .. player:getCurrency("gil"))
     npcUtil.giveKeyItem(player, xi.keyItem.SYNERGY_CRUCIBLE)
+    player:printToPlayer("Debug: Key item given")
     return true
 end
