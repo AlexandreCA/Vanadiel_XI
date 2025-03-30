@@ -566,7 +566,7 @@ xi.synergy.buySynergyCrucible = function(player, cost)
         return false
     end
 
-    local gil = player:getCurrency("gil")
+    local gil = player:getGil() -- Remplace getCurrency par getGil
     player:printToPlayer("Debug: You have " .. gil .. " gil, need " .. cost)
     if gil < cost then
         player:printToPlayer("Debug: Not enough gil detected")
@@ -574,8 +574,8 @@ xi.synergy.buySynergyCrucible = function(player, cost)
     end
 
     player:printToPlayer("Debug: Attempting to remove " .. cost .. " gil")
-    player:delCurrency("gil", cost)
-    player:printToPlayer("Debug: Gil after removal: " .. player:getCurrency("gil"))
+    player:delGil(cost) -- Remplace delCurrency par delGil
+    player:printToPlayer("Debug: Gil after removal: " .. player:getGil())
     npcUtil.giveKeyItem(player, xi.keyItem.SYNERGY_CRUCIBLE)
     player:printToPlayer("Debug: Key item given")
     return true
