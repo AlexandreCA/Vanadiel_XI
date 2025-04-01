@@ -78,17 +78,23 @@ zones[xi.zone.AHT_URHGAN_WHITEGATE] =
         AUTOMATON_SPIRITREAVER_UNLOCK = 9652,  -- You obtain the Spiritreaver M-400 head!
         AUTOMATON_ATTACHMENT_UNLOCK   = 9668,  -- You can now equip your automaton with <item>.
         SANCTION                      = 9821,  -- You have received the Empire's Sanction.
-        ZASSHAL_DIALOG                = 11023, -- 'ang about. Looks like the permit you got was the last one I 'ad, so it might take me a bit o' time to scrounge up some more. 'ere, don't gimme that look. I'll be restocked before you know it.
-		SECOND_LIEUTENANT             = 12050, -- <player> has been promoted to Second Lieutenant!
-		PROMOTION_CHIEF_SERGEANT      = 12357, -- <player> has been promoted to Chief Sergeant!																					   
-        RETRIEVE_DIALOG_ID            = 13542, -- You retrieve <item> from the porter moogle's care.
-        COMMON_SENSE_SURVIVAL         = 14333, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
+        ZASSHAL_DIALOG                = 11015, -- 'ang about. Looks like the permit you got was the last one I 'ad, so it might take me a bit o' time to scrounge up some more. 'ere, don't gimme that look. I'll be restocked before you know it.
+		SECOND_LIEUTENANT             = 12041, -- <player> has been promoted to Second Lieutenant!
+		PROMOTION_CHIEF_SERGEANT      = 12345, -- <player> has been promoted to Chief Sergeant!																					   
+		HOPES_REST                    = 13127, -- Our hopes rest upon your able shoulders, noble adventurer.
+        ALREADY_IN_POSSESSION         = 13131, -- Oh, it seems you are already in possession of one. In that case, you will not be requiring another.
+        APPRECIATE_MORE               = 13132, -- I appreciate you bringing me more <item> However, I'm afraid I can only accept up to <amount> for each <days>. After all, we need to travel light.
+        SINGLE_TALLY                  = 13162, -- A single tally seal is proof positive of your prowess as an adventurer. You shan't be requiring another.
+        MASTER_FORBID                 = 13163, -- Ah, please forgive me. My master, Sanraku, whom I respect and revere, has forbidden me from engaging in conversation, as it will disrupt my attunement with nature.																																																																				 
+        RETRIEVE_DIALOG_ID            = 13534, -- You retrieve <item> from the porter moogle's care.
+        COMMON_SENSE_SURVIVAL         = 14325, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
     mob =
     {
     },
     npc =
     {
+		SANRAKU = GetFirstID('Sanraku'),								
     },
 }
 
