@@ -25,7 +25,7 @@ zones[xi.zone.MOUNT_ZHAYOLM] =
         CANNOT_LEAVE                  = 7332, -- You cannot leave this area while in the possession of <keyitem>.
         RESPONSE                      = 7341, -- There is no response...
 		YOU_HAVE_A_BADGE              = 7354, -- You have a %? Let me have a closer look at that...
-		NOTHING_OUT_OF_ORDINARY       = 7375, -- There is nothing out of the ordinary here.
+		
         HAND_OVER_TO_IMMORTAL         = 7428, -- You hand over the % to the Immortal.
         YOUR_IMPERIAL_STANDING        = 7429, -- Your Imperial Standing has increased!
         MINING_IS_POSSIBLE_HERE       = 7430, -- Mining is possible here if you have <item>.
@@ -39,6 +39,7 @@ zones[xi.zone.MOUNT_ZHAYOLM] =
         PUTRID_ODOR                   = 7567, -- A putrid odor threatens to overwhelm you...
         STIFLING_STENCH               = 7571, -- A stifling stench pervades the air...
         DRAWS_NEAR                    = 7587, -- Something draws near!
+		ACID_EATEN_DOOR               = 7837, -- The door's coarse, discolored surface gives off a pungent chemical odor...																												   
         HOMEPOINT_SET                 = 8736, -- Home point set!
         UNITY_WANTED_BATTLE_INTERACT  = 8794, -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
     },
