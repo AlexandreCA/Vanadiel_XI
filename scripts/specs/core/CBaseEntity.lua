@@ -3266,6 +3266,11 @@ end
 function CBaseEntity:getWeaponHitCount(offhand)
 end
 
+---@nodiscard
+---@return integer
+function CBaseEntity:addDamageFromMultipliers(damage, attackType, weaponSlot, allowProc)
+end
+
 ---@return nil
 function CBaseEntity:removeAmmo()
 end
