@@ -1,4 +1,3 @@
------------------------------------
 -- Area: Northern_San_dOria
 -----------------------------------
 zones = zones or {}
@@ -41,6 +40,9 @@ zones[xi.zone.NORTHERN_SAN_DORIA] =
         OBTAIN_SCYLDS                 = 8034,  -- You obtain <number> [scyld/scylds]! Current balance: <number> [scyld/scylds].
         HUNT_CANCELED                 = 8038,  -- Hunt canceled.
         WHAT_DO_YOU_WANT              = 11166, -- What do you want?
+        WHO_DOES_HE_THINK             = 11170, -- Who does he think he is, running off when we've piles of work to do! I'll give him a good lashing when he gets back!
+        GAMBLING_IS_THE_RUIN          = 11171, -- Gambling is the ruin of many, I tell you...
+        HE_WAS_JUST_HERE              = 11177, -- Eh? That gambler, Varchet? Aye, he was just here.
         FFR_GUILBERDRIER              = 11179, -- A magic shop, you say? A bit of magic would come in handy... I know! I'll have my daughter study it for me!
         YOU_DONATE_GIL                = 11188, -- You donate 10 gil.
         AILBECHE_FATHER_WHERE         = 11205, -- Oh, Father! Where are you?

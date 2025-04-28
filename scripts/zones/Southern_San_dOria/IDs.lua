@@ -48,6 +48,7 @@ zones[xi.zone.SOUTHERN_SAN_DORIA] =
         YOU_CANNOT_ENTER_DYNAMIS       = 7448,  -- You cannot enter Dynamis - [Dummy/San d'Oria/Bastok/Windurst/Jeuno/Beaucedine/Xarcabard/Valkurm/Buburimu/Qufim/Tavnazia] for <number> [day/days] (Vana'diel time).
         PLAYERS_HAVE_NOT_REACHED_LEVEL = 7450,  -- Players who have not reached level <number> are prohibited from entering Dynamis.
         DYNA_NPC_DEFAULT_MESSAGE       = 7460,  -- There is an unusual arrangement of branches here.
+        NOBODY_ONE_WANTS_TO_PLAY       = 7776,  -- Ah, nobody wants to play games of chance these days.
         VARCHET_BET_LOST               = 7791,  -- You lose your bet of 5 gil.
         VARCHET_KEEP_PROMISE           = 7800,  -- As promised, I shall go and see about those woodchippers. Maybe we can play another game later.
         ROSEL_GREETINGS                = 7801,  -- Greetings!
