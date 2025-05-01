@@ -1425,14 +1425,15 @@ INSERT INTO `item_mods` VALUES (10500,9,4);   -- DEX: 4
 INSERT INTO `item_mods` VALUES (10500,73,10); -- STORETP: 10
 
 -- Athoss Gloves
-INSERT INTO `item_mods` VALUES (10501,1,30); -- DEF: 30
-INSERT INTO `item_mods` VALUES (10501,8,7);  -- STR: 7
-INSERT INTO `item_mods` VALUES (10501,9,7);  -- DEX: 7
-INSERT INTO `item_mods` VALUES (10501,10,7); -- VIT: 7
-INSERT INTO `item_mods` VALUES (10501,11,7); -- AGI: 7
-INSERT INTO `item_mods` VALUES (10501,12,7); -- INT: 7
-INSERT INTO `item_mods` VALUES (10501,13,7); -- MND: 7
-INSERT INTO `item_mods` VALUES (10501,14,7); -- CHR: 7
+INSERT INTO `item_mods` VALUES (10501,1,30);    -- DEF: 30
+INSERT INTO `item_mods` VALUES (10501,8,7);     -- STR: 7
+INSERT INTO `item_mods` VALUES (10501,9,7);     -- DEX: 7
+INSERT INTO `item_mods` VALUES (10501,10,7);    -- VIT: 7
+INSERT INTO `item_mods` VALUES (10501,11,7);    -- AGI: 7
+INSERT INTO `item_mods` VALUES (10501,12,7);    -- INT: 7
+INSERT INTO `item_mods` VALUES (10501,13,7);    -- MND: 7
+INSERT INTO `item_mods` VALUES (10501,14,7);    -- CHR: 7
+INSERT INTO `item_mods` VALUES (10501,1145,15); -- DAY_FTP_BONUS: 15
 
 -- Rubeus Gloves
 INSERT INTO `item_mods` VALUES (10502,1,30);   -- DEF: 30
@@ -3661,9 +3662,10 @@ INSERT INTO `item_mods` VALUES (10865,28,5);  -- MATT: 5
 INSERT INTO `item_mods` VALUES (10865,30,5);  -- MACC: 5
 
 -- Mekira-Oto
-INSERT INTO `item_mods` VALUES (10866,1,40);  -- DEF: 40
-INSERT INTO `item_mods` VALUES (10866,8,15);  -- STR: 15
-INSERT INTO `item_mods` VALUES (10866,23,25); -- ATT: 25
+INSERT INTO `item_mods` VALUES (10866,1,40);    -- DEF: 40
+INSERT INTO `item_mods` VALUES (10866,8,15);    -- STR: 15
+INSERT INTO `item_mods` VALUES (10866,23,25);   -- ATT: 25
+INSERT INTO `item_mods` VALUES (10866,1145,25); -- DAY_FTP_BONUS: 25
 
 -- Ocelomeh Headpiece +1
 INSERT INTO `item_mods` VALUES (10867,1,32);    -- DEF: 32
@@ -3680,9 +3682,10 @@ INSERT INTO `item_mods` VALUES (10868,28,6);  -- MATT: 6
 INSERT INTO `item_mods` VALUES (10868,30,6);  -- MACC: 6
 
 -- Mekira-Oto +1
-INSERT INTO `item_mods` VALUES (10869,1,41);  -- DEF: 41
-INSERT INTO `item_mods` VALUES (10869,8,16);  -- STR: 16
-INSERT INTO `item_mods` VALUES (10869,23,30); -- ATT: 30
+INSERT INTO `item_mods` VALUES (10869,1,41);    -- DEF: 41
+INSERT INTO `item_mods` VALUES (10869,8,16);    -- STR: 16
+INSERT INTO `item_mods` VALUES (10869,23,30);   -- ATT: 30
+INSERT INTO `item_mods` VALUES (10869,1145,25); -- DAY_FTP_BONUS: 25
 
 -- Sceamol Band
 INSERT INTO `item_mods` VALUES (10870,23,14);    -- ATT: 14
@@ -4852,11 +4855,12 @@ INSERT INTO `item_mods` VALUES (11086,112,20); -- HEALING: 20
 INSERT INTO `item_mods` VALUES (11086,369,2);  -- REFRESH: 2
 
 -- Goetia Coat +2
-INSERT INTO `item_mods` VALUES (11087,1,50);  -- DEF: 50
-INSERT INTO `item_mods` VALUES (11087,5,45);  -- MP: 45
-INSERT INTO `item_mods` VALUES (11087,28,11); -- MATT: 11
-INSERT INTO `item_mods` VALUES (11087,30,11); -- MACC: 11
-INSERT INTO `item_mods` VALUES (11087,369,2); -- REFRESH: 2
+INSERT INTO `item_mods` VALUES (11087,1,50);     -- DEF: 50
+INSERT INTO `item_mods` VALUES (11087,5,45);     -- MP: 45
+INSERT INTO `item_mods` VALUES (11087,28,11);    -- MATT: 11
+INSERT INTO `item_mods` VALUES (11087,30,11);    -- MACC: 11
+INSERT INTO `item_mods` VALUES (11087,369,2);    -- REFRESH: 2
+INSERT INTO `item_mods` VALUES (11087,1146,-12); -- ELEMENTAL_MAGIC_RECAST: -12
 
 -- Estoqueurs Sayon +2
 INSERT INTO `item_mods` VALUES (11088,1,52);   -- DEF: 52
@@ -5090,10 +5094,11 @@ INSERT INTO `item_mods` VALUES (11118,5,50);   -- MP: 50
 INSERT INTO `item_mods` VALUES (11118,74,100); -- ENHANCES_MANA_CEDE: 100
 
 -- Mavi Bazubands +2
-INSERT INTO `item_mods` VALUES (11119,1,26);  -- DEF: 26
-INSERT INTO `item_mods` VALUES (11119,13,10); -- MND: 10
-INSERT INTO `item_mods` VALUES (11119,27,-4); -- ENMITY: -4
-INSERT INTO `item_mods` VALUES (11119,28,10); -- MATT: 10
+INSERT INTO `item_mods` VALUES (11119,1,26);     -- DEF: 26
+INSERT INTO `item_mods` VALUES (11119,13,10);    -- MND: 10
+INSERT INTO `item_mods` VALUES (11119,27,-4);    -- ENMITY: -4
+INSERT INTO `item_mods` VALUES (11119,28,10);    -- MATT: 10
+INSERT INTO `item_mods` VALUES (11119,1147,-12); -- BLUE_MAGIC_RECAST -12
 
 -- Navarchs Gants +2
 INSERT INTO `item_mods` VALUES (11120,1,26);    -- DEF: 26
@@ -5557,11 +5562,12 @@ INSERT INTO `item_mods` VALUES (11186,112,15); -- HEALING: 15
 INSERT INTO `item_mods` VALUES (11186,369,1);  -- REFRESH: 1
 
 -- Goetia Coat +1
-INSERT INTO `item_mods` VALUES (11187,1,47);  -- DEF: 47
-INSERT INTO `item_mods` VALUES (11187,5,35);  -- MP: 35
-INSERT INTO `item_mods` VALUES (11187,28,8);  -- MATT: 8
-INSERT INTO `item_mods` VALUES (11187,30,8);  -- MACC: 8
-INSERT INTO `item_mods` VALUES (11187,369,1); -- REFRESH: 1
+INSERT INTO `item_mods` VALUES (11187,1,47);    -- DEF: 47
+INSERT INTO `item_mods` VALUES (11187,5,35);    -- MP: 35
+INSERT INTO `item_mods` VALUES (11187,28,8);    -- MATT: 8
+INSERT INTO `item_mods` VALUES (11187,30,8);    -- MACC: 8
+INSERT INTO `item_mods` VALUES (11187,369,1);   -- REFRESH: 1
+INSERT INTO `item_mods` VALUES (11187,1146,-6); -- ELEMENTAL_MAGIC_RECAST: -6
 
 -- Estoqueurs Sayon +1
 INSERT INTO `item_mods` VALUES (11188,1,49);  -- DEF: 49
@@ -5786,10 +5792,11 @@ INSERT INTO `item_mods` VALUES (11218,5,40);  -- MP: 40
 INSERT INTO `item_mods` VALUES (11218,74,50); -- ENHANCES_MANA_CEDE: 50
 
 -- Mavi Bazubands +1
-INSERT INTO `item_mods` VALUES (11219,1,24);  -- DEF: 24
-INSERT INTO `item_mods` VALUES (11219,13,7);  -- MND: 7
-INSERT INTO `item_mods` VALUES (11219,27,-3); -- ENMITY: -3
-INSERT INTO `item_mods` VALUES (11219,28,7);  -- MATT: 7
+INSERT INTO `item_mods` VALUES (11219,1,24);    -- DEF: 24
+INSERT INTO `item_mods` VALUES (11219,13,7);    -- MND: 7
+INSERT INTO `item_mods` VALUES (11219,27,-3);   -- ENMITY: -3
+INSERT INTO `item_mods` VALUES (11219,28,7);    -- MATT: 7
+INSERT INTO `item_mods` VALUES (11219,1147,-6); -- BLUE_MAGIC_RECAST -6
 
 -- Navarchs Gants +1
 INSERT INTO `item_mods` VALUES (11220,1,24);   -- DEF: 24
@@ -8639,28 +8646,36 @@ INSERT INTO `item_mods` VALUES (11754,13,5);  -- MND: 5
 INSERT INTO `item_mods` VALUES (11754,27,-3); -- ENMITY: -3
 
 -- Flame Belt
-INSERT INTO `item_mods` VALUES (11755,1,7); -- DEF: 7
+INSERT INTO `item_mods` VALUES (11755,1,7);    -- DEF: 7
+INSERT INTO `item_mods` VALUES (11755,544,25); -- FIRE_FTP_BONUS: 25
 
 -- Snow Belt
-INSERT INTO `item_mods` VALUES (11756,1,7); -- DEF: 7
+INSERT INTO `item_mods` VALUES (11756,1,7);    -- DEF: 7
+INSERT INTO `item_mods` VALUES (11756,545,25); -- ICE_FTP_BONUS: 25
 
 -- Breeze Belt
-INSERT INTO `item_mods` VALUES (11757,1,7); -- DEF: 7
+INSERT INTO `item_mods` VALUES (11757,1,7);    -- DEF: 7
+INSERT INTO `item_mods` VALUES (11757,546,25); -- WIND_FTP_BONUS: 25
 
 -- Soil Belt
-INSERT INTO `item_mods` VALUES (11758,1,7); -- DEF: 7
+INSERT INTO `item_mods` VALUES (11758,1,7);    -- DEF: 7
+INSERT INTO `item_mods` VALUES (11758,547,25); -- EARTH_FTP_BONUS: 25
 
 -- Thunder Belt
-INSERT INTO `item_mods` VALUES (11759,1,7); -- DEF: 7
+INSERT INTO `item_mods` VALUES (11759,1,7);    -- DEF: 7
+INSERT INTO `item_mods` VALUES (11759,548,25); -- THUNDER_FTP_BONUS: 25
 
 -- Aqua Belt
-INSERT INTO `item_mods` VALUES (11760,1,7); -- DEF: 7
+INSERT INTO `item_mods` VALUES (11760,1,7);    -- DEF: 7
+INSERT INTO `item_mods` VALUES (11760,549,25); -- WATER_FTP_BONUS: 25
 
 -- Light Belt
-INSERT INTO `item_mods` VALUES (11761,1,7); -- DEF: 7
+INSERT INTO `item_mods` VALUES (11761,1,7);    -- DEF: 7
+INSERT INTO `item_mods` VALUES (11761,550,25); -- LIGHT_FTP_BONUS: 25
 
 -- Shadow Belt
-INSERT INTO `item_mods` VALUES (11762,1,7); -- DEF: 7
+INSERT INTO `item_mods` VALUES (11762,1,7);    -- DEF: 7
+INSERT INTO `item_mods` VALUES (11762,551,25); -- DARK_FTP_BONUS: 25
 
 -- Beir Belt
 INSERT INTO `item_mods` VALUES (11763,1,9);  -- DEF: 9
@@ -27774,6 +27789,30 @@ INSERT INTO `item_mods` VALUES (15494,6,1);  -- MPP: 1
 INSERT INTO `item_mods` VALUES (15494,68,3); -- EVA: 3
 INSERT INTO `item_mods` VALUES (15494,71,1); -- MPHEAL: 1
 
+-- Flame Gorget
+INSERT INTO `item_mods` VALUES (15495,544,25); -- FIRE_FTP_BONUS: 25
+
+-- Snow Gorget
+INSERT INTO `item_mods` VALUES (15496,545,25); -- ICE_FTP_BONUS: 25
+
+-- Breeze Gorget
+INSERT INTO `item_mods` VALUES (15497,546,25); -- WIND_FTP_BONUS: 25
+
+-- Soil Gorget
+INSERT INTO `item_mods` VALUES (15498,547,25); -- EARTH_FTP_BONUS: 25
+
+-- Thunder Gorget
+INSERT INTO `item_mods` VALUES (15499,548,25); -- THUNDER_FTP_BONUS: 25
+
+-- Aqua Gorget
+INSERT INTO `item_mods` VALUES (15500,549,25); -- WATER_FTP_BONUS: 25
+
+-- Light Gorget
+INSERT INTO `item_mods` VALUES (15501,550,25); -- LIGHT_FTP_BONUS: 25
+
+-- Shadow Gorget
+INSERT INTO `item_mods` VALUES (15502,551,25); -- DARK_FTP_BONUS: 25
+
 -- Van Pendant
 INSERT INTO `item_mods` VALUES (15503,1,3);    -- DEF: 3
 INSERT INTO `item_mods` VALUES (15503,166,-1); -- ENEMYCRITRATE: -1
@@ -37972,6 +38011,9 @@ INSERT INTO `item_mods` VALUES (18596,29,5); -- MDEF: 5
 -- Catalyst
 INSERT INTO `item_mods` VALUES (18597,487,5); -- MAG_BURST_BONUS: 5
 
+-- Prester
+INSERT INTO `item_mods` VALUES (18598,546,25); -- WIND_FTP_BONUS: 25
+
 -- Pestle
 INSERT INTO `item_mods` VALUES (18599,5,10);   -- MP: 10
 INSERT INTO `item_mods` VALUES (18599,431,6);  -- ITEM_ADDEFFECT_TYPE: 6
@@ -43826,6 +43868,7 @@ INSERT INTO `item_mods` VALUES (21176,12,12);   -- INT: 12
 INSERT INTO `item_mods` VALUES (21176,13,12);   -- MND: 12
 INSERT INTO `item_mods` VALUES (21176,28,18);   -- MATT: 18
 INSERT INTO `item_mods` VALUES (21176,311,207); -- MAGIC_DAMAGE: 207
+INSERT INTO `item_mods` VALUES (21176,1146,-3); -- ELEMENTAL_MAGIC_RECAST: -3
 
 -- Twebuliij
 INSERT INTO `item_mods` VALUES (21177,5,20);    -- MP: 20
@@ -49305,7 +49348,7 @@ INSERT INTO `item_mods` VALUES (23154,369,3);   -- REFRESH: 3
 INSERT INTO `item_mods` VALUES (23154,370,4);   -- REGEN: 4
 INSERT INTO `item_mods` VALUES (23154,384,300); -- HASTE_GEAR: 3%
 
--- Wicce Coat : 2
+-- Wicce Coat +2
 INSERT INTO `item_mods` VALUES (23155,1,144);   -- DEF: 144
 INSERT INTO `item_mods` VALUES (23155,2,70);    -- HP: 70
 INSERT INTO `item_mods` VALUES (23155,5,122);   -- MP: 122
@@ -49325,7 +49368,7 @@ INSERT INTO `item_mods` VALUES (23155,68,78);   -- EVA: 78
 INSERT INTO `item_mods` VALUES (23155,311,24);  -- MAGIC_DAMAGE: 24
 INSERT INTO `item_mods` VALUES (23155,369,3);   -- REFRESH: 3
 INSERT INTO `item_mods` VALUES (23155,384,300); -- HASTE_GEAR: 3%
-INSERT INTO `item_mods` VALUES (23155,901,15);  -- ELEMENTAL_CELERITY: -15%
+INSERT INTO `item_mods` VALUES (23155,1146,-15); -- ELEMENTAL_MAGIC_RECAST: -15
 -- TODO: MAG_BURST_BONUS_II: : 4
 
 -- Lethargy Sayon +2
@@ -50979,7 +51022,7 @@ INSERT INTO `item_mods` VALUES (23234,31,77);    -- MEVA: 77
 INSERT INTO `item_mods` VALUES (23234,68,64);    -- EVA: 64
 INSERT INTO `item_mods` VALUES (23234,160,-900); -- DMG: -9%
 INSERT INTO `item_mods` VALUES (23234,384,300);  -- HASTE_GEAR: 3%
--- TODO: Blue magic recast delay -15%
+INSERT INTO `item_mods` VALUES (23234,1147,-15); -- BLUE_MAGIC_RECAST -15
 
 -- Chasseur's Gants +2
 INSERT INTO `item_mods` VALUES (23235,1,110);   -- DEF: 110
@@ -63316,6 +63359,7 @@ INSERT INTO `item_mods` VALUES (26702,29,2);    -- MDEF: 2
 INSERT INTO `item_mods` VALUES (26702,31,53);   -- MEVA: 53
 INSERT INTO `item_mods` VALUES (26702,68,44);   -- EVA: 44
 INSERT INTO `item_mods` VALUES (26702,384,800); -- HASTE_GEAR: 800
+INSERT INTO `item_mods` VALUES (26702,1145,30); -- DAY_FTP_BONUS: 30
 
 -- Imperial Wing Hairpin +1
 INSERT INTO `item_mods` VALUES (26710,9,27);  -- DEX: 27
@@ -65806,6 +65850,7 @@ INSERT INTO `item_mods` VALUES (26904,31,62);   -- MEVA: 62
 INSERT INTO `item_mods` VALUES (26904,68,17);   -- EVA: 17
 INSERT INTO `item_mods` VALUES (26904,369,2);   -- REFRESH: 2
 INSERT INTO `item_mods` VALUES (26904,384,200); -- HASTE_GEAR: 200
+INSERT INTO `item_mods` VALUES (26904,1146,-13); -- ELEMENTAL_MAGIC_RECAST: -13
 
 -- Wicce Coat +1
 INSERT INTO `item_mods` VALUES (26905,1,124);   -- DEF: 124
@@ -65825,6 +65870,7 @@ INSERT INTO `item_mods` VALUES (26905,31,91);   -- MEVA: 91
 INSERT INTO `item_mods` VALUES (26905,68,38);   -- EVA: 38
 INSERT INTO `item_mods` VALUES (26905,369,2);   -- REFRESH: 2
 INSERT INTO `item_mods` VALUES (26905,384,300); -- HASTE_GEAR: 300
+INSERT INTO `item_mods` VALUES (26905,1146,-14); -- ELEMENTAL_MAGIC_RECAST: -14
 
 -- Lethargy Sayon
 INSERT INTO `item_mods` VALUES (26906,1,91);    -- DEF: 91
@@ -68200,6 +68246,7 @@ INSERT INTO `item_mods` VALUES (27082,29,1);    -- MDEF: 1
 INSERT INTO `item_mods` VALUES (27082,31,25);   -- MEVA: 25
 INSERT INTO `item_mods` VALUES (27082,68,11);   -- EVA: 11
 INSERT INTO `item_mods` VALUES (27082,384,300); -- HASTE_GEAR: 300
+INSERT INTO `item_mods` VALUES (27082,1147,-13); -- BLUE_MAGIC_RECAST -13
 
 -- Hashishin Bazubands +1
 INSERT INTO `item_mods` VALUES (27083,1,90);    -- DEF: 90
@@ -68218,6 +68265,7 @@ INSERT INTO `item_mods` VALUES (27083,29,3);    -- MDEF: 3
 INSERT INTO `item_mods` VALUES (27083,31,37);   -- MEVA: 37
 INSERT INTO `item_mods` VALUES (27083,68,24);   -- EVA: 24
 INSERT INTO `item_mods` VALUES (27083,384,300); -- HASTE_GEAR: 300
+INSERT INTO `item_mods` VALUES (27083,1147,-14); -- BLUE_MAGIC_RECAST -14
 
 -- Chasseurs Gants
 INSERT INTO `item_mods` VALUES (27084,1,60);    -- DEF: 60
@@ -68412,6 +68460,7 @@ INSERT INTO `item_mods` VALUES (27105,31,37);   -- MEVA: 37
 INSERT INTO `item_mods` VALUES (27105,68,22);   -- EVA: 22
 INSERT INTO `item_mods` VALUES (27105,115,13);  -- ELEM: 13
 INSERT INTO `item_mods` VALUES (27105,384,300); -- HASTE_GEAR: 300
+INSERT INTO `item_mods` VALUES (27105,1146,-7); -- ELEMENTAL_MAGIC_RECAST: -7
 
 -- Asteria Mitts
 INSERT INTO `item_mods` VALUES (27106,1,82);    -- DEF: 82
@@ -70749,9 +70798,9 @@ INSERT INTO `item_mods` VALUES (27304,28,30);   -- MATT: 30
 INSERT INTO `item_mods` VALUES (27304,29,6);    -- MDEF: 6
 INSERT INTO `item_mods` VALUES (27304,31,118);  -- MEVA: 118
 INSERT INTO `item_mods` VALUES (27304,68,24);   -- EVA: 24
-INSERT INTO `item_mods` VALUES (27304,174,9);   -- SKILLCHAINBONUS: 9
+INSERT INTO `item_mods` VALUES (27304,175,8);   -- SKILLCHAINDMG: 8
 INSERT INTO `item_mods` VALUES (27304,384,500); -- HASTE_GEAR: 500
-INSERT INTO `item_mods` VALUES (27304,397,7);   -- BLACK_MAGIC_RECAST: 7
+INSERT INTO `item_mods` VALUES (27304,1146,-7); -- ELEMENTAL_MAGIC_RECAST: -7
 
 -- Amalric Slops +1
 INSERT INTO `item_mods` VALUES (27305,1,106);   -- DEF: 106
@@ -70768,9 +70817,9 @@ INSERT INTO `item_mods` VALUES (27305,28,40);   -- MATT: 40
 INSERT INTO `item_mods` VALUES (27305,29,6);    -- MDEF: 6
 INSERT INTO `item_mods` VALUES (27305,31,118);  -- MEVA: 118
 INSERT INTO `item_mods` VALUES (27305,68,24);   -- EVA: 24
-INSERT INTO `item_mods` VALUES (27305,175,8);   -- SKILLCHAINDMG: 8
+INSERT INTO `item_mods` VALUES (27305,175,9);   -- SKILLCHAINDMG: 9
 INSERT INTO `item_mods` VALUES (27305,384,500); -- HASTE_GEAR: 500
-INSERT INTO `item_mods` VALUES (27305,397,8);   -- BLACK_MAGIC_RECAST: 8
+INSERT INTO `item_mods` VALUES (27305,1146,-8); -- ELEMENTAL_MAGIC_RECAST: -8
 
 -- Kaykaus Tights
 INSERT INTO `item_mods` VALUES (27306,1,107);   -- DEF: 107
@@ -72986,6 +73035,25 @@ INSERT INTO `item_mods` VALUES (27489,384,300); -- HASTE_GEAR: 300
 INSERT INTO `item_mods` VALUES (27489,386,100); -- KICK_DMG: 100
 INSERT INTO `item_mods` VALUES (27489,429,15);  -- FOOTWORK_ATT_BONUS: 15
 
+-- Tutyr Sabots
+INSERT INTO `item_mods` VALUES (27490,1,70);    -- DEF: 70
+INSERT INTO `item_mods` VALUES (27490,2,13);    -- HP: 13
+INSERT INTO `item_mods` VALUES (27490,5,14);    -- MP: 14
+INSERT INTO `item_mods` VALUES (27490,8,10);    -- STR: 10
+INSERT INTO `item_mods` VALUES (27490,9,11);    -- DEX: 11
+INSERT INTO `item_mods` VALUES (27490,10,10);   -- VIT: 10
+INSERT INTO `item_mods` VALUES (27490,11,33);   -- AGI: 33
+INSERT INTO `item_mods` VALUES (27490,12,22);   -- INT: 22
+INSERT INTO `item_mods` VALUES (27490,13,19);   -- MND: 19
+INSERT INTO `item_mods` VALUES (27490,14,34);   -- CHR: 34
+INSERT INTO `item_mods` VALUES (27490,68,55);   -- EVA: 55
+INSERT INTO `item_mods` VALUES (27490,31,107);  -- MEVA: 107
+INSERT INTO `item_mods` VALUES (27490,28,23);   -- MATT: 23
+INSERT INTO `item_mods` VALUES (27490,29,5);    -- MDEF: 5
+INSERT INTO `item_mods` VALUES (27490,384,300); -- HASTE_GEAR: 300
+INSERT INTO `item_mods` VALUES (27490,27,-7);   -- ENMITY: -7
+INSERT INTO `item_mods` VALUES (27490,1146,-7); -- ELEMENTAL_MAGIC_RECAST: -7
+
 -- Herculean Boots
 INSERT INTO `item_mods` VALUES (27496,1,79);     -- DEF: 79
 INSERT INTO `item_mods` VALUES (27496,2,9);      -- HP: 9
@@ -73060,7 +73128,8 @@ INSERT INTO `item_mods` VALUES (27507,28,10); -- MATT: 10
 INSERT INTO `item_mods` VALUES (27507,296,2); -- CONSERVE_MP: 2
 
 -- Fotia Gorget
-INSERT INTO `item_mods` VALUES (27510,949,1); -- WS_NO_DEPLETE: 1
+INSERT INTO `item_mods` VALUES (27510,949,1);   -- WS_NO_DEPLETE: 1
+INSERT INTO `item_mods` VALUES (27510,1144,25); -- ANY_FTP_BONUS: 25
 
 -- Satlada Necklace
 INSERT INTO `item_mods` VALUES (27516,12,6);   -- INT: 6
@@ -83264,8 +83333,9 @@ INSERT INTO `item_mods` VALUES (28419,537,1); -- FORCE_LIGHT_DWBONUS: 1
 INSERT INTO `item_mods` VALUES (28419,538,1); -- FORCE_DARK_DWBONUS: 1
 
 -- Fotia Belt
-INSERT INTO `item_mods` VALUES (28420,1,7);   -- DEF: 7
-INSERT INTO `item_mods` VALUES (28420,949,1); -- WS_NO_DEPLETE: 1
+INSERT INTO `item_mods` VALUES (28420,1,7);     -- DEF: 7
+INSERT INTO `item_mods` VALUES (28420,949,1);   -- WS_NO_DEPLETE: 1
+INSERT INTO `item_mods` VALUES (28420,1144,25); -- ANY_FTP_BONUS: 25
 
 -- Rumination Sash
 INSERT INTO `item_mods` VALUES (28421,13,4);   -- MND: 4
