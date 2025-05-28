@@ -27,13 +27,30 @@ zones[xi.zone.BONEYARD_GULLY] =
         THE_PARTY_WILL_BE_REMOVED     = 7421, -- If all party members' HP are still zero after # minute[/s], the party will be removed from the battlefield.
         CONQUEST_BASE                 = 7438, -- Tallying conquest results...
         ENTERING_THE_BATTLEFIELD_FOR  = 7601, -- Entering the battlefield for [Head Wind/Like the Wind/Sheep in Antlion's Clothing/Shell We Dance?/Totentanz/Tango with a Tracker/Requiem of Sin/Antagonistic Ambuscade/Head Wind]!
+        FOLLOW_LEAD                   = 7724, -- Follow my lead!
+        I_CANT_HAVE_LOST              = 7733, -- I...I can't have lost...
+        READY_TO_REAP                 = 7734, -- Ready to rrrreap!
+        LET_THE_MASSACRE_BEGIN        = 7735, -- Let the massacrrre begin!
+        JUST_FOR_YOU_SUGARPLUM        = 7736, -- Just for you, sugarplum!
+        IN_YOUR_EYE_HONEYCAKES        = 7737, -- In your eye, honeycakes!
+        READY_TO_RUMBLE               = 7745, -- Ready to rrrumble!
+        TIME_TO_HUNT                  = 7746, -- Mithran Trackers! Time to hunt!
+        MY_TURN                       = 7747, -- My turn! My Turn!
+        YOURE_MINE                    = 7748, -- You're mine!
         TUCHULCHA_SANDPIT             = 7757, -- Tuchulcha retreats beneath the soil!
+        BURSTS_INTO_FLAMES            = 7762, -- The {key item} suddenly bursts into flames, the blackened remains borne away by the wind...
+        GET_YOUR_BLOOD_RACING         = 7812, -- I'll get your blood rrracing!
+        SCENT_OF_FRESH_BLOOD          = 7814, -- Ah, the scent of frrrresh blood!
+        EVEN_AT_MY_BEST               = 7816, -- Even at my best...
+        TIME_TO_END_THE_HUNT          = 7817, -- Time to end the hunt! Go for the jugular!
+        DINNER_TIME_ADVENTURER_STEAK  = 7818, -- Dinner time! Tonight we're having "Adventurer Steak"!
     },
     mob =
     {
-        PARATA     = GetFirstID('Parata'),
-        SHIKAREE_Z = GetFirstID('Shikaree_Z'),
-        TUCHULCHA  = GetFirstID('Tuchulcha'),
+        PARATA            = GetFirstID('Parata'),
+        SHIKAREE_Z        = GetFirstID('Shikaree_Z'),
+        TUCHULCHA         = GetFirstID('Tuchulcha'),
+        SHIKAREE_Z_OFFSET = GetTableOfIDs('Shikaree_Z'),
     },
 
     npc =
