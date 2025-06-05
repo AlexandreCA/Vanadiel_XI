@@ -41,6 +41,7 @@
 #include <algorithm>
 #include <cstring>
 #include <execution>
+#include <ranges>
 
 std::map<uint16, CZone*> g_PZoneList; // Global array of pointers for zones
 CNpcEntity*              g_PTrigger;  // trigger to start events
