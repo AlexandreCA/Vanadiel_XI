@@ -31,8 +31,12 @@ mission.sections =
 {
     {
         check = function(player, currentMission, missionStatus, vars)
-            return currentMission == xi.mission.id.nation.NONE and
-                player:getNation() == mission.areaId
+            -- Permet de proposer la mission si le joueur ne fait rien et qu'il est éligible
+            return currentMission == xi.mission.id.windurst.TO_EACH_HIS_OWN_RIGHT or
+                (currentMission == xi.mission.id.nation.NONE and
+                 player:getNation() == mission.areaId and
+                 player:getRank() == 2 and
+                 player:getMissionRankPoints() >= 1500)
         end,
 
         [xi.zone.PORT_WINDURST] =
@@ -78,9 +82,12 @@ mission.sections =
             ['Kupipi'] =
             {
                 onTrigger = function(player, npc)
+                    local currentMission = player:getCurrentMission(mission.areaId)
                     local missionStatus = player:getMissionStatus(mission.areaId)
 
-                    if missionStatus == 0 then
+                    if currentMission == xi.mission.id.nation.NONE then
+                        player:startEvent(78)  -- Menu Accepter/Refuser
+                    elseif missionStatus == 0 then
                         return mission:progressEvent(103, 0, 0, xi.ki.STARWAY_STAIRWAY_BAUBLE)
                     elseif missionStatus == 1 then
                         return mission:progressEvent(104)
@@ -105,6 +112,13 @@ mission.sections =
 
             onEventFinish =
             {
+                [78] = function(player, csid, option, npc)
+                    if option == 10 then
+                        mission:begin(player)
+                        player:messageSpecial(zones[player:getZoneID()].text.YOU_ACCEPT_THE_MISSION)
+                    end
+                end,
+
                 [103] = function(player, csid, option, npc)
                     player:setMissionStatus(mission.areaId, 1)
                     npcUtil.giveKeyItem(player, xi.ki.STARWAY_STAIRWAY_BAUBLE)
@@ -143,9 +157,6 @@ mission.sections =
         {
             onEventFinish =
             {
-                -- NOTE: This event is fired from NPCs _47b and _47c.  This is to allow for trap door opening and
-                -- immediately triggering the CS.
-                -- TODO: Find an alternative method for handling the event.
                 [43] = function(player, csid, option, npc)
                     player:setMissionStatus(mission.areaId, 4)
                 end,
