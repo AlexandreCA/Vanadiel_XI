@@ -27,7 +27,6 @@ zones[xi.zone.MONARCH_LINN] =
         CONQUEST_BASE                 = 7479, -- Tallying conquest results...
         ENTERING_THE_BATTLEFIELD_FOR  = 7642, -- Entering the battlefield for [Ancient Vows/The Savage/Fire in the Sky/Bad Seed/Bugard in the Clouds/Beloved of the Atlantes/Uninvited Guests/Nest of Nightmares/The Savage]!
     },
-    },
     mob =
     {
         MAMMET_19_EPSILON = GetFirstID('Mammet-19_Epsilon'),
