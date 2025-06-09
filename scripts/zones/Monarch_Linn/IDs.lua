@@ -21,10 +21,12 @@ zones[xi.zone.MONARCH_LINN] =
         MEMBERS_OF_YOUR_PARTY         = 7416, -- Currently, # members of your party (including yourself) have clearance to enter the battlefield.
         MEMBERS_OF_YOUR_ALLIANCE      = 7417, -- Currently, # members of your alliance (including yourself) have clearance to enter the battlefield.
         TIME_LIMIT_FOR_THIS_BATTLE_IS = 7419, -- The time limit for this battle is <number> minutes.
+        TORN_FROM_YOUR_HANDS          = 7470, -- The [key item] is torn from your hands and sucked into the spatial displacement!
         PARTY_MEMBERS_HAVE_FALLEN     = 7455, -- All party members have fallen in battle. Now leaving the battlefield.
         THE_PARTY_WILL_BE_REMOVED     = 7462, -- If all party members' HP are still zero after # minute[/s], the party will be removed from the battlefield.
         CONQUEST_BASE                 = 7479, -- Tallying conquest results...
         ENTERING_THE_BATTLEFIELD_FOR  = 7642, -- Entering the battlefield for [Ancient Vows/The Savage/Fire in the Sky/Bad Seed/Bugard in the Clouds/Beloved of the Atlantes/Uninvited Guests/Nest of Nightmares/The Savage]!
+    },
     },
     mob =
     {
