@@ -31,16 +31,21 @@ mission.sections =
 {
     {
         check = function(player, currentMission, missionStatus, vars)
-            -- Permet de proposer la mission si le joueur ne fait rien et qu'il est éligible
-            return currentMission == xi.mission.id.windurst.TO_EACH_HIS_OWN_RIGHT or
-                (currentMission == xi.mission.id.nation.NONE and
-                 player:getNation() == mission.areaId and
-                 player:getRank() == 2 and
-                 player:getMissionRankPoints() >= 1500)
+            return currentMission == xi.mission.id.nation.NONE and
+                player:getNation() == mission.areaId
         end,
 
         [xi.zone.PORT_WINDURST] =
         {
+            ['Rakoh_Buuma'] =
+            {
+                onTrigger = function(player, npc)
+                    if player:getCurrentMission(mission.areaId) == xi.mission.id.nation.NONE and player:getNation() == mission.areaId then
+                        player:startEvent(78) -- Menu accepter/refuser
+                    end
+                end,
+            },
+
             onEventFinish =
             {
                 [78] = handleAcceptMission,
@@ -49,25 +54,52 @@ mission.sections =
 
         [xi.zone.WINDURST_WALLS] =
         {
+            ['Mokyokyo'] =
+            {
+                onTrigger = function(player, npc)
+                    if player:getCurrentMission(mission.areaId) == xi.mission.id.nation.NONE and player:getNation() == mission.areaId then
+                        player:startEvent(78)
+                    end
+                end,
+            },
+
             onEventFinish =
             {
-                [93] = handleAcceptMission,
+                [78] = handleAcceptMission,
             },
         },
 
         [xi.zone.WINDURST_WATERS] =
         {
+            ['Janshura-Rashura'] =
+            {
+                onTrigger = function(player, npc)
+                    if player:getCurrentMission(mission.areaId) == xi.mission.id.nation.NONE and player:getNation() == mission.areaId then
+                        player:startEvent(78)
+                    end
+                end,
+            },
+
             onEventFinish =
             {
-                [111] = handleAcceptMission,
+                [78] = handleAcceptMission,
             },
         },
 
         [xi.zone.WINDURST_WOODS] =
         {
+            ['Zokima-Rokima'] =
+            {
+                onTrigger = function(player, npc)
+                    if player:getCurrentMission(mission.areaId) == xi.mission.id.nation.NONE and player:getNation() == mission.areaId then
+                        player:startEvent(78)
+                    end
+                end,
+            },
+
             onEventFinish =
             {
-                [114] = handleAcceptMission,
+                [78] = handleAcceptMission,
             },
         },
     },
@@ -86,7 +118,7 @@ mission.sections =
                     local missionStatus = player:getMissionStatus(mission.areaId)
 
                     if currentMission == xi.mission.id.nation.NONE then
-                        player:startEvent(78)  -- Menu Accepter/Refuser
+                        player:startEvent(78)  -- Menu "Accepter / Refuser"
                     elseif missionStatus == 0 then
                         return mission:progressEvent(103, 0, 0, xi.ki.STARWAY_STAIRWAY_BAUBLE)
                     elseif missionStatus == 1 then
@@ -157,6 +189,9 @@ mission.sections =
         {
             onEventFinish =
             {
+                -- NOTE: This event is fired from NPCs _47b and _47c.  This is to allow for trap door opening and
+                -- immediately triggering the CS.
+                -- TODO: Find an alternative method for handling the event.
                 [43] = function(player, csid, option, npc)
                     player:setMissionStatus(mission.areaId, 4)
                 end,
