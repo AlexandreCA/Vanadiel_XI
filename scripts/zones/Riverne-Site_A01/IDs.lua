@@ -19,7 +19,7 @@ zones[xi.zone.RIVERNE_SITE_A01] =
         CONQUEST_BASE                 = 7064, -- Tallying conquest results...
         TIME_IN_THE_BATTLEFIELD_IS_UP = 7232, -- Your time in the battlefield is up! Now exiting...
         PARTY_MEMBERS_ARE_ENGAGED     = 7247, -- The battlefield where your party members are engaged in combat is locked. Access is denied.
-        A_GLOWING_MIST                = 7259, -- A glowing mist of ever-changing proportions floats before you...
+        NO_BATTLEFIELD_ENTRY          = 7259, -- A glowing mist of ever-changing proportions floats before you...
         MEMBERS_OF_YOUR_PARTY         = 7534, -- Currently, # members of your party (including yourself) have clearance to enter the battlefield.
         MEMBERS_OF_YOUR_ALLIANCE      = 7535, -- Currently, # members of your alliance (including yourself) have clearance to enter the battlefield.
         TIME_LIMIT_FOR_THIS_BATTLE_IS = 7537, -- The time limit for this battle is # minutes.
@@ -33,7 +33,6 @@ zones[xi.zone.RIVERNE_SITE_A01] =
 		NOTHING_OUT_OF_THE_ORDINARY   = 7651, -- There is nothing out of the ordinary here.																				   
         HOMEPOINT_SET                 = 7741, -- Home point set!
         UNITY_WANTED_BATTLE_INTERACT  = 7799, -- Those who have accepted % must pay # Unity accolades to participate. The content for this Wanted battle is #. [Ready to begin?/You do not have the appropriate object set, so your rewards will be limited.]
-        -- NO_BATTLEFIELD_ENTRY       =     , -- TODO: determine the correct message for NO_BATTLEFIELD_ENTRY
     },
     mob =
     {
