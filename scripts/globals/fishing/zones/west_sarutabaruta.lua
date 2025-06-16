@@ -1,6 +1,15 @@
+-----------------------------------
+-- West_Sarutabaruta
+-----------------------------------
 return {
     "Crayfish",
     "Moat Carp",
-    "Senroh Frog",
-    "Bass",
+    "Quus",
+    "Giant Catfish",
+    "Dark Bass",
+    "Ogre Eel",
+    "Gold Lobster",
+    "Bluetail",
+    "Bladefish",
+    "Bastore Bream",
 }

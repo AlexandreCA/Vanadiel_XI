@@ -1,9 +1,10 @@
 -----------------------------------
--- West_Ronfaure
+-- Ghelsba_Outpost
 -----------------------------------
 return {
     "Crayfish",
-    "Moat Carp",
-    "Giant Catfish",
-    "Red Terrapin",
+    "Tricolored Carp",
+    "Shining Trout",
+    "Gold Carp",
 }
+

@@ -1,9 +1,11 @@
 -----------------------------------
--- West_Ronfaure
+-- Giddeus
 -----------------------------------
 return {
     "Crayfish",
-    "Moat Carp",
+    "Tricolored Carp",
     "Giant Catfish",
-    "Red Terrapin",
+    "Dark Bass",
+    "Monke-Onke",
 }
+

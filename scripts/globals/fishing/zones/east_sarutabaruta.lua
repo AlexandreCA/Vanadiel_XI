@@ -1,6 +1,15 @@
+-----------------------------------
+-- East_Sarutabaruta
+-----------------------------------
 return {
     "Crayfish",
     "Moat Carp",
-    "Senroh Frog",
-    "Bass",
+    "Pipira",
+    "Ogre Eel",
+    "Gold Lobster",
+    "Monke-Onke",
+    "Bluetail",
+    "Crescent Fish",
+    "Bladefish",
+    "Bastore Bream",
 }
