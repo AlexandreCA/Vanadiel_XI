@@ -2,11 +2,15 @@
 -- Buburimu_Peninsula
 -----------------------------------
 return {
-    "Bigfin Squid",
-    "Manta Ray",
-    "Sea Bass",
-    "Sailfish",
-    "Trout",
-    "Tuna",
-    "Wahoo",
+    "Yellow Globe",
+    "Shall Shell",
+    "Bluetail",
+    "Silver Ring",
+    "Copper Ring",
+    "Rusty Leggings",
+    "Rusty Subligar",
+    "Rusty Bucket",
+    "Rusty Pick",
+    "Rusty Cap",
+    "Pamtam Kelp",
 }
