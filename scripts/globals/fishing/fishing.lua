@@ -69,18 +69,32 @@ local function getFishInZone(zoneName, baitName, rodName, player)
 end
 
 --
+local rankTests = {
+    [8]  = {rank = xi.craftRank.RECRUIT,     item = 4401}, -- Moat Carp
+    [18] = {rank = xi.craftRank.INITIATE,    item = 4402}, -- Cheval Salmon
+    [28] = {rank = xi.craftRank.NOVICE,      item = 4403}, -- Giant Catfish
+    [38] = {rank = xi.craftRank.APPRENTICE,  item = 4404}, -- Gugru Tuna
+    [48] = {rank = xi.craftRank.JOURNEYMAN,  item = 4405}, -- Monke-Onke
+    [58] = {rank = xi.craftRank.CRAFTSMAN,   item = 4406}, -- Bhefhel Marlin
+    [68] = {rank = xi.craftRank.ARTISAN,     item = 4407}, -- Bladefish
+    [78] = {rank = xi.craftRank.ADEPT,       item = 4408}, -- Three-eyed Fish
+    [88] = {rank = xi.craftRank.VETERAN,     item = 4409}, -- Gigant Squid
+    [98] = {rank = xi.craftRank.EXPERT,      item = 4410}, -- Tiger Shark
+}
+
 local function checkRankProgress(player, fishingSkill)
-    local rankThresholds = {
-        [xi.craftRank.NOVICE] = 0,
-        [xi.craftRank.APPRENTICE] = 280,
-        [xi.craftRank.JOURNEYMAN] = 480,
-        [xi.craftRank.ARTISAN] = 680,
-        [xi.craftRank.EXPERT] = 880,
-    }
     local currentRank = player:getRank(xi.guild.FISHING) or xi.craftRank.NOVICE
-    for rank, threshold in pairs(rankThresholds) do
-        if fishingSkill >= threshold and currentRank < rank then
-            player:messageSpecial(xi.msg.basic.FISHING_RANK_UP, 0, 0, 0, "")
+
+    for levelReq, info in pairs(rankTests) do
+        if fishingSkill >= levelReq and currentRank < info.rank then
+            if player:hasItem(info.item) then
+                player:removeItem(info.item)
+                player:setRank(xi.guild.FISHING, info.rank)
+                player:messageSpecial(xi.msg.basic.FISHING_RANK_UP, 0, 0, 0, "")
+                player:messageBasic(xi.msg.basic.ITEM_TURNED_IN, info.item)
+            else
+                player:messageBasic(xi.msg.basic.FISHING_TEST_REQUIRED, info.item)
+            end
             break
         end
     end
@@ -101,7 +115,7 @@ local function handleSkillGain(player, fishName, zoneName, success)
         baseChance = 0
     end
     baseChance = success and baseChance or baseChance * 0.5
-    if player:hasItem(15554) then
+    if player:hasItem(15554) then -- Pelican Ring
         baseChance = baseChance * 1.1
     end
 
