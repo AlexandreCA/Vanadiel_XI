@@ -1,10 +1,12 @@
 -----------------------------------
--- Fishing_core
+-- Fishing
 -----------------------------------
-
-local fish_data = require("scripts/globals/fishing/fish_data")
-local zone_data = require("scripts/globals/fishing/zones/zone_data")
-
+local fish_data = require("scripts/globals/fishing/items")
+local zone_data = require("scripts/globals/fishing/zones/zones")
+-----------------------------------
+xi = xi or {}
+xi.fishing = xi.fishing or {}
+-----------------------------------
 local FishingCore = {}
 
 -- Configuration
