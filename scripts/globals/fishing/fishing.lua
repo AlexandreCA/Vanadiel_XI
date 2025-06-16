@@ -15,12 +15,12 @@ FishingCore.biteDelayMax = 30
 FishingCore.tensionGameDuration = 15
 FishingCore.requiredTensionScore = 70
 
--- Vérifie si le joueur est près d'une zone d'eau
+-- Checks if the player is near a body of water
 local function isNearWater(player)
-    return true -- À implémenter avec la logique LSB
+    return true -- To be implemented with LSB logic
 end
 
--- Vérifie la fatigue de pêche (200 captures/jour)
+--
 local function checkFishingFatigue(player)
     local lastReset = player:getVar("FishingFatigueReset") or 0
     local currentTime = os.time()
@@ -30,23 +30,23 @@ local function checkFishingFatigue(player)
     end
     local fatigueCount = player:getVar("FishingFatigueCount") or 0
     if fatigueCount >= 200 then
-        player:messageBasic(xi.msg.basic.FISHING_FATIGUE, 0, 0, 0, "Vous avez atteint la limite quotidienne de pêche !")
+        player:messageBasic(xi.msg.basic.FISHING_FATIGUE, 0, 0, 0, "")
         return false
     end
     return true
 end
 
--- Calcule le bonus de compétence (par exemple, Fisherman's Tunica)
+--
 local function getFishingSkillBonus(player)
     local bonus = 0
-    if player:hasItem(13759) then -- Fisherman's Tunica
-        bonus = bonus + 40 -- +4.0
+    if player:hasItem(13759) then
+        bonus = bonus + 40
     end
     return bonus
 end
 
--- Récupère un poisson/objet aléatoire dans la zone
-local function getFishInZone(zoneName, baitName, rodName)
+--
+local function getFishInZone(zoneName, baitName, rodName, player)
     local zoneFish = zones[zoneName:lower()]
     if not zoneFish then return nil end
 
@@ -62,31 +62,31 @@ local function getFishInZone(zoneName, baitName, rodName)
     end
 
     if #validFish == 0 then
-        player:messageBasic(xi.msg.basic.FISHING_NOTHING_CAUGHT, 0, 0, 0, "Appât ou canne inadapté !")
+        player:messageBasic(xi.msg.basic.FISHING_NOTHING_CAUGHT, 0, 0, 0, "")
         return nil
     end
     return validFish[math.random(1, #validFish)]
 end
 
--- Vérifie et notifie les progrès de rang
+--
 local function checkRankProgress(player, fishingSkill)
     local rankThresholds = {
         [xi.craftRank.NOVICE] = 0,
-        [xi.craftRank.APPRENTICE] = 280, -- 28.0
-        [xi.craftRank.JOURNEYMAN] = 480, -- 48.0
-        [xi.craftRank.ARTISAN] = 680, -- 68.0
-        [xi.craftRank.EXPERT] = 880, -- 88.0
+        [xi.craftRank.APPRENTICE] = 280,
+        [xi.craftRank.JOURNEYMAN] = 480,
+        [xi.craftRank.ARTISAN] = 680,
+        [xi.craftRank.EXPERT] = 880,
     }
     local currentRank = player:getRank(xi.guild.FISHING) or xi.craftRank.NOVICE
     for rank, threshold in pairs(rankThresholds) do
         if fishingSkill >= threshold and currentRank < rank then
-            player:messageSpecial(xi.msg.basic.FISHING_RANK_UP, 0, 0, 0, "Parlez à Thubu Parohren pour passer au rang suivant !")
+            player:messageSpecial(xi.msg.basic.FISHING_RANK_UP, 0, 0, 0, "")
             break
         end
     end
 end
 
--- Calcule et applique un gain de compétence en pêche
+--
 local function handleSkillGain(player, fishName, zoneName, success)
     local fishingSkill = player:getSkillLevel(xi.skill.FISHING) + getFishingSkillBonus(player)
     local fish = items[fishName:lower()]
@@ -94,29 +94,29 @@ local function handleSkillGain(player, fishName, zoneName, success)
     local requiredSkill = variation and variation.skill or 0
 
     local skillDiff = requiredSkill - fishingSkill
-    local baseChance = 0.15 -- Augmenté pour refléter la fréquence des skill-ups
+    local baseChance = 0.15
     if skillDiff > 0 then
         baseChance = baseChance + (skillDiff * 0.05)
     elseif skillDiff <= -10 then
         baseChance = 0
     end
     baseChance = success and baseChance or baseChance * 0.5
-    if player:hasItem(15554) then -- Pelican Ring
+    if player:hasItem(15554) then
         baseChance = baseChance * 1.1
     end
 
-    local maxSkill = 1100 -- 110.0
+    local maxSkill = 1100
     if fishingSkill >= maxSkill then return end
 
     if math.random() < baseChance then
-        local skillGain = 1 -- +0.1
+        local skillGain = 1
         player:setSkillLevel(xi.skill.FISHING, player:getSkillLevel(xi.skill.FISHING) + skillGain)
         player:messageBasic(xi.msg.basic.SKILL_UP, xi.skill.FISHING, fishingSkill + skillGain)
         checkRankProgress(player, fishingSkill + skillGain)
     end
 end
 
--- Vérifie les inputs du joueur pendant le jeu de tension
+--
 local function checkFishingInput(player, fishName, zoneName, rodName)
     local fish = items[fishName:lower()]
     local variation = fish and fish.variations[zoneName:lower()]
@@ -127,7 +127,7 @@ local function checkFishingInput(player, fishName, zoneName, rodName)
     local breakChance = variation.break_chance[rodName] or 0.1
     local moonBonus = variation.moon_bonus[xi.moonPhase()] or 1.0
     local weatherBonus = variation.weather_bonus[xi.weather()] or 1.0
-    local timeBonus = variation.time_bonus[xi.time()] or 1.0 -- Ajouté
+    local timeBonus = variation.time_bonus[xi.time()] or 1.0
 
     local inputScore = 0
     for _ = 1, FishingCore.tensionGameDuration do
@@ -149,7 +149,7 @@ local function checkFishingInput(player, fishName, zoneName, rodName)
     return success
 end
 
--- Résout la capture après le jeu de tension
+--
 local function resolveCatch(player, fishName, zoneName)
     local fish = items[fishName:lower()]
     local fishId = fish and fish.item_id or 4481
@@ -165,7 +165,7 @@ local function resolveCatch(player, fishName, zoneName)
     end
 end
 
--- Lance la pêche manuelle
+--
 function FishingCore.manualFish(player, baitName, rodName)
     if not checkFishingFatigue(player) then return end
     if not isNearWater(player) then
@@ -174,7 +174,7 @@ function FishingCore.manualFish(player, baitName, rodName)
     end
 
     local zoneName = player:getZoneName()
-    local fishName = getFishInZone(zoneName, baitName, rodName)
+    local fishName = getFishInZone(zoneName, baitName, rodName, player)
     if not fishName then return end
 
     local biteDelay = math.random(FishingCore.biteDelayMin, FishingCore.biteDelayMax)
@@ -188,7 +188,7 @@ function FishingCore.manualFish(player, baitName, rodName)
     end)
 end
 
--- Lance la pêche automatique
+--
 function FishingCore.autoFish(player, baitName, rodName)
     while player:getHP() > 0 and checkFishingFatigue(player) do
         FishingCore.manualFish(player, baitName, rodName)
