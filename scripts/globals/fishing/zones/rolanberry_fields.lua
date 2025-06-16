@@ -4,6 +4,8 @@
 return {
     "Crayfish",
     "Moat Carp",
-    "Giant Catfish",
-    "Dark Bass",
+    Lake = {
+        "Giant Catfish",
+        "Dark Bass",
+    }
 }
