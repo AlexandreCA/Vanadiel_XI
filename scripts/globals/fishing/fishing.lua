@@ -15,12 +15,12 @@ FishingCore.biteDelayMax = 30
 FishingCore.tensionGameDuration = 15
 FishingCore.requiredTensionScore = 70
 
--- Checks if the player is near a body of water
+-- Vérifie la proximité à l'eau (à implémenter)
 local function isNearWater(player)
-    return true -- To be implemented with LSB logic
+    return true -- À remplacer avec détection réelle
 end
 
---
+-- Fatigue de pêche
 local function checkFishingFatigue(player)
     local lastReset = player:getVar("FishingFatigueReset") or 0
     local currentTime = os.time()
@@ -36,7 +36,7 @@ local function checkFishingFatigue(player)
     return true
 end
 
---
+-- Bonus de compétence
 local function getFishingSkillBonus(player)
     local bonus = 0
     if player:hasItem(13759) then
@@ -45,7 +45,7 @@ local function getFishingSkillBonus(player)
     return bonus
 end
 
---
+-- Récupération du poisson selon zone
 local function getFishInZone(zoneName, baitName, rodName, player)
     local zoneFish = zones[zoneName:lower()]
     if not zoneFish then return nil end
@@ -68,7 +68,7 @@ local function getFishInZone(zoneName, baitName, rodName, player)
     return validFish[math.random(1, #validFish)]
 end
 
---
+-- Système de test de rang (Retail accurate)
 local rankTests = {
     [8]  = {rank = xi.craftRank.RECRUIT,     item = 4401}, -- Moat Carp
     [18] = {rank = xi.craftRank.INITIATE,    item = 4402}, -- Cheval Salmon
@@ -90,8 +90,8 @@ local function checkRankProgress(player, fishingSkill)
             if player:hasItem(info.item) then
                 player:removeItem(info.item)
                 player:setRank(xi.guild.FISHING, info.rank)
-                player:messageSpecial(xi.msg.basic.FISHING_RANK_UP, 0, 0, 0, "")
                 player:messageBasic(xi.msg.basic.ITEM_TURNED_IN, info.item)
+                player:messageBasic(xi.msg.basic.FISHING_RANK_UP)
             else
                 player:messageBasic(xi.msg.basic.FISHING_TEST_REQUIRED, info.item)
             end
@@ -100,7 +100,7 @@ local function checkRankProgress(player, fishingSkill)
     end
 end
 
---
+-- Gain de compétence
 local function handleSkillGain(player, fishName, zoneName, success)
     local fishingSkill = player:getSkillLevel(xi.skill.FISHING) + getFishingSkillBonus(player)
     local fish = items[fishName:lower()]
@@ -115,7 +115,7 @@ local function handleSkillGain(player, fishName, zoneName, success)
         baseChance = 0
     end
     baseChance = success and baseChance or baseChance * 0.5
-    if player:hasItem(15554) then -- Pelican Ring
+    if player:hasItem(15554) then
         baseChance = baseChance * 1.1
     end
 
@@ -130,7 +130,7 @@ local function handleSkillGain(player, fishName, zoneName, success)
     end
 end
 
---
+-- Mini-jeu de tension avec messages
 local function checkFishingInput(player, fishName, zoneName, rodName)
     local fish = items[fishName:lower()]
     local variation = fish and fish.variations[zoneName:lower()]
@@ -142,6 +142,15 @@ local function checkFishingInput(player, fishName, zoneName, rodName)
     local moonBonus = variation.moon_bonus[xi.moonPhase()] or 1.0
     local weatherBonus = variation.weather_bonus[xi.weather()] or 1.0
     local timeBonus = variation.time_bonus[xi.time()] or 1.0
+
+    -- Ajout des messages d’instinct
+    if skillBonus < -15 then
+        player:messageBasic(xi.msg.basic.FISHING_FEELING_TERRIBLE)
+    elseif skillBonus < 0 then
+        player:messageBasic(xi.msg.basic.FISHING_FEELING_BAD)
+    else
+        player:messageBasic(xi.msg.basic.FISHING_FEELING_GOOD)
+    end
 
     local inputScore = 0
     for _ = 1, FishingCore.tensionGameDuration do
@@ -163,7 +172,7 @@ local function checkFishingInput(player, fishName, zoneName, rodName)
     return success
 end
 
---
+-- Résolution de la prise
 local function resolveCatch(player, fishName, zoneName)
     local fish = items[fishName:lower()]
     local fishId = fish and fish.item_id or 4481
@@ -179,7 +188,7 @@ local function resolveCatch(player, fishName, zoneName)
     end
 end
 
---
+-- Pêche manuelle avec message de type de prise
 function FishingCore.manualFish(player, baitName, rodName)
     if not checkFishingFatigue(player) then return end
     if not isNearWater(player) then
@@ -191,9 +200,20 @@ function FishingCore.manualFish(player, baitName, rodName)
     local fishName = getFishInZone(zoneName, baitName, rodName, player)
     if not fishName then return end
 
+    -- Message selon le type de prise
+    local fish = items[fishName:lower()]
+    if fish and fish.is_monster then
+        player:messageBasic(xi.msg.basic.FISHING_BITE_MONSTER)
+    elseif fish and fish.is_item then
+        player:messageBasic(xi.msg.basic.FISHING_BITE_ITEM)
+    elseif fish and fish.size == "large" then
+        player:messageBasic(xi.msg.basic.FISHING_BITE_LARGE)
+    else
+        player:messageBasic(xi.msg.basic.FISHING_BITE_SMALL)
+    end
+
     local biteDelay = math.random(FishingCore.biteDelayMin, FishingCore.biteDelayMax)
     player:timer(biteDelay * 1000, function()
-        player:messageBasic(xi.msg.basic.FISHING_HOOKED)
         if checkFishingInput(player, fishName, zoneName, rodName) then
             resolveCatch(player, fishName, zoneName)
         else
@@ -202,7 +222,7 @@ function FishingCore.manualFish(player, baitName, rodName)
     end)
 end
 
---
+-- Pêche automatique (boucle naïve, améliorable)
 function FishingCore.autoFish(player, baitName, rodName)
     while player:getHP() > 0 and checkFishingFatigue(player) do
         FishingCore.manualFish(player, baitName, rodName)
