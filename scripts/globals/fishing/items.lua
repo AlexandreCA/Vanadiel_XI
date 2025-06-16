@@ -3,6 +3,7 @@
 -----------------------------------
 local fish_data = {
     ["Crayfish"] = {
+    size = "small",
         variations = {
             bastok_mines = { 
                 skill = 7, 
@@ -137,6 +138,7 @@ local fish_data = {
     },
 
     ["Moat Carp"] = {
+    size = "small",
         variations = {
             bastok_mines = { 
                 skill = 11, 
@@ -235,6 +237,7 @@ local fish_data = {
     },
 
     ["Tricolored Carp"] = {
+    size = "small",
         variations = {
             bastok_mines = { 
                 skill = 27, 
@@ -325,6 +328,7 @@ local fish_data = {
     },
 
     ["Giant Catfish"] = {
+    size = "small",
         variations = {
             bastok_mines = { 
                 skill = 31, 
@@ -430,6 +434,7 @@ local fish_data = {
     },
 
     ["Red Terrapin"] = {
+    size = "small",
         variations = {
             west_ronfaure = { 
                 skill = 53, 
@@ -459,6 +464,7 @@ local fish_data = {
     },
 
     ["Dark Bass"] = {
+    size = "small",
         variations = {
             bastok_mines = { 
                 skill = 33, 
@@ -554,6 +560,7 @@ local fish_data = {
     },
 
     ["Black Eel"] = {
+    size = "small",
         variations = {
             bastok_mines = { 
                 skill = 47, 
@@ -599,6 +606,7 @@ local fish_data = {
     },
 
     ["Gold Carp"] = {
+    size = "small",
         variations = {
             bastok_mines = { 
                 skill = 56, 
@@ -686,6 +694,7 @@ local fish_data = {
     },
 
     ["Cheval Salmon"] = {
+    size = "small",
         variations = {
             east_ronfaure = { 
                 skill = 21, 
@@ -713,6 +722,7 @@ local fish_data = {
     },
 
     ["Shining Trout"] = {
+    size = "small",
         variations = {
             east_ronfaure = { 
                 skill = 37, 
@@ -739,6 +749,7 @@ local fish_data = {
     },
 
     ["Pipira"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 29, 
@@ -758,6 +769,7 @@ local fish_data = {
     },
 
     ["Ogre Eel"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 35, 
@@ -786,6 +798,7 @@ local fish_data = {
     },
 
     ["Gold Lobster"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 46, 
@@ -815,6 +828,7 @@ local fish_data = {
     },
 
     ["Monke-Onke"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 51, 
@@ -838,6 +852,7 @@ local fish_data = {
     },
 
     ["Bluetail"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 55, 
@@ -924,6 +939,7 @@ local fish_data = {
     },
 
     ["Crescent Fish"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 69, 
@@ -938,6 +954,7 @@ local fish_data = {
     },
 
     ["Bladefish"] = {
+    size = "large",
         variations = {
             east_sarutabaruta = { 
                 skill = 71, 
@@ -968,6 +985,7 @@ local fish_data = {
     },
 
     ["Bastore Bream"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 86, 
@@ -1013,6 +1031,7 @@ local fish_data = {
     },
 
     ["Quus"] = {
+    size = "small",
         variations = {
             west_sarutabaruta = { 
                 skill = 19, 
@@ -1061,6 +1080,7 @@ local fish_data = {
     },
 
     ["Gavial Fish"] = {
+    size = "small",
         variations = {
             gusgen_mines = { 
                 skill = 81, 
@@ -1075,6 +1095,7 @@ local fish_data = {
     },
 
     ["Cobalt Jellyfish"] = {
+    size = "small",
         variations = {
             valkurm_dunes = { 
                 skill = 5, 
@@ -1115,6 +1136,7 @@ local fish_data = {
     },
 
     ["Greedie"] = {
+    size = "small",
         variations = {
             valkurm_dunes = { 
                 skill = 14, 
@@ -1148,6 +1170,7 @@ local fish_data = {
     },
 
     ["Zafmlug Bass"] = {
+    size = "small",
         variations = {
             valkurm_dunes = { 
                 skill = 43, 
@@ -1185,6 +1208,7 @@ local fish_data = {
     },
 
     ["Shall Shell"] = {
+    size = "small",
         variations = {
             valkurm_dunes = { 
                 skill = 53, 
@@ -1222,6 +1246,7 @@ local fish_data = {
     },
 
     ["Yellow Globe"] = {
+    size = "small",
         variations = {
             buburimu_peninsula = { 
                 skill = 17, 
@@ -1285,6 +1310,7 @@ local fish_data = {
     },
 
     ["Bastore Sardine"] = {
+    size = "small",
         variations = {
             selbina = { 
                 skill = 9, 
@@ -1325,6 +1351,7 @@ local fish_data = {
     },
 
     ["Fat Greedie"] = {
+    size = "small",
         variations = {
             selbina = { 
                 skill = 24, 
@@ -1351,6 +1378,7 @@ local fish_data = {
     },
 
      ["Copper Frog"] = {
+    size = "small",
         variations = {
             pashhow_marshlands = { 
                 skill = 16, 
@@ -1384,6 +1412,7 @@ local fish_data = {
     },
 
     ["Pamtam Kelp"] = {
+    size = "small",
         variations = {
             buburimu_peninsula = { 
                 skill = 10, 
@@ -1431,6 +1460,7 @@ local fish_data = {
     },
 
     ["Silver Shark"] = {
+    size = "small",
         variations = {
             sauromugue_champaign = { 
                 skill = 76, 
@@ -1460,6 +1490,7 @@ local fish_data = {
     },
 
     ["Rusty Greatsword"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 0, 
@@ -1493,6 +1524,7 @@ local fish_data = {
     },
 
     ["Copper Ring"] = {
+    size = "small",
         variations = {
             east_sarutabaruta = { 
                 skill = 0, 
@@ -1540,6 +1572,7 @@ local fish_data = {
     },
 
     ["Bhefhel Marlin"] = {
+    size = "large",
         variations = {
             ferry_mhaura_selbina = { 
                 skill = 84, 
@@ -1561,6 +1594,7 @@ local fish_data = {
     },
 
     ["Noble Lady"] = {
+    size = "small",
         variations = {
             ferry_mhaura_selbina = { 
                 skill = 90, 
@@ -1582,6 +1616,7 @@ local fish_data = {
     },
 
     ["Tiger Cod"] = {
+    size = "small",
         variations = {
             qufim_island = { 
                 skill = 29, 
@@ -1611,6 +1646,7 @@ local fish_data = {
     },
 
     ["Cone Calamary"] = {
+    size = "small",
         variations = {
             bibiki_bay = { 
                 skill = 41, 
@@ -1632,6 +1668,7 @@ local fish_data = {
     },
 
     ["Crystal Crab"] = {
+    size = "small",
         variations = {
             beaucedine_glacier = { 
                 skill = 65, 
@@ -1645,6 +1682,7 @@ local fish_data = {
     },
 
     ["Icefish"] = {
+    size = "small",
         variations = {
             beaucedine_glacier = { 
                 skill = 28, 
@@ -1658,6 +1696,7 @@ local fish_data = {
     },
 
     ["Sandfish"] = {
+    size = "small",
         variations = {
             batallia_downs = { 
                 skill = 34, 
@@ -1671,6 +1710,7 @@ local fish_data = {
     },
 
     ["Rusty Subligar"] = {
+    size = "small",
         variations = {
             port_bastok = { 
                 skill = 0, 
@@ -1690,6 +1730,7 @@ local fish_data = {
     },
 
     ["Jungle Catfish"] = {
+    size = "small",
         variations = {
             yhoator_jungle = {
                 skill = 45,
@@ -1711,6 +1752,7 @@ local fish_data = {
     },
 
     ["Yayinbaligi"] = {
+    size = "small",
         variations = {
             kazham = {
                 skill = 63,
@@ -1732,6 +1774,7 @@ local fish_data = {
     },
 
     ["Zebra Eel"] = {
+    size = "small",
         variations = {
             sea_serpent_grotto = {
                 skill = 47,
@@ -1745,6 +1788,7 @@ local fish_data = {
     },
 
     ["Veydal Wrasse"] = {
+    size = "small",
         variations = {
             norg = {
                 skill = 80,
@@ -1766,6 +1810,7 @@ local fish_data = {
     },
 
     ["Mithran Whisker"] = {
+    size = "small",
         variations = {
             kazham = {
                 skill = 0,
@@ -1785,6 +1830,7 @@ local fish_data = {
     },
 
     ["Saber Sardine"] = {
+    size = "small",
         variations = {
             rabao = {
                 skill = 12,
@@ -1797,6 +1843,7 @@ local fish_data = {
     },
 
     ["Desert Catfish"] = {
+    size = "small",
         variations = {
             rabao = {
                 skill = 38,
@@ -1810,6 +1857,7 @@ local fish_data = {
     },
 
     ["Grimmonite"] = {
+    size = "small",
         variations = {
             kuftal_tunnel = {
                 skill = 85,
@@ -1823,6 +1871,7 @@ local fish_data = {
     },
 
     ["Ryugu Titan"] = {
+    size = "small",
         variations = {
             cape_teriggan = {
                 skill = 90,
@@ -1836,6 +1885,7 @@ local fish_data = {
     },
 
     ["Sea Dragon"] = {
+    size = "small",
         variations = {
             valley_of_sorrows = {
                 skill = 95,
@@ -1849,6 +1899,7 @@ local fish_data = {
     },
 
     ["Black Sole"] = {
+    size = "small",
         variations = {
             gustav_tunnel = {
                 skill = 70,
@@ -1862,6 +1913,7 @@ local fish_data = {
     },
 
     ["Heavenly Fish"] = {
+    size = "small",
         variations = {
             ru_aun_gardens = {
                 skill = 100,
@@ -1875,6 +1927,7 @@ local fish_data = {
     },
 
     ["Divine Carp"] = {
+    size = "small",
         variations = {
             the_shrine_of_ru_avitau = {
                 skill = 100,
@@ -1888,6 +1941,7 @@ local fish_data = {
     },
 
     ["Aether Eel"] = {
+    size = "small",
         variations = {
             ro_maeve = {
                 skill = 100,
@@ -1901,6 +1955,7 @@ local fish_data = {
     }
 
      ["Hakuryu"] = {
+    size = "small",
         variations = {
             al_zahbi = {
                 skill = 73,
@@ -1922,6 +1977,7 @@ local fish_data = {
     },
 
     ["Mola Mola"] = {
+    size = "small",
         variations = {
             nashmau = {
                 skill = 88,
@@ -1943,6 +1999,7 @@ local fish_data = {
     },
 
     ["Lungfish"] = {
+    size = "small",
         variations = {
             carpenters_landing = {
                 skill = 42,
@@ -1956,6 +2013,7 @@ local fish_data = {
     },
 
     ["Lakerda"] = {
+    size = "small",
         variations = {
             bibiki_bay_purgonorgo_isle = {
                 skill = 79,
@@ -1969,6 +2027,7 @@ local fish_data = {
     },
 
     ["Kalkanbaligi"] = {
+    size = "small",
         variations = {
             al_zahbi_open_sea_route = {
                 skill = 85,
@@ -1990,6 +2049,7 @@ local fish_data = {
     },
 
     ["Pond Carp"] = {
+    size = "small",
         variations = {
             phomiuna_aqueducts = {
                 skill = 15,
@@ -2002,6 +2062,7 @@ local fish_data = {
     },
 
     ["Arrowwood Log"] = {
+    size = "small",
         variations = {
             carpenters_landing = {
                 skill = 0,
@@ -2014,6 +2075,7 @@ local fish_data = {
     },
 
     ["Tavnazian Goby"] = {
+    size = "small",
         variations = {
             tavnazian_safehold = {
                 skill = 20,
@@ -2033,6 +2095,7 @@ local fish_data = {
     },
 
     ["Caedarva Toad"] = {
+    size = "small",
         variations = {
             ilverm_marsh = {
                 skill = 50,
@@ -2046,6 +2109,7 @@ local fish_data = {
     },
 
     ["Lik"] = {
+    size = "small",
         variations = {
             lufaise_meadows = {
                 skill = 92,
@@ -2059,6 +2123,7 @@ local fish_data = {
     },
 
     ["Aurora Bass"] = {
+    size = "small",
         variations = {
             riverne_site_a01 = {
                 skill = 60,
@@ -2080,6 +2145,7 @@ local fish_data = {
     },
 
     ["Empyrean Shrimp"] = {
+    size = "small",
         variations = {
             monarch_linn = {
                 skill = 98,
@@ -2093,6 +2159,7 @@ local fish_data = {
     },
 
     ["Pelazoea"] = {
+    size = "small",
         variations = {
             sealion_den = {
                 skill = 75,
@@ -2106,6 +2173,7 @@ local fish_data = {
     },
 
     ["Matsya"] = {
+    size = "small",
         variations = {
             al_taieu = {
                 skill = 100,
@@ -2119,6 +2187,7 @@ local fish_data = {
     },
 
     ["Phantom Serpent"] = {
+    size = "small",
         variations = {
             grand_palace_of_huzaar = {
                 skill = 100,
@@ -2132,6 +2201,7 @@ local fish_data = {
     },
 
     ["Elysian Eel"] = {
+    size = "small",
         variations = {
             garden_of_rulude = {
                 skill = 100,
@@ -2145,6 +2215,7 @@ local fish_data = {
     },
 
     ["Mercenary's Mantle"] = {
+    size = "small",
         variations = {
             aht_urhgan_whitegate = {
                 skill = 0,
@@ -2157,6 +2228,7 @@ local fish_data = {
     },
 
     ["Sardine"] = {
+    size = "small",
         variations = {
             aht_urhgan_whitegate = {
                 skill = 10,
@@ -2183,6 +2255,7 @@ local fish_data = {
     },
 
     ["Aht Urhgan Brass"] = {
+    size = "small",
         variations = {
             al_zahbi = {
                 skill = 0,
@@ -2202,6 +2275,7 @@ local fish_data = {
     },
 
     ["Qiqirn Chocobo Egg"] = {
+    size = "small",
         variations = {
             halvung = {
                 skill = 0,
@@ -2214,6 +2288,7 @@ local fish_data = {
     },
 
     ["Mamool Ja Catfish"] = {
+    size = "small",
         variations = {
             mamook = {
                 skill = 55,
@@ -2227,6 +2302,7 @@ local fish_data = {
     },
 
     ["Yorchete"] = {
+    size = "small",
         variations = {
             wajaom_woodlands = {
                 skill = 65,
@@ -2240,6 +2316,7 @@ local fish_data = {
     },
 
     ["Poroggo Perch"] = {
+    size = "small",
         variations = {
             bhaflau_thickets = {
                 skill = 70,
@@ -2253,6 +2330,7 @@ local fish_data = {
     },
 
     ["Arrapago Mullet"] = {
+    size = "small",
         variations = {
             arrapago_reef = {
                 skill = 82,
@@ -2266,6 +2344,7 @@ local fish_data = {
     },
 
     ["Lava Eel"] = {
+    size = "small",
         variations = {
             mount_zhayolm = {
                 skill = 90,
@@ -2279,6 +2358,7 @@ local fish_data = {
     },
 
     ["Shen"] = {
+    size = "small",
         variations = {
             caedarva_mire = {
                 skill = 95,
@@ -2292,6 +2372,7 @@ local fish_data = {
     },
 
     ["Astral Flounder"] = {
+    size = "small",
         variations = {
             alzadaal_undersea_ruins = {
                 skill = 100,
@@ -2305,6 +2386,7 @@ local fish_data = {
     },
 
     ["Dil"] = {
+    size = "small",
         variations = {
             talacca_cove = {
                 skill = 85,
@@ -2318,6 +2400,7 @@ local fish_data = {
     },
 
     ["Kawahori"] = {
+    size = "small",
         variations = {
             hazhalm_testing_grounds = {
                 skill = 88,
@@ -2331,6 +2414,7 @@ local fish_data = {
     },
 
     ["Orontes"] = {
+    size = "small",
         variations = {
             lebros_cavern = {
                 skill = 92,
@@ -2344,6 +2428,7 @@ local fish_data = {
     },
 
     ["Serrated Dagger"] = {
+    size = "small",
         variations = {
             ilrusi_atoll = {
                 skill = 0,
@@ -2356,6 +2441,7 @@ local fish_data = {
     },
 
     ["Apkallu Egg"] = {
+    size = "small",
         variations = {
             periqiq_cavern = {
                 skill = 0,
@@ -2368,6 +2454,7 @@ local fish_data = {
     },
 
     ["Black Prawn"] = {
+    size = "small",
         variations = {
             ashu_talif = {
                 skill = 75,
@@ -2381,6 +2468,7 @@ local fish_data = {
     },
 
     ["Gilded Carp"] = {
+    size = "small",
         variations = {
             north_san_doria_d = {
                 skill = 25,
@@ -2400,6 +2488,7 @@ local fish_data = {
     },
 
     ["Bronze Carp"] = {
+    size = "small",
         variations = {
             bastok_markets_d = {
                 skill = 20,
@@ -2419,6 +2508,7 @@ local fish_data = {
     },
 
     ["Windurstian Perch"] = {
+    size = "small",
         variations = {
             windurst_waters_d = {
                 skill = 30,
@@ -2440,6 +2530,7 @@ local fish_data = {
     },
 
     ["War Carp"] = {
+    size = "small",
         variations = {
             batallia_downs_d = {
                 skill = 35,
@@ -2461,6 +2552,7 @@ local fish_data = {
     },
 
     ["Crystal Eel"] = {
+    size = "small",
         variations = {
             east_ronfaure_d = {
                 skill = 40,
@@ -2482,6 +2574,7 @@ local fish_data = {
     },
 
     ["Marsh Goby"] = {
+    size = "small",
         variations = {
             pashhow_marshlands_d = {
                 skill = 15,
@@ -2494,6 +2587,7 @@ local fish_data = {
     },
 
     ["Saberfish"] = {
+    size = "small",
         variations = {
             sauromugue_champaign_d = {
                 skill = 50,
@@ -2507,6 +2601,7 @@ local fish_data = {
     },
 
     ["Grauberg Greens"] = {
+    size = "small",
         variations = {
             grauberg_d = {
                 skill = 0,
@@ -2519,6 +2614,7 @@ local fish_data = {
     },
 
     ["Vunkerl Herring"] = {
+    size = "small",
         variations = {
             vunkerl_inlet_d = {
                 skill = 60,
@@ -2532,6 +2628,7 @@ local fish_data = {
     },
 
     ["Karugo Catfish"] = {
+    size = "small",
         variations = {
             fort_karugo_narugo_d = {
                 skill = 45,
@@ -2545,6 +2642,7 @@ local fish_data = {
     },
 
     ["Riverne Trout"] = {
+    size = "small",
         variations = {
             cape_riverne = {
                 skill = 70,
@@ -2558,6 +2656,7 @@ local fish_data = {
     },
 
     ["Everbloom Mackerel"] = {
+    size = "small",
         variations = {
             everbloom_hollow = {
                 skill = 80,
@@ -2571,6 +2670,7 @@ local fish_data = {
     },
 
     ["Ghoyu Squid"] = {
+    size = "small",
         variations = {
             ghoyu_s_reverie = {
                 skill = 85,
@@ -2584,6 +2684,7 @@ local fish_data = {
     },
 
     ["Silver Ore"] = {
+    size = "small",
         variations = {
             ruhoytz_silvermines = {
                 skill = 0,
@@ -2596,6 +2697,7 @@ local fish_data = {
     },
 
     ["Vaule Eel"] = {
+    size = "small",
         variations = {
             la_vaule_d = {
                 skill = 90,
@@ -2609,6 +2711,7 @@ local fish_data = {
     },
 
     ["Abyssal Flounder"] = {
+    size = "small",
         variations = {
             abyssea_altepa = {
                 skill = 95,
@@ -2622,6 +2725,7 @@ local fish_data = {
     },
 
     ["Attohwa Chub"] = {
+    size = "small",
         variations = {
             abyssea_attohwa = {
                 skill = 90,
@@ -2635,6 +2739,7 @@ local fish_data = {
     },
 
     ["Grauberg Perch"] = {
+    size = "small",
         variations = {
             abyssea_grauberg = {
                 skill = 85,
@@ -2648,6 +2753,7 @@ local fish_data = {
     },
 
     ["Konschtat Carp"] = {
+    size = "small",
         variations = {
             abyssea_konschtat = {
                 skill = 80,
@@ -2661,6 +2767,7 @@ local fish_data = {
     },
 
     ["La Theine Goby"] = {
+    size = "small",
         variations = {
             abyssea_la_theine = {
                 skill = 75,
@@ -2674,6 +2781,7 @@ local fish_data = {
     },
 
     ["Misareaux Mullet"] = {
+    size = "small",
         variations = {
             abyssea_misareaux = {
                 skill = 88,
@@ -2687,6 +2795,7 @@ local fish_data = {
     },
 
     ["Tahrongi Trout"] = {
+    size = "small",
         variations = {
             abyssea_tahrongi = {
                 skill = 82,
@@ -2700,6 +2809,7 @@ local fish_data = {
     },
 
     ["Uleguerand Eel"] = {
+    size = "small",
         variations = {
             abyssea_uleguerand = {
                 skill = 92,
@@ -2713,6 +2823,7 @@ local fish_data = {
     },
 
     ["Vunkerl Bass"] = {
+    size = "small",
         variations = {
             abyssea_vunkerl = {
                 skill = 90,
@@ -2726,6 +2837,7 @@ local fish_data = {
     },
 
     ["Cruor Crab"] = {
+    size = "small",
         variations = {
             abyssea_misareaux = {
                 skill = 85,
@@ -2747,6 +2859,7 @@ local fish_data = {
     },
 
     ["Abyssite Shard"] = {
+    size = "small",
         variations = {
             abyssea_konschtat = {
                 skill = 0,
@@ -2773,6 +2886,7 @@ local fish_data = {
     },
 
     ["Ceizak Catfish"] = {
+    size = "small",
         variations = {
             ceizak_battlegrounds = {
                 skill = 75,
@@ -2786,6 +2900,7 @@ local fish_data = {
     },
 
     ["Yahse Mullet"] = {
+    size = "small",
         variations = {
             yahse_hunting_grounds = {
                 skill = 80,
@@ -2799,6 +2914,7 @@ local fish_data = {
     },
 
     ["Hennetiel Perch"] = {
+    size = "small",
         variations = {
             foret_de_hennetiel = {
                 skill = 85,
@@ -2812,6 +2928,7 @@ local fish_data = {
     },
 
     ["Morimar Bass"] = {
+    size = "small",
         variations = {
             morimar_basalt_fields = {
                 skill = 88,
@@ -2825,6 +2942,7 @@ local fish_data = {
     },
 
     ["Marjami Trout"] = {
+    size = "small",
         variations = {
             marjami_ravine = {
                 skill = 90,
@@ -2838,6 +2956,7 @@ local fish_data = {
     },
 
     ["Kamihr Eel"] = {
+    size = "small",
         variations = {
             kamihr_drifts = {
                 skill = 92,
@@ -2851,6 +2970,7 @@ local fish_data = {
     },
 
     ["Sih Snapper"] = {
+    size = "small",
         variations = {
             sih_gates = {
                 skill = 87,
@@ -2864,6 +2984,7 @@ local fish_data = {
     },
 
     ["Moh Mackerel"] = {
+    size = "small",
         variations = {
             moh_gates = {
                 skill = 89,
@@ -2877,6 +2998,7 @@ local fish_data = {
     },
 
     ["Cirdas Crab"] = {
+    size = "small",
         variations = {
             cirdas_caverns = {
                 skill = 90,
@@ -2890,6 +3012,7 @@ local fish_data = {
     },
 
     ["Dho Goby"] = {
+    size = "small",
         variations = {
             dho_gates = {
                 skill = 85,
@@ -2903,6 +3026,7 @@ local fish_data = {
     },
 
     ["Woh Shrimp"] = {
+    size = "small",
         variations = {
             woh_gates = {
                 skill = 88,
@@ -2916,6 +3040,7 @@ local fish_data = {
     },
 
     ["Kaznar Catfish"] = {
+    size = "small",
         variations = {
             outer_ra_kaznar = {
                 skill = 95,
@@ -2937,6 +3062,7 @@ local fish_data = {
     },
 
     ["Velkk Scale"] = {
+    size = "small",
         variations = {
             ceizak_battlegrounds = {
                 skill = 0,
@@ -2956,6 +3082,7 @@ local fish_data = {
     },
 
     ["Coalition Rune"] = {
+    size = "small",
         variations = {
             foret_de_hennetiel = {
                 skill = 0,
@@ -2975,6 +3102,7 @@ local fish_data = {
     },
 
     ["Eschan Carp"] = {
+    size = "small",
         variations = {
             escha_zitah = {
                 skill = 90,
@@ -2988,6 +3116,7 @@ local fish_data = {
     },
 
     ["Ruaun Eel"] = {
+    size = "small",
         variations = {
             escha_ruaun = {
                 skill = 95,
@@ -3001,6 +3130,7 @@ local fish_data = {
     },
 
     ["Reisenjima Trout"] = {
+    size = "small",
         variations = {
             reisenjima = {
                 skill = 100,
@@ -3014,6 +3144,7 @@ local fish_data = {
     },
 
     ["Cloud Goby"] = {
+    size = "small",
         variations = {
             escha_zitah = {
                 skill = 85,
@@ -3035,6 +3166,7 @@ local fish_data = {
     },
 
     ["Iroha's Scale"] = {
+    size = "small",
         variations = {
             reisenjima = {
                 skill = 0,
@@ -3047,6 +3179,7 @@ local fish_data = {
     },
 
     ["Cait Sith Whisker"] = {
+    size = "small",
         variations = {
             escha_zitah = {
                 skill = 0,
