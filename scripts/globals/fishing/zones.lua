@@ -1,5 +1,5 @@
 -----------------------------------
--- Fishing_zones
+-- zones
 -----------------------------------
 return {
     abyssea_attohwa = require("scripts/globals/fishing/zones/abyssea_attohwa"),
