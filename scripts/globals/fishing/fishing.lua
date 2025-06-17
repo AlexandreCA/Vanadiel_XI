@@ -15,6 +15,49 @@ FishingCore.biteDelayMax = 30
 FishingCore.tensionGameDuration = 15
 FishingCore.requiredTensionScore = 70
 
+-- Définition des points d'eau par zone et coordonnées
+local waterBodyZones = {
+    ["giddeus"] = {
+        { name = "pond", minX = -100, maxX = 100, minY = -100, maxY = 100 }, -- Placeholder
+        { name = "spring", minX = 100, maxX = 200, minY = 100, maxY = 200 }, -- Placeholder
+        { name = "general", default = true }, -- Crayfish partout
+    },
+    ["rolandberry_fields"] = {
+        { name = "Lake", minX = -50, maxX = 50, minY = -50, maxY = 50 }, -- Placeholder
+        { name = "general", default = true }, -- Crayfish, Moat Carp
+    },
+    ["gusgen_mines"] = {
+        { name = "pools_first_floor", minX = -200, maxX = -100, minY = -200, maxY = -100 }, -- Placeholder
+        { name = "deeper_pools_map_3", minX = 100, maxX = 200, minY = 100, maxY = 200 }, -- Placeholder
+        { name = "general_pools", default = true }, -- Tricolored Carp, Black Eel
+    },
+    ["bastok_markets"] = {
+        { name = "canal", minX = -50, maxX = 50, minY = -50, maxY = 50 }, -- Placeholder
+        { name = "general", default = true }, -- Fountain
+    },
+    -- Ajouter d'autres zones au besoin
+}
+
+-- Fonction pour déterminer le point d'eau
+local function getWaterBody(zoneName, player)
+    local zoneWaterBodies = waterBodyZones[zoneName:lower()]
+    if not zoneWaterBodies then
+        return nil -- Pas de points d'eau spécifiques
+    end
+
+    local playerX, playerY = player:getXPos(), player:getYPos()
+    for _, waterBody in ipairs(zoneWaterBodies) do
+        if waterBody.default then
+            return waterBody.name
+        elseif playerX >= waterBody.minX and playerX <= waterBody.maxX and
+               playerY >= waterBody.minY and playerY <= waterBody.maxY then
+            return waterBody.name
+        end
+    end
+
+    return nil -- Retourner nil si aucun point d'eau spécifique
+end
+
 -- Vérifie la proximité à l'eau (à implémenter)
 local function isNearWater(player)
     return true -- À remplacer avec détection réelle
@@ -47,12 +90,28 @@ end
 
 -- Récupération du poisson selon zone
 local function getFishInZone(zoneName, baitName, rodName, player)
-    local zoneFish = zones[zoneName:lower()]
-    if not zoneFish then return nil end
+    local zoneFish = xi.fishing.zones[zoneName:lower()]
+    if not zoneFish then
+        return nil
+    end
+
+    local waterBody = getWaterBody(zoneName, player)
+    local fishList = {}
+
+    -- Si un point d'eau spécifique est trouvé et que la zone a une sous-table
+    if waterBody and zoneFish[waterBody] then
+        fishList = zoneFish[waterBody]
+    else
+        -- Sinon, utiliser la liste plate ou la sous-table 'general' par défaut
+        fishList = zoneFish.general or {}
+        for _, fishName in ipairs(zoneFish) do
+            table.insert(fishList, fishName)
+        end
+    end
 
     local validFish = {}
-    for _, fishName in ipairs(zoneFish) do
-        local fish = items[fishName:lower()]
+    for _, fishName in ipairs(fishList) do
+        local fish = xi.fishing.items[fishName:lower()]
         if fish and fish.variations[zoneName:lower()] then
             local variation = fish.variations[zoneName:lower()]
             if table.contains(variation.baits, baitName) and table.contains(variation.rods, rodName) then
@@ -103,7 +162,7 @@ end
 -- Gain de compétence
 local function handleSkillGain(player, fishName, zoneName, success)
     local fishingSkill = player:getSkillLevel(xi.skill.FISHING) + getFishingSkillBonus(player)
-    local fish = items[fishName:lower()]
+    local fish = xi.fishing.items[fishName:lower()]
     local variation = fish and fish.variations[zoneName:lower()]
     local requiredSkill = variation and variation.skill or 0
 
@@ -132,7 +191,7 @@ end
 
 -- Mini-jeu de tension avec messages
 local function checkFishingInput(player, fishName, zoneName, rodName)
-    local fish = items[fishName:lower()]
+    local fish = xi.fishing.items[fishName:lower()]
     local variation = fish and fish.variations[zoneName:lower()]
     if not variation then return false end
 
@@ -174,7 +233,7 @@ end
 
 -- Résolution de la prise
 local function resolveCatch(player, fishName, zoneName)
-    local fish = items[fishName:lower()]
+    local fish = xi.fishing.items[fishName:lower()]
     local fishId = fish and fish.item_id or 4481
     if fishId then
         if player:addItem(fishId) then
@@ -201,7 +260,7 @@ function FishingCore.manualFish(player, baitName, rodName)
     if not fishName then return end
 
     -- Message selon le type de prise
-    local fish = items[fishName:lower()]
+    local fish = xi.fishing.items[fishName:lower()]
     if fish and fish.is_monster then
         player:messageBasic(xi.msg.basic.FISHING_BITE_MONSTER)
     elseif fish and fish.is_item then
