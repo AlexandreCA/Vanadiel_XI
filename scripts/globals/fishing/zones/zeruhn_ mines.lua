@@ -1,7 +1,14 @@
+-----------------------------------
+-- Zeruhn_Mines
+-----------------------------------
 return {
-    "Crayfish",
-    "Moat Carp",
-    "Tricolored Carp",
-    "Giant Catfish",
-    "Black Eel",
+    general = {
+        "Crayfish",
+        "Moat Carp",
+    },
+    river = {
+        "Tricolored Carp",
+        "Giant Catfish",
+        "Black Eel",
+    },           
 }
