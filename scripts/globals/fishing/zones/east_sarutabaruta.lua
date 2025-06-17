@@ -2,14 +2,22 @@
 -- East_Sarutabaruta
 -----------------------------------
 return {
-    "Crayfish",
-    "Moat Carp",
-    "Pipira",
-    "Ogre Eel",
-    "Gold Lobster",
-    "Monke-Onke",
-    "Bluetail",
-    "Crescent Fish",
-    "Bladefish",
-    "Bastore Bream",
+    general = {
+        "Moat Carp",
+        "Pipira",
+    },
+    pond = {
+        "Crayfish",
+    },
+    sea = {    
+        "Ogre Eel",
+        "Gold Lobster",
+        "Bluetail",
+        "Bladefish",
+        "Bastore Bream",
+    },
+    Lake Tepokalipuka = {  
+        "Monke-Onke",
+        "Crescent Fish",
+    },
 }
