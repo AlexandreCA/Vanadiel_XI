@@ -2,14 +2,21 @@
 -- West_Sarutabaruta
 -----------------------------------
 return {
-    "Crayfish",
-    "Moat Carp",
-    "Quus",
-    "Giant Catfish",
-    "Dark Bass",
-    "Ogre Eel",
-    "Gold Lobster",
-    "Bluetail",
-    "Bladefish",
-    "Bastore Bream",
+    general = {
+        "Moat Carp",
+    },
+    pond = {
+        "Crayfish",
+        "Giant Catfish",
+        "Dark Bass",
+    },
+    sea = {
+        "Quus",
+        "Ogre Eel",
+        "Gold Lobster",
+        "Bluetail",
+        "Bladefish",
+        "Bastore Bream",
+    },
 }
+
