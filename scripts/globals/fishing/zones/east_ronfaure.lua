@@ -2,9 +2,13 @@
 -- East_Ronfaure
 -----------------------------------
 return {
-    "Crayfish",
-    "Cheval Salmon",
-    "Tricolored Carp",
-    "Shining Trout",
-    "Gold Carp",
+    general = {
+        "Crayfish",
+        "Tricolored Carp",
+        "Shining Trout",
+        "Gold Carp",
+    },
+    cheval river = {
+        "Cheval Salmon",
+    },        
 }

@@ -2,9 +2,13 @@
 -- Ghelsba_Outpost
 -----------------------------------
 return {
-    "Crayfish",
-    "Tricolored Carp",
-    "Shining Trout",
-    "Gold Carp",
+    general = {
+        "Crayfish",
+        "Tricolored Carp",
+        "Shining Trout",
+    },
+    river = {
+        "Gold Carp",
+     },
 }
 

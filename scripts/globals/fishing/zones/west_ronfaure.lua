@@ -2,8 +2,13 @@
 -- West_Ronfaure
 -----------------------------------
 return {
-    "Crayfish",
-    "Moat Carp",
-    "Giant Catfish",
-    "Red Terrapin",
+    general = {
+        "Crayfish",
+    },    
+    knight well = {
+        "Moat Carp",
+        "Giant Catfish",
+        "Red Terrapin",
+    },
 }
+

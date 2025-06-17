@@ -16,7 +16,7 @@ return {
         "Bladefish",
         "Bastore Bream",
     },
-    Lake Tepokalipuka = {  
+    lake tepokalipuka = {  
         "Monke-Onke",
         "Crescent Fish",
     },
