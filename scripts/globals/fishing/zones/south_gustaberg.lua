@@ -1,10 +1,16 @@
+-----------------------------------
+-- South_Gustaberg
+-----------------------------------
 return {
-    "Cobalt Jellyfish",
-    "Quus",
-    "Ogre Eel",
-    "Zafmlug Bass",
-    "Gold Lobster",
-    "Bladefish ",
-    "Bastore Bream",
+    general = {
+        "Cobalt Jellyfish",
+        "Quus",
+        "Zafmlug Bass",
+        "Bladefish ",
+        "Bastore Bream",
+    },
+    sea = {
+        "Ogre Eel",    
+        "Gold Lobster",
+    },
  }
-
