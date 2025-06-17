@@ -2,11 +2,20 @@
 -- Bastok_Markets
 -----------------------------------
 return {
-    "Crayfish",
-    "Moat Carp",
-    "Tricolored Carp",
-    "Giant Catfish",
-    "Dark Bass",
-    "Black Eel",
-    "Gold Carp",
+    general = {
+        "Moat Carp",
+        "Dark Bass",
+    },
+    waterway = {
+        "Crayfish",
+        "Tricolored Carp",
+        "Black Eel",
+    },
+    storage of water = {
+        "Giant Catfish",
+    },
+    pond north of goldsmithing guild = {
+         "Gold Carp",
+    },    
 }
+

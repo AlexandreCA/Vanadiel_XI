@@ -2,7 +2,11 @@
 -- Bastok_Mines
 -----------------------------------
 return {
-    "Crayfish",
-    "Copper Frog",
-    "Tricolored Carp",
+    general = {
+        "Copper Frog",
+        "Tricolored Carp",
+    },
+    moat = {
+        "Crayfish",
+    },
 }

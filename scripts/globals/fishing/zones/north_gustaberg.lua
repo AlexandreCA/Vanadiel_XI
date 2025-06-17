@@ -1,9 +1,11 @@
 return {
-    "Crayfish",
-    "Tricolored Carp",
-    "Black Eel",
-    "Gold Carp",
-    "Gavial Fish",
+    general = {
+        "Crayfish",
+        "Tricolored Carp",
+        "Black Eel",
+        "Gold Carp",
+    },
+    drachenfall = {
+        "Gavial Fish",
+    },
 }
-
-
