@@ -6,6 +6,8 @@ local zone_data = require("scripts/globals/fishing/zones/zones")
 -----------------------------------
 xi = xi or {}
 xi.fishing = xi.fishing or {}
+xi.fishing.zones = zone_data
+xi.fishing.items = fish_data
 -----------------------------------
 local FishingCore = {}
 
@@ -15,27 +17,35 @@ FishingCore.biteDelayMax = 30
 FishingCore.tensionGameDuration = 15
 FishingCore.requiredTensionScore = 70
 
--- Définition des points d'eau par zone et coordonnées
+-- Définition des points d'eau par zone et coordonnées centrales
 local waterBodyZones = {
     ["giddeus"] = {
-        { name = "pond", minX = -100, maxX = 100, minY = -100, maxY = 100 }, -- Placeholder
-        { name = "spring", minX = 100, maxX = 200, minY = 100, maxY = 200 }, -- Placeholder
-        { name = "general", default = true }, -- Crayfish partout
+        { name = "pond", pos_x = 50.00, pos_y = -30.00, max_distance = 20 },
+        { name = "spring", pos_x = 150.00, pos_y = 80.00, max_distance = 20 },
+        { name = "general", default = true }, -- Crayfish
     },
     ["rolandberry_fields"] = {
-        { name = "Lake", minX = -50, maxX = 50, minY = -50, maxY = 50 }, -- Placeholder
+        { name = "Lake", pos_x = 0.00, pos_y = -10.00, max_distance = 20 },
         { name = "general", default = true }, -- Crayfish, Moat Carp
     },
     ["gusgen_mines"] = {
-        { name = "pools_first_floor", minX = -200, maxX = -100, minY = -200, maxY = -100 }, -- Placeholder
-        { name = "deeper_pools_map_3", minX = 100, maxX = 200, minY = 100, maxY = 200 }, -- Placeholder
+        { name = "pools_first_floor", pos_x = -125.00, pos_y = -150.00, max_distance = 20 },
+        { name = "deeper_pools_map_3", pos_x = 150.00, pos_y = 130.00, max_distance = 20 },
         { name = "general_pools", default = true }, -- Tricolored Carp, Black Eel
     },
     ["bastok_markets"] = {
-        { name = "canal", minX = -50, maxX = 50, minY = -50, maxY = 50 }, -- Placeholder
-        { name = "general", default = true }, -- Fountain
+        { name = "canal", pos_x = 0.00, pos_y = -40.00, max_distance = 20 },
+        { name = "general", default = true }, -- Fontaine
     },
-    -- Ajouter d'autres zones au besoin
+    ["jugner_forest"] = {
+        { name = "general", default = true }, -- Étangs
+    },
+    ["mhaura"] = {
+        { name = "general", default = true }, -- Mer
+    },
+    ["buburimu_peninsula"] = {
+        { name = "general", default = true }, -- Côte
+    },
 }
 
 -- Fonction pour déterminer le point d'eau
@@ -49,18 +59,34 @@ local function getWaterBody(zoneName, player)
     for _, waterBody in ipairs(zoneWaterBodies) do
         if waterBody.default then
             return waterBody.name
-        elseif playerX >= waterBody.minX and playerX <= waterBody.maxX and
-               playerY >= waterBody.minY and playerY <= waterBody.maxY then
-            return waterBody.name
+        elseif waterBody.pos_x and waterBody.pos_y then
+            local distance = math.sqrt((playerX - waterBody.pos_x)^2 + (playerY - waterBody.pos_y)^2)
+            if distance <= waterBody.max_distance then
+                return waterBody.name
+            end
         end
     end
-
-    return nil -- Retourner nil si aucun point d'eau spécifique
+    return nil
 end
 
--- Vérifie la proximité à l'eau (à implémenter)
+-- Vérifie la proximité à l'eau
 local function isNearWater(player)
-    return true -- À remplacer avec détection réelle
+    local zoneName = player:getZoneName():lower()
+    local waterBodies = waterBodyZones[zoneName]
+    if not waterBodies then
+        return false -- Pas de points d'eau définis
+    end
+
+    local playerX, playerY = player:getXPos(), player:getYPos()
+    for _, waterBody in ipairs(waterBodies) do
+        if waterBody.pos_x and waterBody.pos_y then
+            local distance = math.sqrt((playerX - waterBody.pos_x)^2 + (playerY - waterBody.pos_y)^2)
+            if distance <= waterBody.max_distance then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 -- Fatigue de pêche
@@ -102,7 +128,7 @@ local function getFishInZone(zoneName, baitName, rodName, player)
     if waterBody and zoneFish[waterBody] then
         fishList = zoneFish[waterBody]
     else
-        -- Sinon, utiliser la liste plate ou la sous-table 'general' par défaut
+        -- Sinon, utiliser la sous-table 'general' ou la liste plate
         fishList = zoneFish.general or {}
         for _, fishName in ipairs(zoneFish) do
             table.insert(fishList, fishName)
@@ -287,6 +313,11 @@ function FishingCore.autoFish(player, baitName, rodName)
         FishingCore.manualFish(player, baitName, rodName)
         player:timer(5000, function() end)
     end
+end
+
+-- Fonction de test
+function xi.fishing.test()
+    print("xi.fishing est implémenté")
 end
 
 return FishingCore
