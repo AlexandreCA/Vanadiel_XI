@@ -84,41 +84,6 @@ FishingCore.biteDelayMax = 30
 FishingCore.tensionGameDuration = 15
 FishingCore.requiredTensionScore = 70
 
--- Définition des points d'eau par zone et coordonnées centrales
-local waterBodyZones = {
-    ["port_bastok"] = {
-        { name = "docks", pos_x = -98.25, pos_y = -54.26, max_distance = 40 }, -- F-8, quais larges
-        { name = "general", default = true }, -- Crayfish
-    },
-    ["giddeus"] = {
-        { name = "pond", pos_x = 50.00, pos_y = -30.00, max_distance = 20 },
-        { name = "spring", pos_x = 150.00, pos_y = 80.00, max_distance = 20 },
-        { name = "general", default = true }, -- Crayfish
-    },
-    ["rolandberry_fields"] = {
-        { name = "Lake", pos_x = 0.00, pos_y = -10.00, max_distance = 20 },
-        { name = "general", default = true }, -- Crayfish, Moat Carp
-    },
-    ["gusgen_mines"] = {
-        { name = "pools_first_floor", pos_x = -125.00, pos_y = -150.00, max_distance = 20 },
-        { name = "deeper_pools_map_3", pos_x = 150.00, pos_y = 130.00, max_distance = 20 },
-        { name = "general_pools", default = true }, -- Tricolored Carp, Black Eel
-    },
-    ["bastok_markets"] = {
-        { name = "canal", pos_x = 0.00, pos_y = -40.00, max_distance = 20 },
-        { name = "general", default = true }, -- Fontaine
-    },
-    ["jugner_forest"] = {
-        { name = "general", default = true }, -- Étangs
-    },
-    ["mhaura"] = {
-        { name = "general", default = true }, -- Mer
-    },
-    ["buburimu_peninsula"] = {
-        { name = "general", default = true }, -- Côte
-    },
-}
-
 -- Fonction pour déterminer le point d'eau
 local function getWaterBody(zoneName, player)
     local zoneWaterBodies = waterBodyZones[zoneName:lower()]
