@@ -6,6 +6,73 @@ local zone_data = require("scripts/globals/fishing/zones/zones")
 -----------------------------------
 xi = xi or {}
 xi.fishing = xi.fishing or {}
+
+xi.fishing.spots = {}
+
+-- Chargement des points d'eau depuis la base SQL
+local function loadFishingSpots()
+    local query = "SELECT * FROM water_points"
+    local result = sql:query(query)
+
+    for _, row in ipairs(result) do
+        local zoneId = tonumber(row.zone_id)
+        xi.fishing.spots[zoneId] = xi.fishing.spots[zoneId] or {}
+
+        table.insert(xi.fishing.spots[zoneId], {
+            name = row.name,
+            x = tonumber(row.pos_x),
+            y = tonumber(row.pos_y),
+            z = tonumber(row.pos_z),
+            radius = tonumber(row.radius),
+            default = tonumber(row.is_default) == 1
+        })
+    end
+end
+
+loadFishingSpots()
+
+-- Détermination du point d'eau (par nom)
+local function getWaterBody(player)
+    local zoneId = player:getZoneID()
+    local spots = xi.fishing.spots[zoneId]
+    if not spots then return nil end
+
+    local px, py = player:getXPos(), player:getYPos()
+
+    for _, spot in ipairs(spots) do
+        local dx, dy = px - spot.x, py - spot.y
+        if math.sqrt(dx * dx + dy * dy) <= spot.radius then
+            return spot.name
+        end
+    end
+
+    for _, spot in ipairs(spots) do
+        if spot.default then
+            return spot.name
+        end
+    end
+
+    return nil
+end
+
+-- Vérifie la proximité à un point d'eau
+local function isNearWater(player)
+    local zoneId = player:getZoneID()
+    local spots = xi.fishing.spots[zoneId]
+    if not spots then return false end
+
+    local px, py = player:getXPos(), player:getYPos()
+
+    for _, spot in ipairs(spots) do
+        local dx, dy = px - spot.x, py - spot.y
+        if math.sqrt(dx * dx + dy * dy) <= spot.radius then
+            return true
+        end
+    end
+
+    return false
+end
+
 xi.fishing.zones = zone_data
 xi.fishing.items = fish_data
 -----------------------------------
@@ -19,6 +86,10 @@ FishingCore.requiredTensionScore = 70
 
 -- Définition des points d'eau par zone et coordonnées centrales
 local waterBodyZones = {
+    ["port_bastok"] = {
+        { name = "docks", pos_x = -98.25, pos_y = -54.26, max_distance = 40 }, -- F-8, quais larges
+        { name = "general", default = true }, -- Crayfish
+    },
     ["giddeus"] = {
         { name = "pond", pos_x = 50.00, pos_y = -30.00, max_distance = 20 },
         { name = "spring", pos_x = 150.00, pos_y = 80.00, max_distance = 20 },
@@ -121,7 +192,7 @@ local function getFishInZone(zoneName, baitName, rodName, player)
         return nil
     end
 
-    local waterBody = getWaterBody(zoneName, player)
+    local waterBody = getWaterBody(player)
     local fishList = {}
 
     -- Si un point d'eau spécifique est trouvé et que la zone a une sous-table
