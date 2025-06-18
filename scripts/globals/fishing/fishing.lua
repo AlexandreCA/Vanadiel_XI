@@ -118,7 +118,18 @@ local function getFishingSkillBonus(player)
     return bonus
 end
 
-local function getFishInZone(zoneName, baitName, rodName, player)
+local function getRodBonus(player, rodName)
+    local query = string.format("SELECT fish_attack, lgd_bonus_attack, fish_recovery, fish_time, lgd_bonus_time, sm_delay_bonus, sm_move_bonus, lg_delay_bonus, lg_move_bonus, min_rank FROM fishing_rod WHERE name = '%s'", rodName)
+    local result = sql:query(query)
+    if #result == 0 then return 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 end
+    local row = result[1]
+    return tonumber(row.fish_attack) or 0, tonumber(row.lgd_bonus_attack) or 0, tonumber(row.fish_recovery) or 0, 
+           tonumber(row.fish_time) or 0, tonumber(row.lgd_bonus_time) or 0, tonumber(row.sm_delay_bonus) or 0, 
+           tonumber(row.sm_move_bonus) or 0, tonumber(row.lg_delay_bonus) or 0, tonumber(row.lg_move_bonus) or 0, 
+           tonumber(row.min_rank) or 0
+end
+
+local function getFishOrMobInZone(zoneName, baitName, rodName, player)
     local zoneIdQuery = string.format("SELECT zone_id FROM fishing_zone WHERE zone_name = '%s'", zoneName:lower())
     local zoneResult = sql:query(zoneIdQuery)
     if #zoneResult == 0 then
@@ -132,13 +143,32 @@ local function getFishInZone(zoneName, baitName, rodName, player)
     if #areaResult == 0 then return nil end
     local areaId = areaResult[1].areaid
 
-    local query = string.format("SELECT f.fish_name FROM fishing_fish f JOIN fishing_group g ON f.groupid = g.groupid JOIN fishing_bait_affinity ba ON f.fish_id = ba.fishid JOIN fishing_bait b ON ba.baitid = b.baitid JOIN fishing_rod r ON g.rod_id = r.rod_id JOIN fishing_catch c ON g.groupid = c.groupid WHERE c.zoneid = %d AND c.areaid = %d AND b.name = '%s' AND r.rod_name = '%s' AND ba.power > 0 ORDER BY RAND() * ba.power LIMIT 1", zoneId, areaId, baitName, rodName)
-    local result = sql:query(query)
-    if #result == 0 then
-        player:messageBasic(xi.msg.basic.FISHING_NOTHING_CAUGHT, 0, 0, 0, "")
+    local fishingSkill = player:getSkillLevel(xi.skill.FISHING) + getFishingSkillBonus(player)
+    local _, _, _, _, _, _, _, _, _, minRank = getRodBonus(player, rodName)
+    if fishingSkill < minRank then
+        player:messageBasic(xi.msg.basic.FISHING_ROD_RANK_TOO_LOW, rodName)
         return nil
     end
-    return result[1].fish_name
+
+    -- Tentative de pêcher un poisson standard
+    local fishQuery = string.format("SELECT f.name AS fish_name FROM fishing_fish f JOIN fishing_group g ON f.fishid = g.fishid JOIN fishing_catch c ON g.groupid = c.groupid JOIN fishing_bait_affinity ba ON f.fishid = ba.fishid JOIN fishing_bait b ON ba.baitid = b.baitid JOIN fishing_rod r ON g.rarity > 0 AND r.rodid = (SELECT rodid FROM fishing_rod WHERE name = '%s') WHERE c.zoneid = %d AND c.areaid = %d AND b.name = '%s' AND r.size_type = f.size_type AND ba.power > 0 AND f.disabled = 0 ORDER BY RAND() * (ba.power * g.rarity) LIMIT 1", rodName, zoneId, areaId, baitName)
+    local fishResult = sql:query(fishQuery)
+
+    if #fishResult > 0 then
+        return fishResult[1].fish_name
+    end
+
+    -- Tentative de pêcher un monstre (chance faible)
+    if math.random() < 0.05 then -- Chance de 5% de pêcher un monstre, à ajuster
+        local mobQuery = string.format("SELECT name AS mob_name FROM fishing_mob m WHERE m.zoneid = %d AND m.areaid = %d AND m.disabled = 0 AND (m.required_baitid = 0 OR m.required_baitid = (SELECT baitid FROM fishing_bait WHERE name = '%s') OR m.alternative_baitid = (SELECT baitid FROM fishing_bait WHERE name = '%s')) AND m.size_type <= (SELECT size_type FROM fishing_rod WHERE name = '%s') LIMIT 1", zoneId, areaId, baitName, baitName, rodName)
+        local mobResult = sql:query(mobQuery)
+        if #mobResult > 0 then
+            return "MOB:" .. mobResult[1].mob_name -- Préfixe pour identifier un monstre
+        end
+    end
+
+    player:messageBasic(xi.msg.basic.FISHING_NOTHING_CAUGHT, 0, 0, 0, "")
+    return nil
 end
 
 local function checkRankProgress(player, fishingSkill)
@@ -167,7 +197,6 @@ local function checkRankProgress(player, fishingSkill)
                 player:removeItem(info.item)
                 player:messageBasic(xi.msg.basic.ITEM_TURNED_IN, info.item)
                 player:messageBasic(xi.msg.basic.FISHING_RANK_UP)
-                -- Mettre à jour fishing_contest_entries si nécessaire
                 local updateContestQuery = string.format("UPDATE fishing_contest_entries SET fishrank = %d WHERE charid = %d", info.rank, playerId)
                 sql:query(updateContestQuery)
             else
@@ -180,7 +209,9 @@ end
 
 local function handleSkillGain(player, fishName, zoneName, success)
     local fishingSkill = player:getSkillLevel(xi.skill.FISHING) + getFishingSkillBonus(player)
-    local query = string.format("SELECT required_skill AS skill FROM fishing_group g JOIN fishing_fish f ON g.groupid = f.groupid WHERE f.fish_name = '%s' AND g.zoneid = (SELECT zone_id FROM fishing_zone WHERE zone_name = '%s')", fishName:lower(), zoneName:lower())
+    local isMob = string.sub(fishName, 1, 4) == "MOB:"
+    local name = isMob and string.sub(fishName, 5) or fishName
+    local query = isMob and string.format("SELECT level AS skill FROM fishing_mob WHERE name = '%s'", name:lower()) or string.format("SELECT skill_level AS skill FROM fishing_fish WHERE name = '%s'", name:lower())
     local result = sql:query(query)
     local requiredSkill = result[1] and tonumber(result[1].skill) or 0
 
@@ -211,16 +242,22 @@ local function handleSkillGain(player, fishName, zoneName, success)
 end
 
 local function checkFishingInput(player, fishName, zoneName, rodName)
-    local query = string.format("SELECT required_skill AS skill, break_chance, moon_bonus, weather_bonus, time_bonus FROM fishing_group g JOIN fishing_fish f ON g.groupid = f.groupid WHERE f.fish_name = '%s' AND g.zoneid = (SELECT zone_id FROM fishing_zone WHERE zone_name = '%s')", fishName:lower(), zoneName:lower())
+    local isMob = string.sub(fishName, 1, 4) == "MOB:"
+    local name = isMob and string.sub(fishName, 5) or fishName
+    local query = isMob and string.format("SELECT level AS skill, difficulty AS break_chance FROM fishing_mob WHERE name = '%s'", name:lower()) or string.format("SELECT skill_level AS skill, difficulty AS break_chance FROM fishing_fish WHERE name = '%s'", name:lower())
     local result = sql:query(query)
     if #result == 0 then return false end
     local variation = result[1]
-    local baseScore = math.random(30, 70)
-    local skillBonus = (player:getSkillLevel(xi.skill.FISHING) + getFishingSkillBonus(player)) - tonumber(variation.skill)
-    local breakChance = tonumber(variation.break_chance) or 0.1
-    local moonBonus = tonumber(variation.moon_bonus[xi.moonPhase()]) or 1.0
-    local weatherBonus = tonumber(variation.weather_bonus[xi.weather()]) or 1.0
-    local timeBonus = tonumber(variation.time_bonus[xi.time()]) or 1.0
+    local attack, lgdAttack, recovery, time, lgdTime, smDelay, smMove, lgDelay, lgMove, _ = getRodBonus(player, rodName)
+    local zoneIdQuery = string.format("SELECT difficulty FROM fishing_zone WHERE zone_id = %d", player:getZoneID())
+    local zoneResult = sql:query(zoneIdQuery)
+    local zoneDifficulty = #zoneResult > 0 and tonumber(zoneResult[1].difficulty) or 0
+    local baseScore = math.random(30, 70) + attack + (isMob and lgdAttack or 0) - (zoneDifficulty * 2) -- Réduction basée sur la difficulté
+    local skillBonus = (player:getSkillLevel(xi.skill.FISHING) + getFishingSkillBonus(player)) - tonumber(variation.skill) + recovery
+    local breakChance = tonumber(variation.break_chance) or (tonumber(variation.difficulty) / 100) * (1 + zoneDifficulty / 10) -- Augmentation basée sur la difficulté
+    local moonBonus = 1.0 -- À ajuster avec moon_pattern si disponible
+    local weatherBonus = 1.0 -- À ajuster avec weather data si disponible
+    local timeBonus = 1.0 -- À ajuster avec hour_pattern si disponible
 
     if isContestActive() then
         breakChance = breakChance * 0.8 -- Réduction fictif du risque de casse pendant un concours, à ajuster
@@ -235,14 +272,24 @@ local function checkFishingInput(player, fishName, zoneName, rodName)
     end
 
     local inputScore = 0
-    for _ = 1, FishingCore.tensionGameDuration do
+    local adjustedDuration = FishingCore.tensionGameDuration + time + (isMob and lgdTime or 0)
+    for _ = 1, adjustedDuration do
         local input = math.random(-1, 1)
         if input ~= 0 then
-            inputScore = inputScore + 10
+            inputScore = inputScore + 10 + (isMob and smMove or 0) + (not isMob and lgMove or 0)
         end
-        if math.random() < breakChance then
+        if math.random() < breakChance and (isMob and lgDelay or smDelay) < math.random() then -- Ajustement avec bonus de délai
             player:messageBasic(xi.msg.basic.FISHING_ROD_BROKE)
             handleSkillGain(player, fishName, zoneName, false)
+            local query = string.format("SELECT breakable, broken_rodid FROM fishing_rod WHERE name = '%s'", rodName)
+            local rodResult = sql:query(query)
+            if #rodResult > 0 and rodResult[1].breakable == 1 then
+                player:removeItemByName(rodName)
+                if rodResult[1].broken_rodid then
+                    player:addItem(tonumber(rodResult[1].broken_rodid))
+                    player:messageBasic(xi.msg.basic.FISHING_ROD_BROKEN, rodName, tonumber(rodResult[1].broken_rodid))
+                end
+            end
             return false
         end
     end
@@ -255,11 +302,16 @@ local function checkFishingInput(player, fishName, zoneName, rodName)
 end
 
 local function resolveCatch(player, fishName, zoneName)
-    local query = string.format("SELECT item_id FROM fishing_fish WHERE fish_name = '%s'", fishName:lower())
+    local isMob = string.sub(fishName, 1, 4) == "MOB:"
+    local name = isMob and string.sub(fishName, 5) or fishName
+    local query = isMob and string.format("SELECT mobid AS item_id FROM fishing_mob WHERE name = '%s'", name:lower()) or string.format("SELECT item AS item_id FROM fishing_fish WHERE name = '%s'", name:lower())
     local result = sql:query(query)
-    local fishId = result[1] and tonumber(result[1].item_id) or 4481
+    local fishId = result[1] and tonumber(result[1].item_id) or (isMob and 0 or 4481) -- 0 pour mob, 4481 pour poisson par défaut
     if fishId then
-        if player:addItem(fishId) then
+        if isMob then
+            player:messageBasic(xi.msg.basic.FISHING_BITE_MONSTER_CAUGHT, name) -- Message fictif, à définir
+            -- Logique pour gérer le monstre (ex. combat ou récompense spéciale)
+        elseif player:addItem(fishId) then
             player:setVar("FishingFatigueCount", player:getVar("FishingFatigueCount") + 1)
             local contestEntry = getContestEntry(player)
             if isContestActive() and contestEntry then
@@ -286,20 +338,26 @@ function FishingCore.manualFish(player, baitName, rodName)
     end
 
     local zoneName = player:getZoneName()
-    local fishName = getFishInZone(zoneName, baitName, rodName, player)
+    local fishName = getFishOrMobInZone(zoneName, baitName, rodName, player)
     if not fishName then return end
 
-    local query = string.format("SELECT is_monster, is_item, size FROM fishing_fish WHERE fish_name = '%s'", fishName:lower())
+    local isMob = string.sub(fishName, 1, 4) == "MOB:"
+    local name = isMob and string.sub(fishName, 5) or fishName
+    local query = string.format("SELECT legendary AS is_monster, item AS is_item, size_type AS size FROM fishing_fish WHERE name = '%s'", name:lower())
     local result = sql:query(query)
-    local fish = result[1]
-    if fish and fish.is_monster == 1 then
+    if isMob then
         player:messageBasic(xi.msg.basic.FISHING_BITE_MONSTER)
-    elseif fish and fish.is_item == 1 then
-        player:messageBasic(xi.msg.basic.FISHING_BITE_ITEM)
-    elseif fish and fish.size = "large" then
-        player:messageBasic(xi.msg.basic.FISHING_BITE_LARGE)
-    else
-        player:messageBasic(xi.msg.basic.FISHING_BITE_SMALL)
+    elseif result and result[1] then
+        local fish = result[1]
+        if fish and fish.is_monster == 1 then
+            player:messageBasic(xi.msg.basic.FISHING_BITE_MONSTER)
+        elseif fish and fish.is_item == 1 then
+            player:messageBasic(xi.msg.basic.FISHING_BITE_ITEM)
+        elseif fish and fish.size > 0 then -- Approximation pour large
+            player:messageBasic(xi.msg.basic.FISHING_BITE_LARGE)
+        else
+            player:messageBasic(xi.msg.basic.FISHING_BITE_SMALL)
+        end
     end
 
     local biteDelay = math.random(FishingCore.biteDelayMin, FishingCore.biteDelayMax)
