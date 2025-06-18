@@ -9,7 +9,7 @@ xi.fishing = xi.fishing or {}
 
 xi.fishing.spots = {}
 
--- Chargement des points d'eau depuis la base SQL
+
 local function loadFishingSpots()
     local query = "SELECT * FROM water_points"
     local result = sql:query(query)
@@ -31,7 +31,7 @@ end
 
 loadFishingSpots()
 
--- Détermination du point d'eau (par nom)
+
 local function getWaterBody(player)
     local zoneId = player:getZoneID()
     local spots = xi.fishing.spots[zoneId]
@@ -55,7 +55,7 @@ local function getWaterBody(player)
     return nil
 end
 
--- Vérifie la proximité à un point d'eau
+
 local function isNearWater(player)
     local zoneId = player:getZoneID()
     local spots = xi.fishing.spots[zoneId]
@@ -78,17 +78,17 @@ xi.fishing.items = fish_data
 -----------------------------------
 local FishingCore = {}
 
--- Configuration
+
 FishingCore.biteDelayMin = 5
 FishingCore.biteDelayMax = 30
 FishingCore.tensionGameDuration = 15
 FishingCore.requiredTensionScore = 70
 
--- Fonction pour déterminer le point d'eau
+
 local function getWaterBody(zoneName, player)
     local zoneWaterBodies = waterBodyZones[zoneName:lower()]
     if not zoneWaterBodies then
-        return nil -- Pas de points d'eau spécifiques
+        return nil 
     end
 
     local playerX, playerY = player:getXPos(), player:getYPos()
@@ -105,12 +105,12 @@ local function getWaterBody(zoneName, player)
     return nil
 end
 
--- Vérifie la proximité à l'eau
+
 local function isNearWater(player)
     local zoneName = player:getZoneName():lower()
     local waterBodies = waterBodyZones[zoneName]
     if not waterBodies then
-        return false -- Pas de points d'eau définis
+        return false
     end
 
     local playerX, playerY = player:getXPos(), player:getYPos()
@@ -125,7 +125,7 @@ local function isNearWater(player)
     return false
 end
 
--- Fatigue de pêche
+
 local function checkFishingFatigue(player)
     local lastReset = player:getVar("FishingFatigueReset") or 0
     local currentTime = os.time()
@@ -141,7 +141,7 @@ local function checkFishingFatigue(player)
     return true
 end
 
--- Bonus de compétence
+
 local function getFishingSkillBonus(player)
     local bonus = 0
     if player:hasItem(13759) then
@@ -150,7 +150,7 @@ local function getFishingSkillBonus(player)
     return bonus
 end
 
--- Récupération du poisson selon zone
+
 local function getFishInZone(zoneName, baitName, rodName, player)
     local zoneFish = xi.fishing.zones[zoneName:lower()]
     if not zoneFish then
@@ -160,11 +160,11 @@ local function getFishInZone(zoneName, baitName, rodName, player)
     local waterBody = getWaterBody(player)
     local fishList = {}
 
-    -- Si un point d'eau spécifique est trouvé et que la zone a une sous-table
+
     if waterBody and zoneFish[waterBody] then
         fishList = zoneFish[waterBody]
     else
-        -- Sinon, utiliser la sous-table 'general' ou la liste plate
+
         fishList = zoneFish.general or {}
         for _, fishName in ipairs(zoneFish) do
             table.insert(fishList, fishName)
@@ -189,7 +189,7 @@ local function getFishInZone(zoneName, baitName, rodName, player)
     return validFish[math.random(1, #validFish)]
 end
 
--- Système de test de rang (Retail accurate)
+
 local rankTests = {
     [8]  = {rank = xi.craftRank.RECRUIT,     item = 4401}, -- Moat Carp
     [18] = {rank = xi.craftRank.INITIATE,    item = 4402}, -- Cheval Salmon
@@ -221,7 +221,7 @@ local function checkRankProgress(player, fishingSkill)
     end
 end
 
--- Gain de compétence
+
 local function handleSkillGain(player, fishName, zoneName, success)
     local fishingSkill = player:getSkillLevel(xi.skill.FISHING) + getFishingSkillBonus(player)
     local fish = xi.fishing.items[fishName:lower()]
@@ -251,7 +251,7 @@ local function handleSkillGain(player, fishName, zoneName, success)
     end
 end
 
--- Mini-jeu de tension avec messages
+
 local function checkFishingInput(player, fishName, zoneName, rodName)
     local fish = xi.fishing.items[fishName:lower()]
     local variation = fish and fish.variations[zoneName:lower()]
@@ -264,7 +264,7 @@ local function checkFishingInput(player, fishName, zoneName, rodName)
     local weatherBonus = variation.weather_bonus[xi.weather()] or 1.0
     local timeBonus = variation.time_bonus[xi.time()] or 1.0
 
-    -- Ajout des messages d’instinct
+
     if skillBonus < -15 then
         player:messageBasic(xi.msg.basic.FISHING_FEELING_TERRIBLE)
     elseif skillBonus < 0 then
@@ -293,7 +293,7 @@ local function checkFishingInput(player, fishName, zoneName, rodName)
     return success
 end
 
--- Résolution de la prise
+
 local function resolveCatch(player, fishName, zoneName)
     local fish = xi.fishing.items[fishName:lower()]
     local fishId = fish and fish.item_id or 4481
@@ -309,7 +309,6 @@ local function resolveCatch(player, fishName, zoneName)
     end
 end
 
--- Pêche manuelle avec message de type de prise
 function FishingCore.manualFish(player, baitName, rodName)
     if not checkFishingFatigue(player) then return end
     if not isNearWater(player) then
@@ -321,7 +320,6 @@ function FishingCore.manualFish(player, baitName, rodName)
     local fishName = getFishInZone(zoneName, baitName, rodName, player)
     if not fishName then return end
 
-    -- Message selon le type de prise
     local fish = xi.fishing.items[fishName:lower()]
     if fish and fish.is_monster then
         player:messageBasic(xi.msg.basic.FISHING_BITE_MONSTER)
@@ -343,17 +341,11 @@ function FishingCore.manualFish(player, baitName, rodName)
     end)
 end
 
--- Pêche automatique (boucle naïve, améliorable)
 function FishingCore.autoFish(player, baitName, rodName)
     while player:getHP() > 0 and checkFishingFatigue(player) do
         FishingCore.manualFish(player, baitName, rodName)
         player:timer(5000, function() end)
     end
-end
-
--- Fonction de test
-function xi.fishing.test()
-    print("xi.fishing est implémenté")
 end
 
 return FishingCore
