@@ -1,4 +1,0 @@
-return {
-    "Ashen Crayfish",
-}
-

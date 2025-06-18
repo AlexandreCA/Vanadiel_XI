@@ -1,5 +1,0 @@
-return {
-    "Yorchete",
-    "Senroh Frog",
-}
-
