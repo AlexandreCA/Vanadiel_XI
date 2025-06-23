@@ -9,6 +9,8 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10b_bazaar_close.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10b_bazaar_close.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10c_roe_start.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10c_roe_start.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10d_roe_remove.cpp

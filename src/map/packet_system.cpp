@@ -88,6 +88,7 @@
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x105_bazaar_list.h"
+#include "packets/c2s/0x10b_bazaar_close.h"
 #include "packets/c2s/0x10c_roe_start.h"
 #include "packets/c2s/0x10d_roe_remove.h"
 #include "packets/c2s/0x10e_roe_claim.h"
@@ -7176,34 +7177,6 @@ void SmallPacket0x10A(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                        *
- *  Opening "Set Prices" in bazaar-menu, closing the bazaar                 *
- *                                                                        *
- ************************************************************************/
-
-void SmallPacket0x10B(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    for (std::size_t i = 0; i < PChar->BazaarCustomers.size(); ++i)
-    {
-        CCharEntity* PCustomer = (CCharEntity*)PChar->GetEntity(PChar->BazaarCustomers[i].targid, TYPE_PC);
-
-        if (PCustomer != nullptr && PCustomer->id == PChar->BazaarCustomers[i].id)
-        {
-            PCustomer->pushPacket<CBazaarClosePacket>(PChar);
-
-            DebugBazaarsFmt("Bazaar Interaction [Leave Bazaar] - Buyer: {}, Seller: {}", PCustomer->name, PChar->name);
-        }
-    }
-    PChar->BazaarCustomers.clear();
-
-    PChar->isSettingBazaarPrices = true;
-    PChar->updatemask |= UPDATE_HP;
-
-    DebugBazaarsFmt("Bazaar Interaction [Setting Prices] - Character: {}", PChar->name);
-}
-
-/************************************************************************
- *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
  ************************************************************************/
@@ -7370,7 +7343,7 @@ void PacketParserInitialize()
     PacketSize[0x106] = 0x06; PacketParser[0x106] = &SmallPacket0x106;
     PacketSize[0x109] = 0x00; PacketParser[0x109] = &SmallPacket0x109;
     PacketSize[0x10A] = 0x06; PacketParser[0x10A] = &SmallPacket0x10A;
-    PacketSize[0x10B] = 0x00; PacketParser[0x10B] = &SmallPacket0x10B;
+    PacketSize[0x10B] = 0x00; PacketParser[0x10B] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_CLOSE>;
     PacketSize[0x10C] = 0x04; PacketParser[0x10C] = &ValidatedPacketHandler<GP_CLI_COMMAND_ROE_START>;
     PacketSize[0x10D] = 0x04; PacketParser[0x10D] = &ValidatedPacketHandler<GP_CLI_COMMAND_ROE_REMOVE>;
     PacketSize[0x10E] = 0x04; PacketParser[0x10E] = &ValidatedPacketHandler<GP_CLI_COMMAND_ROE_CLAIM>;
