@@ -78,16 +78,13 @@
 
 #include "packets/basic.h"
 #include "packets/bazaar_check.h"
-#include "packets/bazaar_close.h"
-#include "packets/bazaar_confirmation.h"
-#include "packets/bazaar_item.h"
 #include "packets/bazaar_message.h"
-#include "packets/bazaar_purchase.h"
 #include "packets/blacklist_edit_response.h"
 #include "packets/c2s/0x041_trophy_entry.h"
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x105_bazaar_list.h"
+#include "packets/c2s/0x106_bazaar_buy.h"
 #include "packets/c2s/0x109_bazaar_open.h"
 #include "packets/c2s/0x10a_bazaar_itemset.h"
 #include "packets/c2s/0x10b_bazaar_close.h"
@@ -6935,176 +6932,6 @@ void SmallPacket0x104(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                       *
- *  Purchasing an item from a bazaar                                     *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x106(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    uint8 Quantity = data.ref<uint8>(0x08);
-    uint8 SlotID   = data.ref<uint8>(0x04);
-
-    CCharEntity* PTarget = (CCharEntity*)PChar->GetEntity(PChar->BazaarID.targid, TYPE_PC);
-
-    if (PTarget == nullptr || PTarget->id != PChar->BazaarID.id)
-    {
-        return;
-    }
-
-    CItemContainer* PBazaar         = PTarget->getStorage(LOC_INVENTORY);
-    CItemContainer* PBuyerInventory = PChar->getStorage(LOC_INVENTORY);
-    if (PBazaar == nullptr || PBuyerInventory == nullptr)
-    {
-        return;
-    }
-
-    CItem* PBazaarItem = PBazaar->GetItem(SlotID);
-    if (PBazaarItem == nullptr || PBazaarItem->getReserve() > 0)
-    {
-        return;
-    }
-
-    // Validate purchase quantity
-    if (Quantity < 1)
-    {
-        // Exploit attempt
-        ShowWarningFmt("Bazaar Interaction [Invalid Quantity] - Buyer: {}, Seller: {}, Item: {}, Qty: {}", PChar->name, PTarget->name, PBazaarItem->getName(), Quantity);
-        return;
-    }
-
-    if (PChar->id == PTarget->id || PBuyerInventory->GetFreeSlotsCount() == 0)
-    {
-        PChar->pushPacket<CBazaarPurchasePacket>(PTarget, false);
-
-        if (settings::get<bool>("logging.DEBUG_BAZAARS") && PChar->id == PTarget->id)
-        {
-            if (PChar->id == PTarget->id)
-            {
-                DebugBazaarsFmt("Bazaar Interaction [Purchase Failed / Self Bazaar] - Character: {}, Item: {}", PChar->name, PBazaarItem->getName());
-            }
-            if (PBuyerInventory->GetFreeSlotsCount() == 0)
-            {
-                DebugBazaarsFmt("Bazaar Interaction [Purchase Failed / Inventory Full] - Buyer: {}, Seller: {}, Item: {}", PChar->name, PTarget->name, PBazaarItem->getName());
-            }
-        }
-
-        return;
-    }
-
-    // Obtain the players gil
-    CItem* PCharGil = PBuyerInventory->GetItem(0);
-    if (PCharGil == nullptr || !PCharGil->isType(ITEM_CURRENCY) || PCharGil->getReserve() > 0)
-    {
-        // Player has no gil
-        PChar->pushPacket<CBazaarPurchasePacket>(PTarget, false);
-        return;
-    }
-
-    if ((PBazaarItem->getCharPrice() != 0) && (PBazaarItem->getQuantity() >= Quantity))
-    {
-        uint32 Price        = (PBazaarItem->getCharPrice() * Quantity);
-        uint32 PriceWithTax = (PChar->loc.zone->GetTax() * Price) / 10000 + Price;
-
-        // Validate this player can afford said item
-        if (PCharGil->getQuantity() < PriceWithTax)
-        {
-            PChar->pushPacket<CBazaarPurchasePacket>(PTarget, false);
-
-            // Exploit attempt
-            ShowWarningFmt("Bazaar Interaction [Insufficient Gil] - Buyer: {}, Seller: {}, Buyer Gil: {}, Price: {}", PChar->name, PTarget->name, PCharGil->getQuantity(), PriceWithTax);
-
-            return;
-        }
-
-        CItem* PItem = itemutils::GetItem(PBazaarItem);
-
-        PItem->setCharPrice(0);
-        PItem->setQuantity(Quantity);
-        PItem->setSubType(ITEM_UNLOCKED);
-
-        if (charutils::AddItem(PChar, LOC_INVENTORY, PItem) == ERROR_SLOTID)
-        {
-            return;
-        }
-
-        if (settings::get<bool>("map.AUDIT_PLAYER_BAZAAR"))
-        {
-            Async::getInstance()->submit(
-                [itemID        = PItem->getID(),
-                 quantity      = Quantity,
-                 sellerID      = PTarget->id,
-                 sellerName    = PTarget->getName(),
-                 purchaserID   = PChar->id,
-                 purchaserName = PChar->getName(),
-                 price         = PriceWithTax,
-                 date          = earth_time::timestamp()]
-                {
-                    const auto query = "INSERT INTO audit_bazaar(itemid, quantity, seller, seller_name, purchaser, purchaser_name, price, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                    if (!db::preparedStmt(query, itemID, quantity, sellerID, sellerName, purchaserID, purchaserName, price, date))
-                    {
-                        ShowErrorFmt("Failed to log bazaar purchase (ItemID: {}, Quantity: {}, Seller: {}, Purchaser: {}, Price: {})", itemID, quantity, sellerName, purchaserName, price);
-                    }
-                });
-        }
-
-        charutils::UpdateItem(PChar, LOC_INVENTORY, 0, -(int32)PriceWithTax);
-        charutils::UpdateItem(PTarget, LOC_INVENTORY, 0, Price);
-
-        PChar->pushPacket<CBazaarPurchasePacket>(PTarget, true);
-
-        PTarget->pushPacket<CBazaarConfirmationPacket>(PChar, PItem);
-
-        charutils::UpdateItem(PTarget, LOC_INVENTORY, SlotID, -Quantity);
-
-        PTarget->pushPacket<CInventoryItemPacket>(PBazaar->GetItem(SlotID), LOC_INVENTORY, SlotID);
-        PTarget->pushPacket<CInventoryFinishPacket>();
-
-        DebugBazaarsFmt("Bazaar Interaction [Purchase Successful] - Buyer: {}, Seller: {}, Item: {}, Qty: {}, Cost: {}", PChar->name, PTarget->name, PItem->getName(), Quantity, PriceWithTax);
-
-        bool BazaarIsEmpty = true;
-
-        for (uint8 BazaarSlotID = 1; BazaarSlotID <= PBazaar->GetSize(); ++BazaarSlotID)
-        {
-            PItem = PBazaar->GetItem(BazaarSlotID);
-
-            if ((PItem != nullptr) && (PItem->getCharPrice() != 0))
-            {
-                BazaarIsEmpty = false;
-                break;
-            }
-        }
-        for (std::size_t i = 0; i < PTarget->BazaarCustomers.size(); ++i)
-        {
-            CCharEntity* PCustomer = (CCharEntity*)PTarget->GetEntity(PTarget->BazaarCustomers[i].targid, TYPE_PC);
-
-            if (PCustomer != nullptr && PCustomer->id == PTarget->BazaarCustomers[i].id)
-            {
-                if (PCustomer->id != PChar->id)
-                {
-                    PCustomer->pushPacket<CBazaarConfirmationPacket>(PChar, SlotID, Quantity);
-                }
-                PCustomer->pushPacket<CBazaarItemPacket>(PBazaar->GetItem(SlotID), SlotID, PChar->loc.zone->GetTax());
-
-                if (BazaarIsEmpty)
-                {
-                    PCustomer->pushPacket<CBazaarClosePacket>(PTarget);
-
-                    DebugBazaarsFmt("Bazaar Interaction [Bazaar Emptied] - Buyer: {}, Seller: {}", PChar->name, PTarget->name);
-                }
-            }
-        }
-        if (BazaarIsEmpty)
-        {
-            PTarget->updatemask |= UPDATE_HP;
-        }
-        return;
-    }
-    PChar->pushPacket<CBazaarPurchasePacket>(PTarget, false);
-}
-
-/************************************************************************
  *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
@@ -7269,7 +7096,7 @@ void PacketParserInitialize()
     PacketSize[0x102] = 0x52; PacketParser[0x102] = &SmallPacket0x102;
     PacketSize[0x104] = 0x02; PacketParser[0x104] = &SmallPacket0x104;
     PacketSize[0x105] = 0x06; PacketParser[0x105] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_LIST>;
-    PacketSize[0x106] = 0x06; PacketParser[0x106] = &SmallPacket0x106;
+    PacketSize[0x106] = 0x06; PacketParser[0x106] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_BUY>;
     PacketSize[0x109] = 0x00; PacketParser[0x109] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_OPEN>;
     PacketSize[0x10A] = 0x06; PacketParser[0x10A] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_ITEMSET>;
     PacketSize[0x10B] = 0x00; PacketParser[0x10B] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_CLOSE>;
