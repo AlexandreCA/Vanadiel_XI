@@ -88,6 +88,7 @@
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x105_bazaar_list.h"
+#include "packets/c2s/0x10e_roe_claim.h"
 #include "packets/c2s/0x10f_currencies_1.h"
 #include "packets/c2s/0x110_fishing_2.h"
 #include "packets/c2s/0x113_sitchair.h"
@@ -7235,22 +7236,6 @@ void SmallPacket0x10D(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                        *
- *  Claim completed eminence record                                       *
- *                                                                        *
- ************************************************************************/
-
-void SmallPacket0x10E(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    if (settings::get<bool>("main.ENABLE_ROE"))
-    {
-        uint16 recordID = data.ref<uint16>(0x04);
-        roeutils::onRecordClaim(PChar, recordID);
-    }
-}
-
-/************************************************************************
- *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
  ************************************************************************/
@@ -7420,7 +7405,7 @@ void PacketParserInitialize()
     PacketSize[0x10B] = 0x00; PacketParser[0x10B] = &SmallPacket0x10B;
     PacketSize[0x10C] = 0x04; PacketParser[0x10C] = &SmallPacket0x10C;
     PacketSize[0x10D] = 0x04; PacketParser[0x10D] = &SmallPacket0x10D;
-    PacketSize[0x10E] = 0x04; PacketParser[0x10E] = &SmallPacket0x10E;
+    PacketSize[0x10E] = 0x04; PacketParser[0x10E] = &ValidatedPacketHandler<GP_CLI_COMMAND_ROE_CLAIM>;
     PacketSize[0x10F] = 0x02; PacketParser[0x10F] = &ValidatedPacketHandler<GP_CLI_COMMAND_CURRENCIES_1>;
     PacketSize[0x110] = 0x0A; PacketParser[0x110] = &ValidatedPacketHandler<GP_CLI_COMMAND_FISHING_2>;
     PacketSize[0x111] = 0x00; PacketParser[0x111] = &SmallPacket0xFFF_DEPRECATED;
