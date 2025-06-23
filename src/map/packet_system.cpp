@@ -246,6 +246,17 @@ void SmallPacket0xFFF_NOT_IMPLEMENTED(MapSession* const PSession, CCharEntity* c
 
 /************************************************************************
  *                                                                       *
+ *  Deprecated Packet                                                    *
+ *                                                                       *
+ ************************************************************************/
+
+void SmallPacket0xFFF_DEPRECATED(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
+{
+    ShowWarning("parse: SmallPacket is deprecated Type<%03hX>", (data.ref<uint16>(0) & 0x1FF));
+}
+
+/************************************************************************
+ *                                                                       *
  *  Log Into Zone                                                        *
  *                                                                       *
  *  Update session key and client port between zone transitions.         *
@@ -7268,19 +7279,6 @@ void SmallPacket0x110(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                        *
- *  Lock Style Request                                                    *
- *                                                                        *
- ************************************************************************/
-
-void SmallPacket0x111(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    charutils::SetStyleLock(PChar, data.ref<uint8>(0x04));
-    PChar->pushPacket<CCharAppearancePacket>(PChar);
-}
-
-/************************************************************************
- *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
  ************************************************************************/
@@ -7453,7 +7451,7 @@ void PacketParserInitialize()
     PacketSize[0x10E] = 0x04; PacketParser[0x10E] = &SmallPacket0x10E;
     PacketSize[0x10F] = 0x02; PacketParser[0x10F] = &ValidatedPacketHandler<GP_CLI_COMMAND_CURRENCIES_1>;
     PacketSize[0x110] = 0x0A; PacketParser[0x110] = &SmallPacket0x110;
-    PacketSize[0x111] = 0x00; PacketParser[0x111] = &SmallPacket0x111;
+    PacketSize[0x111] = 0x00; PacketParser[0x111] = &SmallPacket0xFFF_DEPRECATED;
     PacketSize[0x112] = 0x00; PacketParser[0x112] = &SmallPacket0x112;
     PacketSize[0x113] = 0x06; PacketParser[0x113] = &ValidatedPacketHandler<GP_CLI_COMMAND_SITCHAIR>;
     PacketSize[0x114] = 0x00; PacketParser[0x114] = &ValidatedPacketHandler<GP_CLI_COMMAND_MAP_MARKERS>;
