@@ -88,6 +88,7 @@
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x105_bazaar_list.h"
+#include "packets/c2s/0x109_bazaar_open.h"
 #include "packets/c2s/0x10a_bazaar_itemset.h"
 #include "packets/c2s/0x10b_bazaar_close.h"
 #include "packets/c2s/0x10c_roe_start.h"
@@ -7104,23 +7105,6 @@ void SmallPacket0x106(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                       *
- *  Bazaar (Exit Price Setting)                                          *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x109(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    if (PChar->isSettingBazaarPrices)
-    {
-        PChar->isSettingBazaarPrices = false;
-        PChar->updatemask |= UPDATE_HP;
-    }
-}
-
-/************************************************************************
  *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
@@ -7286,7 +7270,7 @@ void PacketParserInitialize()
     PacketSize[0x104] = 0x02; PacketParser[0x104] = &SmallPacket0x104;
     PacketSize[0x105] = 0x06; PacketParser[0x105] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_LIST>;
     PacketSize[0x106] = 0x06; PacketParser[0x106] = &SmallPacket0x106;
-    PacketSize[0x109] = 0x00; PacketParser[0x109] = &SmallPacket0x109;
+    PacketSize[0x109] = 0x00; PacketParser[0x109] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_OPEN>;
     PacketSize[0x10A] = 0x06; PacketParser[0x10A] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_ITEMSET>;
     PacketSize[0x10B] = 0x00; PacketParser[0x10B] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_CLOSE>;
     PacketSize[0x10C] = 0x04; PacketParser[0x10C] = &ValidatedPacketHandler<GP_CLI_COMMAND_ROE_START>;

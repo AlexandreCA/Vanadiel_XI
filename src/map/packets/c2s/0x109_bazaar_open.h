@@ -22,10 +22,6 @@
 #pragma once
 #include "base.h"
 
-// https://github.com/atom0s/XiPackets/tree/main/world/client/0x010A
-// This packet is sent by the client when setting an items sale price within the players personal bazaar.
-GP_CLI_PACKET(GP_CLI_COMMAND_BAZAAR_ITEMSET,
-              uint8_t  ItemIndex;    // PS2: ItemIndex
-              uint8_t  padding00[3]; // PS2: Dammy
-              uint32_t Price;        // PS2: Price
-);
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x0109
+// This packet is sent by the client when exiting the bazaar 'Set Prices' menu with at least one item having a sale price set.
+GP_CLI_PACKET(GP_CLI_COMMAND_BAZAAR_OPEN);

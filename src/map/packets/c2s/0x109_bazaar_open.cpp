@@ -19,13 +19,19 @@
 ===========================================================================
 */
 
-#pragma once
-#include "base.h"
+#include "0x109_bazaar_open.h"
 
-// https://github.com/atom0s/XiPackets/tree/main/world/client/0x010A
-// This packet is sent by the client when setting an items sale price within the players personal bazaar.
-GP_CLI_PACKET(GP_CLI_COMMAND_BAZAAR_ITEMSET,
-              uint8_t  ItemIndex;    // PS2: ItemIndex
-              uint8_t  padding00[3]; // PS2: Dammy
-              uint32_t Price;        // PS2: Price
-);
+#include "entities/charentity.h"
+
+
+auto GP_CLI_COMMAND_BAZAAR_OPEN::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+{
+    return PacketValidator()
+        .mustEqual(PChar->isSettingBazaarPrices, true, "isSettingBazaarPrices not true");
+}
+
+void GP_CLI_COMMAND_BAZAAR_OPEN::process(MapSession* PSession, CCharEntity* PChar) const
+{
+    PChar->isSettingBazaarPrices = false;
+    PChar->updatemask |= UPDATE_HP;
+}
