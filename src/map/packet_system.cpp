@@ -88,6 +88,7 @@
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x105_bazaar_list.h"
 #include "packets/c2s/0x10f_currencies_1.h"
+#include "packets/c2s/0x110_fishing_2.h"
 #include "packets/c2s/0x113_sitchair.h"
 #include "packets/c2s/0x114_map_markers.h"
 #include "packets/c2s/0x115_currencies_2.h"
@@ -3172,21 +3173,6 @@ void SmallPacket0x064(MapSession* const PSession, CCharEntity* const PChar, CBas
     }
 
     charutils::SaveKeyItems(PChar);
-}
-
-/************************************************************************
- *                                                                       *
- *  Fishing (Action) [Old fishing method packet! Still used.]            *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x066(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    if (settings::get<bool>("map.FISHING_ENABLE") && PChar->GetMLevel() >= settings::get<uint8>("map.FISHING_MIN_LEVEL"))
-    {
-        fishingutils::HandleFishingAction(PChar, data);
-    }
 }
 
 /************************************************************************
@@ -7263,21 +7249,6 @@ void SmallPacket0x10E(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                       *
- *  Fishing (New)                                                        *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x110(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    if (settings::get<bool>("map.FISHING_ENABLE") && PChar->GetMLevel() >= settings::get<uint8>("map.FISHING_MIN_LEVEL"))
-    {
-        fishingutils::HandleFishingAction(PChar, data);
-    }
-}
-
-/************************************************************************
  *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
@@ -7384,7 +7355,7 @@ void PacketParserInitialize()
     PacketSize[0x061] = 0x04; PacketParser[0x061] = &SmallPacket0x061;
     PacketSize[0x063] = 0x00; PacketParser[0x063] = &SmallPacket0x063;
     PacketSize[0x064] = 0x26; PacketParser[0x064] = &SmallPacket0x064;
-    PacketSize[0x066] = 0x0A; PacketParser[0x066] = &SmallPacket0x066;
+    PacketSize[0x066] = 0x0A; PacketParser[0x066] = &ValidatedPacketHandler<GP_CLI_COMMAND_FISHING_2>;
     PacketSize[0x06E] = 0x06; PacketParser[0x06E] = &SmallPacket0x06E;
     PacketSize[0x06F] = 0x00; PacketParser[0x06F] = &SmallPacket0x06F;
     PacketSize[0x070] = 0x00; PacketParser[0x070] = &SmallPacket0x070;
@@ -7450,7 +7421,7 @@ void PacketParserInitialize()
     PacketSize[0x10D] = 0x04; PacketParser[0x10D] = &SmallPacket0x10D;
     PacketSize[0x10E] = 0x04; PacketParser[0x10E] = &SmallPacket0x10E;
     PacketSize[0x10F] = 0x02; PacketParser[0x10F] = &ValidatedPacketHandler<GP_CLI_COMMAND_CURRENCIES_1>;
-    PacketSize[0x110] = 0x0A; PacketParser[0x110] = &SmallPacket0x110;
+    PacketSize[0x110] = 0x0A; PacketParser[0x110] = &ValidatedPacketHandler<GP_CLI_COMMAND_FISHING_2>;
     PacketSize[0x111] = 0x00; PacketParser[0x111] = &SmallPacket0xFFF_DEPRECATED;
     PacketSize[0x112] = 0x00; PacketParser[0x112] = &SmallPacket0x112;
     PacketSize[0x113] = 0x06; PacketParser[0x113] = &ValidatedPacketHandler<GP_CLI_COMMAND_SITCHAIR>;

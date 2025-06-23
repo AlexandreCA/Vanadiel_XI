@@ -9,6 +9,8 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10f_currencies_1.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10f_currencies_1.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x110_fishing_2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x110_fishing_2.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x113_sitchair.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x113_sitchair.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x114_map_markers.cpp
