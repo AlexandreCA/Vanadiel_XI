@@ -88,6 +88,7 @@
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x105_bazaar_list.h"
+#include "packets/c2s/0x10a_bazaar_itemset.h"
 #include "packets/c2s/0x10b_bazaar_close.h"
 #include "packets/c2s/0x10c_roe_start.h"
 #include "packets/c2s/0x10d_roe_remove.h"
@@ -248,17 +249,6 @@ void SmallPacket0x000(MapSession* const PSession, CCharEntity* const PChar, CBas
 void SmallPacket0xFFF_NOT_IMPLEMENTED(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     ShowWarning("parse: SmallPacket is not implemented Type<%03hX>", (data.ref<uint16>(0) & 0x1FF));
-}
-
-/************************************************************************
- *                                                                       *
- *  Deprecated Packet                                                    *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0xFFF_DEPRECATED(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    ShowWarning("parse: SmallPacket is deprecated Type<%03hX>", (data.ref<uint16>(0) & 0x1FF));
 }
 
 /************************************************************************
@@ -7131,51 +7121,6 @@ void SmallPacket0x109(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                       *
- *  Bazaar (Set Price)                                                   *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x10A(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    uint8  slotID = data.ref<uint8>(0x04);
-    uint32 price  = data.ref<uint32>(0x08);
-
-    auto* PStorage = PChar->getStorage(LOC_INVENTORY);
-    if (PStorage == nullptr)
-    {
-        return;
-    }
-
-    CItem* PItem = PStorage->GetItem(slotID);
-    if (PItem == nullptr)
-    {
-        return;
-    }
-
-    if (PItem->getReserve() > 0)
-    {
-        ShowError("SmallPacket0x10A: Player %s trying to bazaar a RESERVED item! [Item: %i | Slot ID: %i] ", PChar->getName(), PItem->getID(),
-                  slotID);
-        return;
-    }
-
-    if ((PItem != nullptr) && !(PItem->getFlag() & ITEM_FLAG_EX) && (!PItem->isSubType(ITEM_LOCKED) || PItem->getCharPrice() != 0))
-    {
-        db::preparedStmt("UPDATE char_inventory SET bazaar = ? WHERE charid = ? AND location = 0 AND slot = ?", price, PChar->id, slotID);
-
-        PItem->setCharPrice(price);
-        PItem->setSubType((price == 0 ? ITEM_UNLOCKED : ITEM_LOCKED));
-
-        PChar->pushPacket<CInventoryItemPacket>(PItem, LOC_INVENTORY, slotID);
-        PChar->pushPacket<CInventoryFinishPacket>();
-
-        DebugBazaarsFmt("Bazaar Interaction [Price Set] - Character: {}, Item: {}, Price: {}", PChar->name, PItem->getName(), price);
-    }
-}
-
-/************************************************************************
  *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
@@ -7342,14 +7287,13 @@ void PacketParserInitialize()
     PacketSize[0x105] = 0x06; PacketParser[0x105] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_LIST>;
     PacketSize[0x106] = 0x06; PacketParser[0x106] = &SmallPacket0x106;
     PacketSize[0x109] = 0x00; PacketParser[0x109] = &SmallPacket0x109;
-    PacketSize[0x10A] = 0x06; PacketParser[0x10A] = &SmallPacket0x10A;
+    PacketSize[0x10A] = 0x06; PacketParser[0x10A] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_ITEMSET>;
     PacketSize[0x10B] = 0x00; PacketParser[0x10B] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_CLOSE>;
     PacketSize[0x10C] = 0x04; PacketParser[0x10C] = &ValidatedPacketHandler<GP_CLI_COMMAND_ROE_START>;
     PacketSize[0x10D] = 0x04; PacketParser[0x10D] = &ValidatedPacketHandler<GP_CLI_COMMAND_ROE_REMOVE>;
     PacketSize[0x10E] = 0x04; PacketParser[0x10E] = &ValidatedPacketHandler<GP_CLI_COMMAND_ROE_CLAIM>;
     PacketSize[0x10F] = 0x02; PacketParser[0x10F] = &ValidatedPacketHandler<GP_CLI_COMMAND_CURRENCIES_1>;
     PacketSize[0x110] = 0x0A; PacketParser[0x110] = &ValidatedPacketHandler<GP_CLI_COMMAND_FISHING_2>;
-    PacketSize[0x111] = 0x00; PacketParser[0x111] = &SmallPacket0xFFF_DEPRECATED;
     PacketSize[0x112] = 0x00; PacketParser[0x112] = &SmallPacket0x112;
     PacketSize[0x113] = 0x06; PacketParser[0x113] = &ValidatedPacketHandler<GP_CLI_COMMAND_SITCHAIR>;
     PacketSize[0x114] = 0x00; PacketParser[0x114] = &ValidatedPacketHandler<GP_CLI_COMMAND_MAP_MARKERS>;

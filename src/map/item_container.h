@@ -77,7 +77,7 @@ public:
     uint32            SortingPacket; // number of sort requests per clock
     timer::time_point LastSortingTime;
 
-    CItem* GetItem(uint8 slotID); // get a pointer to the object located in the specified cell.
+    CItem* GetItem(uint8 slotID) const; // get a pointer to the object located in the specified cell.
     void   Clear();               // remove all items from container
 
     template <typename F, typename... Args>
