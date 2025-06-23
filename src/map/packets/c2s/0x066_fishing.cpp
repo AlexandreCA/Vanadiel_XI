@@ -19,29 +19,29 @@
 ===========================================================================
 */
 
-#include "0x110_fishing_2.h"
+#include "0x066_fishing.h"
 
 #include "entities/charentity.h"
 
-auto GP_CLI_COMMAND_FISHING_2::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_FISHING::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
         .mustEqual(settings::get<bool>("map.FISHING_ENABLE"), true, "Fishing is disabled")
         .mustEqual(PChar->GetMLevel() >= settings::get<uint8>("map.FISHING_MIN_LEVEL"), true, "Character below fishing minimum level")
         .mustEqual(UniqueNo, PChar->id, "Character id mismatch")
         .mustEqual(ActIndex, PChar->targid, "Character targid mismatch")
-        .range("mode", mode, GP_CLI_COMMAND_FISHING_2_MODE::RequestCheckHook, GP_CLI_COMMAND_FISHING_2_MODE::RequestPotentialTimeout)
+        .range("mode", mode, GP_CLI_COMMAND_FISHING_MODE::RequestCheckHook, GP_CLI_COMMAND_FISHING_MODE::RequestPotentialTimeout)
         .custom([&](PacketValidator& v)
                 {
                     // clang-format off
-                    switch (static_cast<GP_CLI_COMMAND_FISHING_2_MODE>(mode))
+                    switch (static_cast<GP_CLI_COMMAND_FISHING_MODE>(mode))
                     {
-                        case GP_CLI_COMMAND_FISHING_2_MODE::RequestCheckHook:
+                        case GP_CLI_COMMAND_FISHING_MODE::RequestCheckHook:
                             // para and para2 are both 0 for RequestCheckHook
                             v.mustEqual(para, 0, "para must be 0")
                                 .mustEqual(para2, 0, "para2 must be 0");
                             break;
-                        case GP_CLI_COMMAND_FISHING_2_MODE::RequestEndMiniGame:
+                        case GP_CLI_COMMAND_FISHING_MODE::RequestEndMiniGame:
                             // para has various values depending on the reason
                             // - Equals to 300 when client fails to catch a fish
                             // - Equals to 200 when client force exits the mini game
@@ -58,12 +58,12 @@ auto GP_CLI_COMMAND_FISHING_2::validate(MapSession* PSession, const CCharEntity*
                                 }
                             }
                             break;
-                        case GP_CLI_COMMAND_FISHING_2_MODE::RequestRelease:
+                        case GP_CLI_COMMAND_FISHING_MODE::RequestRelease:
                             // para and para2 are both 0 for RequestRelease
                             v.mustEqual(para, 0, "para must be 0")
                                 .mustEqual(para2, 0, "para2 must be 0");
                             break;
-                        case GP_CLI_COMMAND_FISHING_2_MODE::RequestPotentialTimeout:
+                        case GP_CLI_COMMAND_FISHING_MODE::RequestPotentialTimeout:
                             // para is set to time remaining, para2 is always 0
                             // todo: unknown actual range, this parameter is currently unused
                             v.range("para", para, 0, 10)
@@ -74,7 +74,7 @@ auto GP_CLI_COMMAND_FISHING_2::validate(MapSession* PSession, const CCharEntity*
                 });
 }
 
-void GP_CLI_COMMAND_FISHING_2::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_FISHING::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    fishingutils::FishingAction(PChar, static_cast<GP_CLI_COMMAND_FISHING_2_MODE>(mode), para, para2);
+    fishingutils::FishingAction(PChar, static_cast<GP_CLI_COMMAND_FISHING_MODE>(mode), para, para2);
 }

@@ -28,6 +28,7 @@
 #include "common/utils.h"
 #include "common/vana_time.h"
 
+#include "packets/c2s/0x066_fishing.h"
 #include "packets/caught_fish.h"
 #include "packets/caught_monster.h"
 #include "packets/char_skills.h"
@@ -57,7 +58,6 @@
 #include "item_container.h"
 #include "itemutils.h"
 #include "mob_modifier.h"
-#include "packets/c2s/0x110_fishing_2.h"
 #include "status_effect_container.h"
 #include "trade_container.h"
 #include "universal_container.h"
@@ -2657,7 +2657,7 @@ namespace fishingutils
         return catchResponse;
     }
 
-    void FishingAction(CCharEntity* PChar, const GP_CLI_COMMAND_FISHING_2_MODE mode, const uint32 para, const uint32 para2)
+    void FishingAction(CCharEntity* PChar, const GP_CLI_COMMAND_FISHING_MODE mode, const uint32 para, const uint32 para2)
     {
         const uint32 stamina = para;
         const uint32 special = para2;
@@ -2675,7 +2675,7 @@ namespace fishingutils
 
         switch (mode)
         {
-            case GP_CLI_COMMAND_FISHING_2_MODE::RequestCheckHook:
+            case GP_CLI_COMMAND_FISHING_MODE::RequestCheckHook:
             {
                 if (vanaTime < PChar->lastCastTime + PChar->hookDelay - 2)
                 {
@@ -2746,7 +2746,7 @@ namespace fishingutils
             }
             break;
 
-            case GP_CLI_COMMAND_FISHING_2_MODE::RequestEndMiniGame:
+            case GP_CLI_COMMAND_FISHING_MODE::RequestEndMiniGame:
             {
                 if (stamina <= 4)
                 {
@@ -2861,7 +2861,7 @@ namespace fishingutils
             }
             break;
 
-            case GP_CLI_COMMAND_FISHING_2_MODE::RequestPotentialTimeout:
+            case GP_CLI_COMMAND_FISHING_MODE::RequestPotentialTimeout:
             {
                 // message: "You don't know how much longer you can keep this one on the line..."
                 PChar->pushPacket<CMessageTextPacket>(PChar, MessageOffset + FISHMESSAGEOFFSET_WARNING);
@@ -2870,7 +2870,7 @@ namespace fishingutils
             break;
 
             default:
-            case GP_CLI_COMMAND_FISHING_2_MODE::RequestRelease:
+            case GP_CLI_COMMAND_FISHING_MODE::RequestRelease:
             {
                 if (PChar->hookedFish != nullptr)
                 {
