@@ -78,7 +78,7 @@ public:
     timer::time_point LastSortingTime;
 
     CItem* GetItem(uint8 slotID) const; // get a pointer to the object located in the specified cell.
-    void   Clear();               // remove all items from container
+    void   Clear();                     // remove all items from container
 
     template <typename F, typename... Args>
     void ForEachItem(F func, Args&&... args)

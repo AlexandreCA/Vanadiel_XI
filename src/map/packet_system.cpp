@@ -77,12 +77,12 @@
 #include "lua/luautils.h"
 
 #include "packets/basic.h"
-#include "packets/bazaar_check.h"
 #include "packets/bazaar_message.h"
 #include "packets/blacklist_edit_response.h"
 #include "packets/c2s/0x041_trophy_entry.h"
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
+#include "packets/c2s/0x104_bazaar_exit.h"
 #include "packets/c2s/0x105_bazaar_list.h"
 #include "packets/c2s/0x106_bazaar_buy.h"
 #include "packets/c2s/0x109_bazaar_open.h"
@@ -6902,37 +6902,6 @@ void SmallPacket0x102(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                        *
- *  Closing the "View wares", sending a message to the bazaar            *
- *  that you have left the shop                                            *
- *                                                                        *
- ************************************************************************/
-
-void SmallPacket0x104(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    CCharEntity* PTarget = (CCharEntity*)PChar->GetEntity(PChar->BazaarID.targid, TYPE_PC);
-
-    if (PTarget != nullptr && PTarget->id == PChar->BazaarID.id)
-    {
-        for (std::size_t i = 0; i < PTarget->BazaarCustomers.size(); ++i)
-        {
-            if (PTarget->BazaarCustomers[i].id == PChar->id)
-            {
-                PTarget->BazaarCustomers.erase(PTarget->BazaarCustomers.begin() + i--);
-            }
-        }
-        if (!PChar->m_isGMHidden || (PChar->m_isGMHidden && PTarget->m_GMlevel >= PChar->m_GMlevel))
-        {
-            PTarget->pushPacket<CBazaarCheckPacket>(PChar, BAZAAR_LEAVE);
-        }
-
-        DebugBazaarsFmt("Bazaar Interaction [Leave Bazaar] - Buyer: {}, Seller: {}", PChar->name, PTarget->name);
-    }
-    PChar->BazaarID.clean();
-}
-
-/************************************************************************
- *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
  ************************************************************************/
@@ -7094,7 +7063,7 @@ void PacketParserInitialize()
     PacketSize[0x0FF] = 0x00; PacketParser[0x0FF] = &SmallPacket0x0FF;
     PacketSize[0x100] = 0x04; PacketParser[0x100] = &SmallPacket0x100;
     PacketSize[0x102] = 0x52; PacketParser[0x102] = &SmallPacket0x102;
-    PacketSize[0x104] = 0x02; PacketParser[0x104] = &SmallPacket0x104;
+    PacketSize[0x104] = 0x02; PacketParser[0x104] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_EXIT>;
     PacketSize[0x105] = 0x06; PacketParser[0x105] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_LIST>;
     PacketSize[0x106] = 0x06; PacketParser[0x106] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_BUY>;
     PacketSize[0x109] = 0x00; PacketParser[0x109] = &ValidatedPacketHandler<GP_CLI_COMMAND_BAZAAR_OPEN>;

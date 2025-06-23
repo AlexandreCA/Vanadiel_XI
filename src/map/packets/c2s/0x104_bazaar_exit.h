@@ -19,18 +19,9 @@
 ===========================================================================
 */
 
-#include "0x109_bazaar_open.h"
+#pragma once
+#include "base.h"
 
-#include "entities/charentity.h"
-
-auto GP_CLI_COMMAND_BAZAAR_OPEN::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
-{
-    return PacketValidator()
-        .mustEqual(PChar->isSettingBazaarPrices, true, "isSettingBazaarPrices not true");
-}
-
-void GP_CLI_COMMAND_BAZAAR_OPEN::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    PChar->isSettingBazaarPrices = false;
-    PChar->updatemask |= UPDATE_HP;
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x0104
+// This packet is sent by the client when exiting a bazaar.
+GP_CLI_PACKET(GP_CLI_COMMAND_BAZAAR_EXIT);

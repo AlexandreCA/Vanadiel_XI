@@ -7,6 +7,8 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x104_bazaar_exit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x104_bazaar_exit.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x106_bazaar_buy.cpp
