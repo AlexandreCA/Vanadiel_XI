@@ -521,10 +521,10 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
         return dayAndWeather
     end
 
-    local weather      = caster:getWeather()
-    local dayElement   = VanadielDayElement()
+    local weather    = caster:getWeather()
+    local dayElement = VanadielDayElement()
 
-    -- Calculate Weather bonus + Iridescence bonus.
+    -- Calculate Weather bonus + Iridescence bonus (proc needed.).
     if
         alwaysApply or
         math.random(1, 100) <= 33 or
@@ -544,7 +544,7 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
         end
     end
 
-    -- Calculate day bonus
+    -- Calculate day bonus (proc needed).
     if
         alwaysApply or
         math.random(1, 100) <= 33 or
@@ -552,7 +552,7 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
     then
         -- Strong day.
         if dayElement == spellElement then
-            dayAndWeather = dayAndWeather + 0.1 + caster:getMod(xi.mod.DAY_NUKE_BONUS) / 100 -- sorc. tonban(+1)/zodiac ring
+            dayAndWeather = dayAndWeather + 0.1
 
         -- Weak day.
         elseif dayElement == xi.combat.element.getElementWeakness(spellElement) then
@@ -560,8 +560,16 @@ xi.spells.damage.calculateDayAndWeather = function(caster, spellElement, alwaysA
         end
     end
 
-    -- Cap bonuses from both day and weather
-    dayAndWeather = utils.clamp(dayAndWeather, 0, 1.4)
+    -- Zodiac ring / Sorcerer Tunban / Others (proc not needed, doesn't work with Light nor Dark).
+    if
+        spellElement <= xi.element.WATER and
+        spellElement == dayElement
+    then
+        dayAndWeather = dayAndWeather + caster:getMod(xi.mod.DAY_NUKE_BONUS) / 100
+    end
+
+    -- Cap bonuses.
+    dayAndWeather = utils.clamp(dayAndWeather, 0, 2)
 
     return dayAndWeather
 end
