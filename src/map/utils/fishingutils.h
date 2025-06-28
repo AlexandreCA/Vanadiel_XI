@@ -29,7 +29,7 @@
 #include <map>
 #include <vector>
 
-enum class GP_CLI_COMMAND_FISHING_MODE : uint8_t;
+enum class GP_CLI_COMMAND_FISHING_2_MODE : uint8_t;
 struct lsbret_t
 { // lose/snap/break return values
     uint8 failReason;
@@ -995,7 +995,7 @@ namespace fishingutils
     uint8            UnhookMob(CCharEntity* PChar, bool lost);
     fishresponse_t*  FishingCheck(CCharEntity* PChar, uint8 fishingSkill, rod_t* rod, bait_t* bait, fishingarea_t* area);
     catchresponse_t* ReelCheck(CCharEntity* PChar, fishresponse_t* response, rod_t* rod);
-    void             FishingAction(CCharEntity* PChar, GP_CLI_COMMAND_FISHING_MODE mode, uint32 para, uint32 para2);
+    void             FishingAction(CCharEntity* PChar, GP_CLI_COMMAND_FISHING_2_MODE mode, uint32 para, uint32 para2);
     CItemFish*       GetFish(uint16 itemid); // creates a `new` CItemFish if possible
 
     // Initialization

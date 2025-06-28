@@ -20,25 +20,12 @@
 */
 
 #pragma once
-#include "base.h"
 
-enum class GP_CLI_COMMAND_FISHING_MODE : uint8_t
-{
-    RequestCheckHook        = 2,
-    RequestEndMiniGame      = 3,
-    RequestRelease          = 4,
-    RequestPotentialTimeout = 5,
-};
+struct GP_CLI_COMMAND_FISHING_2;
 
 // https://github.com/atom0s/XiPackets/tree/main/world/client/0x0066
 // This packet is sent by the client when interacting with the fishing mini-game system.
 // Note: 0x066 handles the old fishing system, while 0x110 handles the new fishing mini-game.
 // However, both packets use the exact same structure and are processed the same way.
-GP_CLI_PACKET(GP_CLI_COMMAND_FISHING,
-              uint32_t UniqueNo;  // PS2: UniqueNo
-              int32_t  para;      // PS2: para
-              uint16_t ActIndex;  // PS2: ActIndex
-              int8_t   mode;      // PS2: mode
-              uint8_t  unknown00; // PS2: dammy
-              int32_t  para2;     // PS2: (New; did not exist.)
-);
+// There is a strong chance that this packet is deprecated and not legitimately usable by the client.
+using GP_CLI_COMMAND_FISHING = GP_CLI_COMMAND_FISHING_2;
