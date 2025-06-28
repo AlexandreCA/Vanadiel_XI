@@ -62,6 +62,8 @@ enum class MsgStd : uint16
     LinkshellUnavailable         = 112, // The linkshell name you entered is already in use or otherwise unavailable.
     EventSkipped                 = 117, // Event skipped.
     TellNotReceivedOffline       = 125, // Your tell was not received.  The recipient is currently away.
+    MooglePlantsSeeds            = 132, // Your moogle plants the <seed> in the flowerpot.
+    MoogleUsesItemOnPLant        = 136, // Your moogle uses the <item> on the plant.
     MoghouseCantPickUp           = 137, // Kupo... I can't pick anything right now, kupo.
     ChocoboRefusedToEnte         = 138, // The chocobo refused to enter the next area.
     CurrentPollResultsSystem     = 140, // Player Name's proposal - Current poll results:
