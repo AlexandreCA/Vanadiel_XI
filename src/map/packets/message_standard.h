@@ -63,6 +63,7 @@ enum class MsgStd : uint16
     EventSkipped                 = 117, // Event skipped.
     TellNotReceivedOffline       = 125, // Your tell was not received.  The recipient is currently away.
     MooglePlantsSeeds            = 132, // Your moogle plants the <seed> in the flowerpot.
+    MoogleDriesPlant             = 133, // Your moogle dries the plant in the <item>.
     MoogleUsesItemOnPLant        = 136, // Your moogle uses the <item> on the plant.
     MoghouseCantPickUp           = 137, // Kupo... I can't pick anything right now, kupo.
     ChocoboRefusedToEnte         = 138, // The chocobo refused to enter the next area.
