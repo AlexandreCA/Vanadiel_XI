@@ -127,6 +127,18 @@ public:
         return *this;
     }
 
+    // Value must be in the vector of allowed values
+    template <typename T>
+    PacketValidator& oneOf(const std::string& fieldName, T value, std::vector<T> container)
+    {
+        if (!container.contains(value))
+        {
+            result_.addError(std::format("{} value {} is not allowed.", fieldName, value));
+        }
+
+        return *this;
+    }
+
     // Custom validation function
     template <typename Func>
     auto custom(Func customValidation) -> PacketValidator&
