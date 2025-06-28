@@ -163,7 +163,7 @@ public:
     CMessageStandardPacket(uint16 MessageID);
 
     CMessageStandardPacket(MsgStd MessageID);
-    CMessageStandardPacket(uint32 param0, uint16 MessageID);
+    CMessageStandardPacket(uint32 param0, MsgStd MessageID);
     CMessageStandardPacket(uint32 param0, uint32 param1, uint16 MessageID);
     CMessageStandardPacket(CCharEntity* PChar, uint32 param0, MsgStd MessageID);
     CMessageStandardPacket(CCharEntity* PChar, uint32 param0, uint32 param1, MsgStd MessageID);

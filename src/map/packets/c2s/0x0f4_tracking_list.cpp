@@ -32,7 +32,5 @@ auto GP_CLI_COMMAND_TRACKING_LIST::validate(MapSession* PSession, const CCharEnt
 
 void GP_CLI_COMMAND_TRACKING_LIST::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    TracyZoneCString("Wide Scan");
-
     PChar->loc.zone->WideScan(PChar, charutils::getWideScanRange(PChar));
 }

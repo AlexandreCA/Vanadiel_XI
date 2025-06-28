@@ -31,7 +31,7 @@
 
 namespace
 {
-    const std::vector<uint8_t> validPlantCategories = { LOC_MOGSAFE, LOC_MOGSAFE2 };
+    const std::set<uint8_t> validPlantCategories = { LOC_MOGSAFE, LOC_MOGSAFE2 };
 }
 
 auto GP_CLI_COMMAND_MYROOM_PLANT_STOP::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult

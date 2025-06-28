@@ -29,10 +29,12 @@ public:
     {
     }
 
-    void addError(const std::string& error)
+    auto addError(const std::string& error) -> PacketValidationResult&
     {
         m_Errors.push_back(error);
         setValid(false);
+
+        return *this;
     }
 
     auto valid() const -> bool
@@ -129,7 +131,7 @@ public:
 
     // Value must be in the vector of allowed values
     template <typename T>
-    PacketValidator& oneOf(const std::string& fieldName, T value, std::vector<T> container)
+    PacketValidator& oneOf(const std::string& fieldName, T value, const std::set<T>& container)
     {
         if (!container.contains(value))
         {

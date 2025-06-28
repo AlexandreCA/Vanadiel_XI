@@ -33,7 +33,7 @@
 #include "utils/charutils.h"
 namespace
 {
-    const std::vector<uint8_t> validContainers = { LOC_MOGSAFE, LOC_MOGSAFE2 };
+    const std::set<uint8_t> validContainers = { LOC_MOGSAFE, LOC_MOGSAFE2 };
 }
 
 auto GP_CLI_COMMAND_MYROOM_BANKIN::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult

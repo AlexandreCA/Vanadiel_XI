@@ -45,12 +45,22 @@
 
 auto GP_CLI_COMMAND_MYROOM_JOB::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .mustEqual(PChar->loc.zone->CanUseMisc(MISC_MOGMENU) || PChar->m_moghouseID, true, "Player not in MH or zone with Moogle.")
-        .range("MainJobIndex", MainJobIndex, 0x01, MAX_JOBTYPE - 1)
-        .range("SupportJobIndex", SupportJobIndex, 0x00, MAX_JOBTYPE - 1)
-        .mustEqual(PChar->jobs.unlocked & (1 << MainJobIndex), true, "Main job not unlocked")
-        .mustEqual(PChar->jobs.unlocked & (1 << SupportJobIndex), true, "Support job not unlocked");
+    auto pv = PacketValidator()
+                  .mustEqual(PChar->loc.zone->CanUseMisc(MISC_MOGMENU) || PChar->m_moghouseID, true, "Player not in MH or zone with Moogle.");
+
+    if (MainJobIndex)
+    {
+        pv.range("MainJobIndex", MainJobIndex, 0x01, MAX_JOBTYPE - 1)
+            .mustEqual((PChar->jobs.unlocked & (1 << MainJobIndex)) != 0, true, "Main job not unlocked");
+    }
+
+    if (SupportJobIndex)
+    {
+        pv.range("SupportJobIndex", SupportJobIndex, 0x00, MAX_JOBTYPE - 1)
+            .mustEqual((PChar->jobs.unlocked & (1 << SupportJobIndex)) != 0, true, "Support job not unlocked");
+    }
+
+    return pv;
 }
 
 void GP_CLI_COMMAND_MYROOM_JOB::process(MapSession* PSession, CCharEntity* PChar) const

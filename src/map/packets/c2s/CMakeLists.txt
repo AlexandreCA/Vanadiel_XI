@@ -8,6 +8,26 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f4_tracking_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f4_tracking_list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f5_tracking_start.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f5_tracking_start.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f6_tracking_end.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f6_tracking_end.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fa_myroom_layout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fa_myroom_layout.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fb_myroom_bankin.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fb_myroom_bankin.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fc_myroom_plant_add.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fc_myroom_plant_add.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fd_myroom_plant_check.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fd_myroom_plant_check.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fe_myroom_plant_crop.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0fe_myroom_plant_crop.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ff_myroom_plant_stop.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ff_myroom_plant_stop.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x100_myroom_job.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x100_myroom_job.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x102_extended_job.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x102_extended_job.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x104_bazaar_exit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x104_bazaar_exit.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.cpp
