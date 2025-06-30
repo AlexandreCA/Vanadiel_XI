@@ -29,10 +29,12 @@ public:
     {
     }
 
-    void addError(const std::string& error)
+    auto addError(const std::string& error) -> PacketValidationResult&
     {
         m_Errors.push_back(error);
         setValid(false);
+
+        return *this;
     }
 
     auto valid() const -> bool
@@ -122,6 +124,18 @@ public:
         if (value % divVal != 0)
         {
             result_.addError(std::format("{} is not a multiple of {}.", fieldName, divVal));
+        }
+
+        return *this;
+    }
+
+    // Value must be in the vector of allowed values
+    template <typename T>
+    PacketValidator& oneOf(const std::string& fieldName, T value, const std::set<T>& container)
+    {
+        if (!container.contains(value))
+        {
+            result_.addError(std::format("{} value {} is not allowed.", fieldName, value));
         }
 
         return *this;
