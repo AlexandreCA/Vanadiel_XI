@@ -19,22 +19,9 @@
 ===========================================================================
 */
 
-#include "0x116_unity_menu.h"
+#pragma once
+#include "base.h"
 
-#include "entities/charentity.h"
-#include "packets/menu_unity.h"
-#include "packets/roe_sparkupdate.h"
-
-auto GP_CLI_COMMAND_UNITY_MENU::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
-{
-    return PacketValidator()
-        .range("Kind", Kind, 0x0, 0x1); // Kind 0 = First set of 32 packets, Kind 1 = Second set of 32 packets
-}
-
-void GP_CLI_COMMAND_UNITY_MENU::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    // TODO: Incomplete implementation.
-    // This stub only handles the needed RoE updates.
-    PChar->pushPacket<CRoeSparkUpdatePacket>(PChar);
-    PChar->pushPacket<CMenuUnityPacket>(PChar);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x0109
+// This packet is sent by the client when exiting the bazaar 'Set Prices' menu with at least one item having a sale price set.
+GP_CLI_PACKET(GP_CLI_COMMAND_BAZAAR_OPEN);

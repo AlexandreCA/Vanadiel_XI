@@ -5,10 +5,29 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x041_trophy_entry.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x104_bazaar_exit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x104_bazaar_exit.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x105_bazaar_list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x106_bazaar_buy.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x106_bazaar_buy.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x109_bazaar_open.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x109_bazaar_open.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10a_bazaar_itemset.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10a_bazaar_itemset.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10b_bazaar_close.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10b_bazaar_close.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10c_roe_start.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10c_roe_start.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10d_roe_remove.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10d_roe_remove.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10e_roe_claim.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x10e_roe_claim.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10f_currencies_1.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x10f_currencies_1.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x110_fishing_2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x110_fishing_2.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x113_sitchair.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x113_sitchair.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x114_map_markers.cpp
