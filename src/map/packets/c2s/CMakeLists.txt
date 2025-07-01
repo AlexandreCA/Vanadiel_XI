@@ -13,8 +13,20 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_command_camp.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_command_sit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_command_sit.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_command_get_lspriv.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_command_get_lspriv.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_command_reqlogout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_command_reqlogout.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_command_camp.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_command_camp.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_command_sit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_command_sit.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_command_reqsubmapnum.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_command_reqsubmapnum.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_command_buffcancel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_command_buffcancel.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_command_submapchange.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_command_submapchange.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_command_buffcancel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_command_buffcancel.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_command_submapchange.cpp
