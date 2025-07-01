@@ -83,6 +83,7 @@
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x0f4_tracking_list.h"
 #include "packets/c2s/0x0f5_tracking_start.h"
+#include "packets/c2s/0x0eb_command_reqsubmapnum.h"
 #include "packets/c2s/0x0f1_command_buffcancel.h"
 #include "packets/c2s/0x0f2_command_submapchange.h"
 #include "packets/c2s/0x0f6_tracking_end.h"
@@ -5928,41 +5929,13 @@ void SmallPacket0x0EA(MapSession* const PSession, CCharEntity* const PChar, CBas
     }
 }
 
-/************************************************************************
- *                                                                       *
- *  Special Release Request                                              *
- *                                                                       *
- ************************************************************************/
 
-void SmallPacket0x0EB(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
 
-    if (!PChar->isNpcLocked())
-    {
-        return;
-    }
 
-    PChar->pushPacket<CSpecialReleasePacket>(PChar);
-}
 
-/************************************************************************
- *                                                                       *
- *  Cancel Status Effect                                                 *
- *                                                                       *
- ************************************************************************/
 
-void SmallPacket0x0F1(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
 
-    uint16 IconID = data.ref<uint16>(0x04);
 
-    if (IconID)
-    {
-        PChar->StatusEffectContainer->DelStatusEffectsByIcon(IconID);
-    }
-}
 
 
 /************************************************************************
@@ -6114,7 +6087,7 @@ void PacketParserInitialize()
     PacketSize[0x0E7] = 0x04; PacketParser[0x0E7] = &SmallPacket0x0E7;
     PacketSize[0x0E8] = 0x04; PacketParser[0x0E8] = &SmallPacket0x0E8;
     PacketSize[0x0EA] = 0x00; PacketParser[0x0EA] = &SmallPacket0x0EA;
-    PacketSize[0x0EB] = 0x00; PacketParser[0x0EB] = &SmallPacket0x0EB;
+    PacketSize[0x0EB] = 0x00; PacketParser[0x0EB] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQSUBMAPNUM>;
     PacketSize[0x0F1] = 0x04; PacketParser[0x0F1] = &ValidatedPacketHandler<GP_CLI_COMMAND_BUFFCANCEL>;
     PacketSize[0x0F2] = 0x04; PacketParser[0x0F2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SUBMAPCHANGE>;
     PacketSize[0x0F4] = 0x04; PacketParser[0x0F4] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRACKING_LIST>;

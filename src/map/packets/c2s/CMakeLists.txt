@@ -64,6 +64,8 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x118_unity_toggle.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x119_emote_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x119_emote_list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_command_reqsubmapnum.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_command_reqsubmapnum.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_command_buffcancel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_command_buffcancel.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_command_submapchange.cpp
