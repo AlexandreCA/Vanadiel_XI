@@ -20,6 +20,8 @@
 */
 
 #pragma once
+#include "status_effect_container.h"
+#include "trade_container.h"
 
 class PacketValidationResult
 {
@@ -131,11 +133,45 @@ public:
 
     // Value must be in the vector of allowed values
     template <typename T>
-    PacketValidator& oneOf(const std::string& fieldName, T value, const std::set<T>& container)
+    auto oneOf(const std::string& fieldName, T value, const std::set<T>& container) -> PacketValidator&
     {
         if (!container.contains(value))
         {
             result_.addError(std::format("{} value {} is not allowed.", fieldName, value));
+        }
+
+        return *this;
+    }
+
+    // Character must not be crafting
+    auto isNotCrafting(const CCharEntity* PChar) -> PacketValidator&
+    {
+        if (PChar->animation == ANIMATION_SYNTH ||
+            (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0))
+        {
+            result_.addError("Character is crafting.");
+        }
+
+        return *this;
+    }
+
+    // Character current status must be NORMAL
+    auto hasNormalStatus(const CCharEntity* PChar) -> PacketValidator&
+    {
+        if (PChar->status != STATUS_TYPE::NORMAL)
+        {
+            result_.addError("Character has abnormal status.");
+        }
+
+        return *this;
+    }
+
+    // Character must not have any status effect preventing action (Sleep, Stun, Terror etc..)
+    auto isNotPreventedAction(const CCharEntity* PChar) -> PacketValidator&
+    {
+        if (PChar->StatusEffectContainer->HasPreventActionEffect())
+        {
+            result_.addError("Character has prevent action effect.");
         }
 
         return *this;

@@ -83,6 +83,7 @@
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x0f4_tracking_list.h"
 #include "packets/c2s/0x0f5_tracking_start.h"
+#include "packets/c2s/0x0ea_command_sit.h"
 #include "packets/c2s/0x0eb_command_reqsubmapnum.h"
 #include "packets/c2s/0x0f1_command_buffcancel.h"
 #include "packets/c2s/0x0f2_command_submapchange.h"
@@ -5889,45 +5890,6 @@ void SmallPacket0x0E8(MapSession* const PSession, CCharEntity* const PChar, CBas
     }
 }
 
-/************************************************************************
- *                                                                       *
- *  Sit Packet (/sit)                                                    *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0EA(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    // Prevent sitting while crafting.
-    if (PChar->animation == ANIMATION_SYNTH || (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0))
-    {
-        return;
-    }
-
-    if (PChar->status != STATUS_TYPE::NORMAL)
-    {
-        return;
-    }
-
-    if (PChar->StatusEffectContainer->HasPreventActionEffect())
-    {
-        return;
-    }
-
-    PChar->animation = PChar->animation == ANIMATION_SIT ? ANIMATION_NONE : ANIMATION_SIT;
-    PChar->updatemask |= UPDATE_HP;
-
-    CPetEntity* PPet = dynamic_cast<CPetEntity*>(PChar->PPet);
-    if (PPet)
-    {
-        if (PPet->getPetType() == PET_TYPE::WYVERN || PPet->getPetType() == PET_TYPE::AUTOMATON)
-        {
-            PPet->animation = PChar->animation;
-            PPet->updatemask |= UPDATE_HP;
-        }
-    }
-}
 
 
 
@@ -6086,7 +6048,7 @@ void PacketParserInitialize()
     PacketSize[0x0E2] = 0x00; PacketParser[0x0E2] = &SmallPacket0x0E2;
     PacketSize[0x0E7] = 0x04; PacketParser[0x0E7] = &SmallPacket0x0E7;
     PacketSize[0x0E8] = 0x04; PacketParser[0x0E8] = &SmallPacket0x0E8;
-    PacketSize[0x0EA] = 0x00; PacketParser[0x0EA] = &SmallPacket0x0EA;
+    PacketSize[0x0EA] = 0x04; PacketParser[0x0EA] = &ValidatedPacketHandler<GP_CLI_COMMAND_SIT>;
     PacketSize[0x0EB] = 0x00; PacketParser[0x0EB] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQSUBMAPNUM>;
     PacketSize[0x0F1] = 0x04; PacketParser[0x0F1] = &ValidatedPacketHandler<GP_CLI_COMMAND_BUFFCANCEL>;
     PacketSize[0x0F2] = 0x04; PacketParser[0x0F2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SUBMAPCHANGE>;
