@@ -28,9 +28,9 @@ auto GP_CLI_COMMAND_SIT::validate(MapSession* PSession, const CCharEntity* PChar
 {
     return PacketValidator()
         .isNotCrafting(PChar)
-        .hasNormalStatus(PChar)
+        .isNormalStatus(PChar)
         .isNotPreventedAction(PChar)
-        .range("Mode", Mode, GP_CLI_COMMAND_SIT_MODE::Toggle, GP_CLI_COMMAND_SIT_MODE::Off);
+        .oneOf<GP_CLI_COMMAND_SIT_MODE>(Mode);
 }
 
 void GP_CLI_COMMAND_SIT::process(MapSession* PSession, CCharEntity* PChar) const

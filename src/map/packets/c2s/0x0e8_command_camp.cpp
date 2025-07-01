@@ -21,6 +21,7 @@
 
 #include "0x0e8_command_camp.h"
 
+#include "0x0e7_command_reqlogout.h"
 #include "ai/ai_container.h"
 #include "entities/charentity.h"
 #include "status_effect_container.h"
@@ -28,9 +29,10 @@
 auto GP_CLI_COMMAND_CAMP::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
-        .hasNormalStatus(PChar)
+        .isNormalStatus(PChar)
         .isNotPreventedAction(PChar)
-        .range("Mode", Mode, GP_CLI_COMMAND_CAMP_MODE::Toggle, GP_CLI_COMMAND_CAMP_MODE::Off)
+        .mustNotEqual(PChar->PAI->IsEngaged(), true, "Cannot heal while engaged in combat")
+        .oneOf<GP_CLI_COMMAND_REQLOGOUT_MODE>(Mode)
         .mustNotEqual(
             PChar->animation == ANIMATION_HEALING &&
                 Mode == static_cast<uint32_t>(GP_CLI_COMMAND_CAMP_MODE::On),
@@ -45,25 +47,18 @@ void GP_CLI_COMMAND_CAMP::process(MapSession* PSession, CCharEntity* PChar) cons
 {
     auto enableHealing = [&]()
     {
-        if (PChar->PPet == nullptr ||
-            (PChar->PPet->m_EcoSystem != ECOSYSTEM::AVATAR && PChar->PPet->m_EcoSystem != ECOSYSTEM::ELEMENTAL && !PChar->PAI->IsEngaged()))
+        PChar->PAI->ClearStateStack();
+        if (PChar->PPet && PChar->PPet->objtype == TYPE_PET && static_cast<CPetEntity*>(PChar->PPet)->getPetType() == PET_TYPE::AUTOMATON)
         {
-            PChar->PAI->ClearStateStack();
-            if (PChar->PPet && PChar->PPet->objtype == TYPE_PET && static_cast<CPetEntity*>(PChar->PPet)->getPetType() == PET_TYPE::AUTOMATON)
-            {
-                PChar->PPet->PAI->Disengage();
-            }
-
-            PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, std::chrono::seconds(settings::get<uint8>("map.HEALING_TICK_DELAY")), 0s));
-            return;
+            PChar->PPet->PAI->Disengage();
         }
 
-        PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, 345);
+        PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, std::chrono::seconds(settings::get<uint8>("map.HEALING_TICK_DELAY")), 0s));
     };
 
     auto disableHealing = [&]()
     {
-        PChar->StatusEffectContainer->DelStatusEffect(EFFECT_HEALING);
+        PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_HEALING);
     };
 
     // Note: The status effect lua takes care of changing the animation.

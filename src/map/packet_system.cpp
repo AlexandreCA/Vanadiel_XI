@@ -23,20 +23,16 @@
 #include "common/blowfish.h"
 #include "common/database.h"
 #include "common/logging.h"
-#include "common/md52.h"
 #include "common/mmo.h"
 #include "common/task_manager.h"
 #include "common/timer.h"
 #include "common/utils.h"
-#include "common/version.h"
 
 #include <cstring>
 #include <utility>
 
 #include "alliance.h"
-#include "campaign_system.h"
 #include "command_handler.h"
-#include "conquest_system.h"
 #include "enmity_container.h"
 #include "fishingcontest.h"
 #include "ipc_client.h"
@@ -48,7 +44,6 @@
 #include "map_session.h"
 #include "mob_modifier.h"
 #include "monstrosity.h"
-#include "notoriety_container.h"
 #include "packet_system.h"
 
 #include "items.h"
@@ -64,7 +59,6 @@
 #include "zone.h"
 
 #include "ai/ai_container.h"
-#include "ai/states/death_state.h"
 
 #include "entities/charentity.h"
 #include "entities/mobentity.h"
@@ -81,13 +75,14 @@
 #include "packets/c2s/0x041_trophy_entry.h"
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
-#include "packets/c2s/0x0f4_tracking_list.h"
-#include "packets/c2s/0x0f5_tracking_start.h"
+#include "packets/c2s/0x0e7_command_reqlogout.h"
 #include "packets/c2s/0x0e8_command_camp.h"
 #include "packets/c2s/0x0ea_command_sit.h"
 #include "packets/c2s/0x0eb_command_reqsubmapnum.h"
 #include "packets/c2s/0x0f1_command_buffcancel.h"
 #include "packets/c2s/0x0f2_command_submapchange.h"
+#include "packets/c2s/0x0f4_tracking_list.h"
+#include "packets/c2s/0x0f5_tracking_start.h"
 #include "packets/c2s/0x0f6_tracking_end.h"
 #include "packets/c2s/0x0fa_myroom_layout.h"
 #include "packets/c2s/0x0fb_myroom_bankin.h"
@@ -137,9 +132,7 @@
 #include "packets/conquest_map.h"
 #include "packets/cs_position.h"
 #include "packets/downloading_data.h"
-#include "packets/entity_update.h"
 #include "packets/fish_ranking.h"
-#include "packets/furniture_interact.h"
 #include "packets/guild_menu_buy.h"
 #include "packets/guild_menu_buy_update.h"
 #include "packets/guild_menu_sell.h"
@@ -148,22 +141,16 @@
 #include "packets/inventory_count.h"
 #include "packets/inventory_finish.h"
 #include "packets/inventory_item.h"
-#include "packets/inventory_modify.h"
 #include "packets/inventory_size.h"
 #include "packets/jobpoint_details.h"
 #include "packets/jobpoint_update.h"
 #include "packets/linkshell_equip.h"
-#include "packets/linkshell_message.h"
-#include "packets/lock_on.h"
 #include "packets/macroequipset.h"
 #include "packets/menu_config.h"
 #include "packets/menu_jobpoints.h"
 #include "packets/menu_merit.h"
-#include "packets/menu_raisetractor.h"
-#include "packets/menu_unity.h"
 #include "packets/merit_points_categories.h"
 #include "packets/message_basic.h"
-#include "packets/message_combat.h"
 #include "packets/message_standard.h"
 #include "packets/message_system.h"
 #include "packets/monipulator1.h"
@@ -174,12 +161,9 @@
 #include "packets/party_search.h"
 #include "packets/position.h"
 #include "packets/release.h"
-#include "packets/release_special.h"
 #include "packets/roe_questlog.h"
 #include "packets/roe_sparkupdate.h"
 #include "packets/roe_update.h"
-#include "packets/send_blacklist.h"
-#include "packets/server_ip.h"
 #include "packets/server_message.h"
 #include "packets/shop_appraise.h"
 #include "packets/shop_buy.h"
@@ -196,7 +180,6 @@
 #include "utils/auctionutils.h"
 #include "utils/battleutils.h"
 #include "utils/blacklistutils.h"
-#include "utils/blueutils.h"
 #include "utils/charutils.h"
 #include "utils/dboxutils.h"
 #include "utils/fishingutils.h"
@@ -204,7 +187,6 @@
 #include "utils/itemutils.h"
 #include "utils/jailutils.h"
 #include "utils/petutils.h"
-#include "utils/puppetutils.h"
 #include "utils/synthutils.h"
 #include "utils/zoneutils.h"
 
@@ -5784,70 +5766,6 @@ void SmallPacket0x0E2(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                       *
- *  Exit Game Request                                                    *
- *    1 = /logout                                                        *
- *    3 = /shutdown                                                      *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0E7(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    if (PChar->status != STATUS_TYPE::NORMAL)
-    {
-        return;
-    }
-
-    if (PChar->StatusEffectContainer->HasPreventActionEffect())
-    {
-        return;
-    }
-
-    // FIXME: Two GM level checks? visibleGmLevel is the GM level visible to other players, and m_GMLevel is the alway-invisible GM level.
-    if (PChar->m_moghouseID || PChar->visibleGmLevel >= 3 || PChar->m_GMlevel > 0)
-    {
-        charutils::ForceLogout(PChar);
-    }
-    else if (PChar->animation == ANIMATION_NONE)
-    {
-        uint8 ExitType = (data.ref<uint8>(0x06) == 1 ? 7 : 35);
-
-        if (PChar->PPet == nullptr || (PChar->PPet->m_EcoSystem != ECOSYSTEM::AVATAR && PChar->PPet->m_EcoSystem != ECOSYSTEM::ELEMENTAL))
-        {
-            PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, std::chrono::seconds(settings::get<uint8>("map.HEALING_TICK_DELAY")), 0s));
-        }
-        PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_LEAVEGAME, 0, ExitType, 5s, 0s));
-    }
-    else if (PChar->animation == ANIMATION_HEALING)
-    {
-        if (PChar->StatusEffectContainer->HasStatusEffect(EFFECT_LEAVEGAME))
-        {
-            PChar->StatusEffectContainer->DelStatusEffect(EFFECT_HEALING);
-        }
-        else
-        {
-            uint8 ExitType = (data.ref<uint8>(0x06) == 1 ? 7 : 35);
-
-            PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_LEAVEGAME, 0, ExitType, 5s, 0s));
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/************************************************************************
  *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
@@ -5993,7 +5911,7 @@ void PacketParserInitialize()
     PacketSize[0x0E0] = 0x4C; PacketParser[0x0E0] = &SmallPacket0x0E0;
     PacketSize[0x0E1] = 0x00; PacketParser[0x0E1] = &SmallPacket0x0E1;
     PacketSize[0x0E2] = 0x00; PacketParser[0x0E2] = &SmallPacket0x0E2;
-    PacketSize[0x0E7] = 0x04; PacketParser[0x0E7] = &SmallPacket0x0E7;
+    PacketSize[0x0E7] = 0x04; PacketParser[0x0E7] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQLOGOUT>;
     PacketSize[0x0E8] = 0x04; PacketParser[0x0E8] = &ValidatedPacketHandler<GP_CLI_COMMAND_CAMP>;
     PacketSize[0x0EA] = 0x04; PacketParser[0x0EA] = &ValidatedPacketHandler<GP_CLI_COMMAND_SIT>;
     PacketSize[0x0EB] = 0x00; PacketParser[0x0EB] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQSUBMAPNUM>;
