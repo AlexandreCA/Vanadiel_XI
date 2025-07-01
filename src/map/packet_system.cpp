@@ -83,6 +83,7 @@
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x0f4_tracking_list.h"
 #include "packets/c2s/0x0f5_tracking_start.h"
+#include "packets/c2s/0x0e8_command_camp.h"
 #include "packets/c2s/0x0ea_command_sit.h"
 #include "packets/c2s/0x0eb_command_reqsubmapnum.h"
 #include "packets/c2s/0x0f1_command_buffcancel.h"
@@ -5834,61 +5835,7 @@ void SmallPacket0x0E7(MapSession* const PSession, CCharEntity* const PChar, CBas
     }
 }
 
-/************************************************************************
- *                                                                       *
- *  Heal Packet (/heal)                                                  *
- *                                                                       *
- ************************************************************************/
 
-void SmallPacket0x0E8(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    if (PChar->status != STATUS_TYPE::NORMAL)
-    {
-        return;
-    }
-
-    if (PChar->StatusEffectContainer->HasPreventActionEffect())
-    {
-        return;
-    }
-
-    switch (PChar->animation)
-    {
-        case ANIMATION_NONE:
-        {
-            if (data.ref<uint8>(0x04) == 0x02)
-            {
-                return;
-            }
-
-            if (PChar->PPet == nullptr ||
-                (PChar->PPet->m_EcoSystem != ECOSYSTEM::AVATAR && PChar->PPet->m_EcoSystem != ECOSYSTEM::ELEMENTAL && !PChar->PAI->IsEngaged()))
-            {
-                PChar->PAI->ClearStateStack();
-                if (PChar->PPet && PChar->PPet->objtype == TYPE_PET && ((CPetEntity*)PChar->PPet)->getPetType() == PET_TYPE::AUTOMATON)
-                {
-                    PChar->PPet->PAI->Disengage();
-                }
-                PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, std::chrono::seconds(settings::get<uint8>("map.HEALING_TICK_DELAY")), 0s));
-                return;
-            }
-            PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, 345);
-        }
-        break;
-        case ANIMATION_HEALING:
-        {
-            if (data.ref<uint8>(0x04) == 0x01)
-            {
-                return;
-            }
-
-            PChar->StatusEffectContainer->DelStatusEffect(EFFECT_HEALING);
-        }
-        break;
-    }
-}
 
 
 
@@ -6047,7 +5994,7 @@ void PacketParserInitialize()
     PacketSize[0x0E1] = 0x00; PacketParser[0x0E1] = &SmallPacket0x0E1;
     PacketSize[0x0E2] = 0x00; PacketParser[0x0E2] = &SmallPacket0x0E2;
     PacketSize[0x0E7] = 0x04; PacketParser[0x0E7] = &SmallPacket0x0E7;
-    PacketSize[0x0E8] = 0x04; PacketParser[0x0E8] = &SmallPacket0x0E8;
+    PacketSize[0x0E8] = 0x04; PacketParser[0x0E8] = &ValidatedPacketHandler<GP_CLI_COMMAND_CAMP>;
     PacketSize[0x0EA] = 0x04; PacketParser[0x0EA] = &ValidatedPacketHandler<GP_CLI_COMMAND_SIT>;
     PacketSize[0x0EB] = 0x00; PacketParser[0x0EB] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQSUBMAPNUM>;
     PacketSize[0x0F1] = 0x04; PacketParser[0x0F1] = &ValidatedPacketHandler<GP_CLI_COMMAND_BUFFCANCEL>;
