@@ -83,6 +83,7 @@
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x0f4_tracking_list.h"
 #include "packets/c2s/0x0f5_tracking_start.h"
+#include "packets/c2s/0x0f2_command_submapchange.h"
 #include "packets/c2s/0x0f6_tracking_end.h"
 #include "packets/c2s/0x0fa_myroom_layout.h"
 #include "packets/c2s/0x0fb_myroom_bankin.h"
@@ -5962,20 +5963,6 @@ void SmallPacket0x0F1(MapSession* const PSession, CCharEntity* const PChar, CBas
     }
 }
 
-/************************************************************************
- *                                                                       *
- *  Update Player Zone Boundary                                          *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0F2(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    PChar->loc.boundary = data.ref<uint16>(0x06);
-
-    charutils::SaveCharPosition(PChar);
-}
 
 /************************************************************************
  *                                                                        *
@@ -6128,7 +6115,7 @@ void PacketParserInitialize()
     PacketSize[0x0EA] = 0x00; PacketParser[0x0EA] = &SmallPacket0x0EA;
     PacketSize[0x0EB] = 0x00; PacketParser[0x0EB] = &SmallPacket0x0EB;
     PacketSize[0x0F1] = 0x00; PacketParser[0x0F1] = &SmallPacket0x0F1;
-    PacketSize[0x0F2] = 0x00; PacketParser[0x0F2] = &SmallPacket0x0F2;
+    PacketSize[0x0F2] = 0x08; PacketParser[0x0F2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SUBMAPCHANGE>;
     PacketSize[0x0F4] = 0x04; PacketParser[0x0F4] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRACKING_LIST>;
     PacketSize[0x0F5] = 0x00; PacketParser[0x0F5] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRACKING_START>;
     PacketSize[0x0F6] = 0x00; PacketParser[0x0F6] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRACKING_END>;
