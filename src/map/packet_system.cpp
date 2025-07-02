@@ -76,6 +76,7 @@
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
 #include "packets/c2s/0x0e1_command_get_lsmsg.h"
+#include "packets/c2s/0x0e2_command_set_lsmsg.h"
 #include "packets/c2s/0x0e4_command_get_lspriv.h"
 #include "packets/c2s/0x0e7_command_reqlogout.h"
 #include "packets/c2s/0x0e8_command_camp.h"
@@ -5692,82 +5693,6 @@ void SmallPacket0x0E0(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                       *
- *  Request Linkshell Message (/lsmes)                                   *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0E1(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    uint8 slot = data.ref<uint8>(0x07);
-    if (slot == PChar->equip[SLOT_LINK1] && PChar->PLinkshell1)
-    {
-        PChar->PLinkshell1->PushLinkshellMessage(PChar, LinkshellSlot::LS1);
-    }
-    else if (slot == PChar->equip[SLOT_LINK2] && PChar->PLinkshell2)
-    {
-        PChar->PLinkshell2->PushLinkshellMessage(PChar, LinkshellSlot::LS2);
-    }
-}
-
-/************************************************************************
- *                                                                       *
- *  Update Linkshell Message                                             *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0E2(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    CItemLinkshell* PItemLinkshell = (CItemLinkshell*)PChar->getEquip(SLOT_LINK1);
-
-    if (PChar->PLinkshell1 != nullptr && (PItemLinkshell != nullptr && PItemLinkshell->isType(ITEM_LINKSHELL)))
-    {
-        switch (data.ref<uint8>(0x04) & 0xF0)
-        {
-            case 0x20: // Establish right to change the message.
-            {
-                if (PItemLinkshell->GetLSType() == LSTYPE_LINKSHELL)
-                {
-                    switch (data.ref<uint8>(0x05))
-                    {
-                        case 0x00:
-                            PChar->PLinkshell1->setPostRights(LSTYPE_LINKSHELL);
-                            break;
-                        case 0x04:
-                            PChar->PLinkshell1->setPostRights(LSTYPE_PEARLSACK);
-                            break;
-                        case 0x08:
-                            PChar->PLinkshell1->setPostRights(LSTYPE_LINKPEARL);
-                            break;
-                    }
-                    return;
-                }
-            }
-            break;
-            case 0x40: // Change Message
-            {
-                if (static_cast<uint8>(PItemLinkshell->GetLSType()) <= PChar->PLinkshell1->m_postRights)
-                {
-                    // NOTE: We are not escaping this because we need the exact message to be stored
-                    //     : to be displayed correctly. We're storing through a prepared statement so
-                    //     : this is safe from injection.
-                    const auto lsMessage = asStringFromUntrustedSource(data[0x10], 128);
-                    PChar->PLinkshell1->setMessage(lsMessage, PChar->getName());
-                    return;
-                }
-            }
-            break;
-        }
-    }
-
-    PChar->pushPacket<CMessageStandardPacket>(MsgStd::LinkshellNoAccess);
-}
-
-/************************************************************************
  *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
@@ -5912,7 +5837,7 @@ void PacketParserInitialize()
     PacketSize[0x0DE] = 0x40; PacketParser[0x0DE] = &SmallPacket0x0DE;
     PacketSize[0x0E0] = 0x4C; PacketParser[0x0E0] = &SmallPacket0x0E0;
     PacketSize[0x0E1] = 0x86; PacketParser[0x0E1] = &ValidatedPacketHandler<GP_CLI_COMMAND_GET_LSMSG>;
-    PacketSize[0x0E2] = 0x00; PacketParser[0x0E2] = &SmallPacket0x0E2;
+    PacketSize[0x0E2] = 0x86; PacketParser[0x0E2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SET_LSMSG>;
     PacketSize[0x0E4] = 0x86; PacketParser[0x0E4] = &ValidatedPacketHandler<GP_CLI_COMMAND_GET_LSPRIV>;
     PacketSize[0x0E7] = 0x04; PacketParser[0x0E7] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQLOGOUT>;
     PacketSize[0x0E8] = 0x04; PacketParser[0x0E8] = &ValidatedPacketHandler<GP_CLI_COMMAND_CAMP>;

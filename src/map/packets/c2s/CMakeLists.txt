@@ -9,6 +9,8 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_command_get_lsmsg.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_command_get_lsmsg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e2_command_set_lsmsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e2_command_set_lsmsg.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_command_get_lspriv.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_command_get_lspriv.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_command_reqlogout.cpp
