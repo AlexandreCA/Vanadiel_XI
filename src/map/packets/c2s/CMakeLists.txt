@@ -7,6 +7,8 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0de_inspect_message.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0de_inspect_message.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e0_set_usermsg.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e0_set_usermsg.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_get_lsmsg.cpp

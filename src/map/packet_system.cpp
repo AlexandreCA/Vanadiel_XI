@@ -75,6 +75,7 @@
 #include "packets/c2s/0x041_trophy_entry.h"
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
+#include "packets/c2s/0x0de_inspect_message.h"
 #include "packets/c2s/0x0e0_set_usermsg.h"
 #include "packets/c2s/0x0e1_get_lsmsg.h"
 #include "packets/c2s/0x0e2_set_lsmsg.h"
@@ -5641,30 +5642,6 @@ void SmallPacket0x0DD(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                       *
- *  Set Bazaar Message                                                   *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0DE(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    // Maximum bazaar message limit: 120 characters
-    //
-    // NOTE: We are NOT escaping this because the exact message needs to be stored to
-    //     : be correctly displayed in the bazaar. We're storing through a prepared statement so
-    //     : this is safe from injection.
-    const auto message = asStringFromUntrustedSource(data[4], 120);
-
-    if (db::preparedStmt("UPDATE char_stats SET bazaar_message = ? WHERE charid = ? LIMIT 1", message, PChar->id))
-    {
-        DebugBazaarsFmt("Bazaar Interaction [Set Message] - Character: {}, Message: '{}'", PChar->name, message);
-        PChar->bazaar.message = message;
-    }
-}
-
-/************************************************************************
  *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
@@ -5806,7 +5783,7 @@ void PacketParserInitialize()
     PacketSize[0x0DB] = 0x00; PacketParser[0x0DB] = &SmallPacket0x0DB;
     PacketSize[0x0DC] = 0x0A; PacketParser[0x0DC] = &SmallPacket0x0DC;
     PacketSize[0x0DD] = 0x08; PacketParser[0x0DD] = &SmallPacket0x0DD;
-    PacketSize[0x0DE] = 0x40; PacketParser[0x0DE] = &SmallPacket0x0DE;
+    PacketSize[0x0DE] = 0x40; PacketParser[0x0DE] = &ValidatedPacketHandler<GP_CLI_COMMAND_INSPECT_MESSAGE>;
     PacketSize[0x0E0] = 0x00; PacketParser[0x0E0] = &ValidatedPacketHandler<GP_CLI_COMMAND_SET_USERMSG>;
     PacketSize[0x0E1] = 0x00; PacketParser[0x0E1] = &ValidatedPacketHandler<GP_CLI_COMMAND_GET_LSMSG>;
     PacketSize[0x0E2] = 0x00; PacketParser[0x0E2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SET_LSMSG>;
