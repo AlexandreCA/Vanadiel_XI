@@ -75,15 +75,16 @@
 #include "packets/c2s/0x041_trophy_entry.h"
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
-#include "packets/c2s/0x0e1_command_get_lsmsg.h"
-#include "packets/c2s/0x0e2_command_set_lsmsg.h"
-#include "packets/c2s/0x0e4_command_get_lspriv.h"
-#include "packets/c2s/0x0e7_command_reqlogout.h"
-#include "packets/c2s/0x0e8_command_camp.h"
-#include "packets/c2s/0x0ea_command_sit.h"
-#include "packets/c2s/0x0eb_command_reqsubmapnum.h"
-#include "packets/c2s/0x0f1_command_buffcancel.h"
-#include "packets/c2s/0x0f2_command_submapchange.h"
+#include "packets/c2s/0x0e0_set_usermsg.h"
+#include "packets/c2s/0x0e1_get_lsmsg.h"
+#include "packets/c2s/0x0e2_set_lsmsg.h"
+#include "packets/c2s/0x0e4_get_lspriv.h"
+#include "packets/c2s/0x0e7_reqlogout.h"
+#include "packets/c2s/0x0e8_camp.h"
+#include "packets/c2s/0x0ea_sit.h"
+#include "packets/c2s/0x0eb_reqsubmapnum.h"
+#include "packets/c2s/0x0f1_buffcancel.h"
+#include "packets/c2s/0x0f2_submapchange.h"
 #include "packets/c2s/0x0f4_tracking_list.h"
 #include "packets/c2s/0x0f5_tracking_start.h"
 #include "packets/c2s/0x0f6_tracking_end.h"
@@ -5664,35 +5665,6 @@ void SmallPacket0x0DE(MapSession* const PSession, CCharEntity* const PChar, CBas
 }
 
 /************************************************************************
- *                                                                       *
- *  Set Search Message                                                   *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0E0(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    // NOTE: As with the bazaar message, we aren't going to escape this because we need the
-    //     : exact message to be stored to be displayed correctly. We're storing through a prepared statement so
-    //     : this is safe from injection.
-    const auto message = asStringFromUntrustedSource(data[0x04], 256);
-
-    uint8 type = message.empty() ? 0 : data.ref<uint8>(data.getSize() - 4);
-
-    if (type == PChar->search.messagetype && strcmp(message.c_str(), PChar->search.message.c_str()) == 0)
-    {
-        return;
-    }
-
-    if (db::preparedStmt("UPDATE accounts_sessions SET seacom_type = ?, seacom_message = ? WHERE charid = ? LIMIT 1", type, message, PChar->id))
-    {
-        PChar->search.message     = message;
-        PChar->search.messagetype = type;
-    }
-}
-
-/************************************************************************
  *                                                                        *
  *  Roe Quest Log Request                                                 *
  *                                                                        *
@@ -5835,10 +5807,10 @@ void PacketParserInitialize()
     PacketSize[0x0DC] = 0x0A; PacketParser[0x0DC] = &SmallPacket0x0DC;
     PacketSize[0x0DD] = 0x08; PacketParser[0x0DD] = &SmallPacket0x0DD;
     PacketSize[0x0DE] = 0x40; PacketParser[0x0DE] = &SmallPacket0x0DE;
-    PacketSize[0x0E0] = 0x4C; PacketParser[0x0E0] = &SmallPacket0x0E0;
-    PacketSize[0x0E1] = 0x86; PacketParser[0x0E1] = &ValidatedPacketHandler<GP_CLI_COMMAND_GET_LSMSG>;
-    PacketSize[0x0E2] = 0x86; PacketParser[0x0E2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SET_LSMSG>;
-    PacketSize[0x0E4] = 0x86; PacketParser[0x0E4] = &ValidatedPacketHandler<GP_CLI_COMMAND_GET_LSPRIV>;
+    PacketSize[0x0E0] = 0x00; PacketParser[0x0E0] = &ValidatedPacketHandler<GP_CLI_COMMAND_SET_USERMSG>;
+    PacketSize[0x0E1] = 0x00; PacketParser[0x0E1] = &ValidatedPacketHandler<GP_CLI_COMMAND_GET_LSMSG>;
+    PacketSize[0x0E2] = 0x00; PacketParser[0x0E2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SET_LSMSG>;
+    PacketSize[0x0E4] = 0x00; PacketParser[0x0E4] = &ValidatedPacketHandler<GP_CLI_COMMAND_GET_LSPRIV>;
     PacketSize[0x0E7] = 0x04; PacketParser[0x0E7] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQLOGOUT>;
     PacketSize[0x0E8] = 0x04; PacketParser[0x0E8] = &ValidatedPacketHandler<GP_CLI_COMMAND_CAMP>;
     PacketSize[0x0EA] = 0x04; PacketParser[0x0EA] = &ValidatedPacketHandler<GP_CLI_COMMAND_SIT>;

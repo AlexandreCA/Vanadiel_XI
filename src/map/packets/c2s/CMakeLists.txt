@@ -7,24 +7,26 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_command_get_lsmsg.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_command_get_lsmsg.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e2_command_set_lsmsg.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e2_command_set_lsmsg.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_command_get_lspriv.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_command_get_lspriv.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_command_reqlogout.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_command_reqlogout.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_command_camp.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_command_camp.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_command_sit.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_command_sit.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_command_reqsubmapnum.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_command_reqsubmapnum.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_command_buffcancel.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_command_buffcancel.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_command_submapchange.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_command_submapchange.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e0_set_usermsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e0_set_usermsg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_get_lsmsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_get_lsmsg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e2_set_lsmsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e2_set_lsmsg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_get_lspriv.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_get_lspriv.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_reqlogout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_reqlogout.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_camp.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_camp.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_sit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_sit.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_reqsubmapnum.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_reqsubmapnum.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_buffcancel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_buffcancel.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_submapchange.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_submapchange.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f4_tracking_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f4_tracking_list.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f5_tracking_start.cpp

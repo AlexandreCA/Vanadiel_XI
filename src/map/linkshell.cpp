@@ -40,7 +40,7 @@
 
 #include "items.h"
 #include "map_server.h"
-#include "packets/c2s/0x0e2_command_set_lsmsg.h"
+#include "packets/c2s/0x0e2_set_lsmsg.h"
 #include "packets/linkshell_message.h"
 #include "utils/charutils.h"
 #include "utils/itemutils.h"
@@ -378,6 +378,7 @@ void CLinkshell::PushLinkshellMessage(CCharEntity* PChar, LinkshellSlot slot)
         {
             PChar->pushPacket<CLinkshellMessagePacket>(poster, message, m_name, messageTime, slot);
         }
+        // TODO: No message sends a 0xCC packet that prints "No linkshell message set."
     }
 }
 

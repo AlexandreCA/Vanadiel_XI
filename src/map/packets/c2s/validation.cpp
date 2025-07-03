@@ -46,7 +46,6 @@ auto PacketValidator::isNormalStatus(const CCharEntity* PChar) -> PacketValidato
     return *this;
 }
 
-// Character must not have any status effect preventing action (Sleep, Stun, Terror etc..)
 auto PacketValidator::isNotPreventedAction(const CCharEntity* PChar) -> PacketValidator&
 {
     if (PChar->StatusEffectContainer->HasPreventActionEffect())

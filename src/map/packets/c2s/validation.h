@@ -148,7 +148,6 @@ public:
     template <typename E>
     auto oneOf(const std::underlying_type_t<E> value) -> PacketValidator&
     {
-        static_assert(std::is_enum_v<E>, "Template parameter E must be an enum type");
         static_assert(magic_enum::is_scoped_enum_v<E>, "Template parameter E must be an enum class");
 
         if (!magic_enum::enum_contains<E>(value))

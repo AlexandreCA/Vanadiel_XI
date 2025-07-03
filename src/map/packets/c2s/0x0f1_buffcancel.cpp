@@ -19,7 +19,7 @@
 ===========================================================================
 */
 
-#include "0x0f1_command_buffcancel.h"
+#include "0x0f1_buffcancel.h"
 
 #include "entities/charentity.h"
 #include "status_effect_container.h"

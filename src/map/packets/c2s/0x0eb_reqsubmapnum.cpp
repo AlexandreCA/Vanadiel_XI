@@ -19,7 +19,7 @@
 ===========================================================================
 */
 
-#include "0x0eb_command_reqsubmapnum.h"
+#include "0x0eb_reqsubmapnum.h"
 
 #include "entities/charentity.h"
 #include "packets/release_special.h"

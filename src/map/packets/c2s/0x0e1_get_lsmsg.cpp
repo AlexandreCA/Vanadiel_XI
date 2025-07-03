@@ -19,7 +19,7 @@
 ===========================================================================
 */
 
-#include "0x0e1_command_get_lsmsg.h"
+#include "0x0e1_get_lsmsg.h"
 
 #include "common/utils.h"
 #include "entities/charentity.h"

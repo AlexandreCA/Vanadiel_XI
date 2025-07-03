@@ -19,7 +19,7 @@
 ===========================================================================
 */
 
-#include "0x0f2_command_submapchange.h"
+#include "0x0f2_submapchange.h"
 
 #include "entities/charentity.h"
 #include "utils/charutils.h"

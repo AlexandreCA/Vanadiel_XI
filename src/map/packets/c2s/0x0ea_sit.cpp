@@ -19,7 +19,7 @@
 ===========================================================================
 */
 
-#include "0x0ea_command_sit.h"
+#include "0x0ea_sit.h"
 
 #include "entities/charentity.h"
 #include "entities/petentity.h"
