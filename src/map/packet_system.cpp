@@ -85,6 +85,7 @@
 #include "packets/c2s/0x0e8_camp.h"
 #include "packets/c2s/0x0ea_sit.h"
 #include "packets/c2s/0x0eb_reqsubmapnum.h"
+#include "packets/c2s/0x0f0_rescue.h"
 #include "packets/c2s/0x0f1_buffcancel.h"
 #include "packets/c2s/0x0f2_submapchange.h"
 #include "packets/c2s/0x0f4_tracking_list.h"
@@ -5794,6 +5795,7 @@ void PacketParserInitialize()
     PacketSize[0x0EA] = 0x04; PacketParser[0x0EA] = &ValidatedPacketHandler<GP_CLI_COMMAND_SIT>;
     PacketSize[0x0EB] = 0x00; PacketParser[0x0EB] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQSUBMAPNUM>;
     PacketSize[0x0F1] = 0x04; PacketParser[0x0F1] = &ValidatedPacketHandler<GP_CLI_COMMAND_BUFFCANCEL>;
+    PacketSize[0x0F0] = 0x04; PacketParser[0x0F0] = &ValidatedPacketHandler<GP_CLI_COMMAND_RESCUE>;
     PacketSize[0x0F2] = 0x04; PacketParser[0x0F2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SUBMAPCHANGE>;
     PacketSize[0x0F4] = 0x04; PacketParser[0x0F4] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRACKING_LIST>;
     PacketSize[0x0F5] = 0x00; PacketParser[0x0F5] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRACKING_START>;

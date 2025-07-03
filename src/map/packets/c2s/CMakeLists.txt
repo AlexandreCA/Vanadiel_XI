@@ -27,6 +27,8 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_sit.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_reqsubmapnum.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_reqsubmapnum.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f0_rescue.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f0_rescue.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_buffcancel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_buffcancel.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_submapchange.cpp
