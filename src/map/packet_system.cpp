@@ -75,6 +75,7 @@
 #include "packets/c2s/0x041_trophy_entry.h"
 #include "packets/c2s/0x058_recipe.h"
 #include "packets/c2s/0x066_fishing.h"
+#include "packets/c2s/0x0d2_map_group.h"
 #include "packets/c2s/0x0d3_faq_gmcall.h"
 #include "packets/c2s/0x0d4_faq_gmparam.h"
 #include "packets/c2s/0x0de_inspect_message.h"
@@ -5240,31 +5241,6 @@ void SmallPacket0x0CB(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                       *
- *  Request Party Map Positions                                          *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x0D2(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    // clang-format off
-    PChar->ForAlliance([PChar](CBattleEntity* PPartyMember)
-    {
-        if (PPartyMember)
-        {
-            auto* partyMember = static_cast<CCharEntity*>(PPartyMember);
-            if (partyMember->getZone() == PChar->getZone() && partyMember->m_moghouseID == PChar->m_moghouseID)
-            {
-                PChar->pushPacket<CPartyMapPacket>(partyMember);
-            }
-        }
-    });
-    // clang-format on
-}
-
-/************************************************************************
- *                                                                       *
  *  Set Chat Filters / Preferred Language                                *
  *                                                                       *
  ************************************************************************/
@@ -5766,7 +5742,7 @@ void PacketParserInitialize()
     PacketSize[0x0C3] = 0x00; PacketParser[0x0C3] = &SmallPacket0x0C3;
     PacketSize[0x0C4] = 0x0E; PacketParser[0x0C4] = &SmallPacket0x0C4;
     PacketSize[0x0CB] = 0x04; PacketParser[0x0CB] = &SmallPacket0x0CB;
-    PacketSize[0x0D2] = 0x00; PacketParser[0x0D2] = &SmallPacket0x0D2;
+    PacketSize[0x0D2] = 0x04; PacketParser[0x0D2] = &ValidatedPacketHandler<GP_CLI_COMMAND_MAP_GROUP>;
     PacketSize[0x0D3] = 0x00; PacketParser[0x0D3] = &ValidatedPacketHandler<GP_CLI_COMMAND_FAQ_GMCALL>;
     PacketSize[0x0D4] = 0x04; PacketParser[0x0D4] = &ValidatedPacketHandler<GP_CLI_COMMAND_FAQ_GMPARAM>;
     PacketSize[0x0DB] = 0x00; PacketParser[0x0DB] = &SmallPacket0x0DB;
