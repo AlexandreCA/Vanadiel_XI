@@ -70,7 +70,7 @@ commandObj.onTrigger = function(player)
     local minute = VanadielMinute()
     local totd = totdName[VanadielTOTD()] or 'None'
     player:printToPlayer(fmt('It has been {} Vana\'diel days ({} seconds) since the Vana\'diel epoch.', VanadielUniqueDay(), VanadielTime()), channel)
-    player:printToPlayer(fmt('The next Vana\'diel day is in {} seconds.', getVanaMidnight() - os.time()), channel)
+    player:printToPlayer(fmt('The next Vana\'diel day is in {} seconds.', getVanaMidnight() - GetSystemTime()), channel)
     player:printToPlayer(fmt('Vana\'diel: {}/{}/{}, {}, {}:{:02} ({}, {} days into the year)', year, month, day, dayElement, hour, minute, totd, VanadielDayOfTheYear()), channel)
 
     -- Moon

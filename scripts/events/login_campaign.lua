@@ -35,7 +35,7 @@ xi.events.loginCampaign.isCampaignActive = function()
         }) + localUtcOffset + jstUtcOffset
         local campaignEndDate = campaignStartDate + loginCampaignDuration * 24 * 60 * 60
 
-        if os.time() < campaignEndDate and os.time() > campaignStartDate then
+        if GetSystemTime() < campaignEndDate and GetSystemTime() > campaignStartDate then
             return true
         end
     end

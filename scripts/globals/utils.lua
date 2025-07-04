@@ -201,7 +201,7 @@ function utils.join(input1, input2)
     return result
 end
 
--- For use alongside os.time()
+-- For use alongside GetSystemTime()
 ---@nodiscard
 ---@param minutes integer
 ---@return integer
@@ -212,12 +212,12 @@ end
 ---@nodiscard
 ---@param hours integer
 ---@return integer
--- For use alongside os.time()
+-- For use alongside GetSystemTime()
 function utils.hours(hours)
     return hours * 60 * 60
 end
 
--- For use alongside os.time()
+-- For use alongside GetSystemTime()
 ---@nodiscard
 ---@param days integer
 ---@return integer
@@ -1248,7 +1248,7 @@ function utils.drawIn(target, table)
         for _, condition in ipairs(conditions) do
             if condition then
                 if nextDrawIn > 0 then
-                    if os.time() > nextDrawIn then
+                    if GetSystemTime() > nextDrawIn then
                         local position = {}
                         if table.position then
                             position.x   = table.position.x and table.position.x or table.position[1]
@@ -1268,7 +1268,7 @@ function utils.drawIn(target, table)
                     return false
                 else
                     local wait = table.wait and table.wait or 1
-                    target:setLocalVar('[Draw-In]WaitTime', os.time() + wait)
+                    target:setLocalVar('[Draw-In]WaitTime', GetSystemTime() + wait)
                     return false
                 end
             end
