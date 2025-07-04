@@ -1289,3 +1289,43 @@ function utils.defaultIfNil(inputValue, defaultValue)
 
     return inputValue
 end
+
+---@nodiscard
+---@param current table
+---@param target table
+---@return boolean
+function utils.timeIsAfterOrEqual(current, target)
+    if current.year ~= target.year then
+        return current.year > target.year
+    end
+
+    if current.month ~= target.month then
+        return current.month > target.month
+    end
+
+    if current.day ~= target.day then
+        return current.day > target.day
+    end
+
+    return current.hour >= target.hour
+end
+
+---@nodiscard
+---@param current table
+---@param target table
+---@return boolean
+function utils.timeIsBefore(current, target)
+    if current.year ~= target.year then
+        return current.year < target.year
+    end
+
+    if current.month ~= target.month then
+        return current.month < target.month
+    end
+
+    if current.day ~= target.day then
+        return current.day < target.day
+    end
+
+    return current.hour < target.hour
+end
