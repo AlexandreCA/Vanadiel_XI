@@ -749,7 +749,7 @@ uint32 CLuaBaseEntity::getLocalVar(std::string const& var)
 /************************************************************************
  *  Function: setLocalVar()
  *  Purpose : Assigns a local variable to an entity
- *  Example : mob:setLocalVar("pop", os.time() + math.random(1200,7200));
+ *  Example : mob:setLocalVar("pop", GetSystemTime() + math.random(1200,7200));
  *  Notes   :
  ************************************************************************/
 
@@ -11348,7 +11348,7 @@ uint32 CLuaBaseEntity::getLeaderID()
 /************************************************************************
  *  Function: getPartyLastMemberJoinedTime()
  *  Purpose : Get the epoch time point in seconds that the last PC joined the party (if any)
- *  Example : seconds_since_last_member_joined = os.time() - player:getPartyLastMemberJoinedTime()
+ *  Example : seconds_since_last_member_joined = GetSystemTime() - player:getPartyLastMemberJoinedTime()
  *  Notes   :
  ************************************************************************/
 
