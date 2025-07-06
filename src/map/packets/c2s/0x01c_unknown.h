@@ -19,17 +19,15 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
-{
-    // Not implemented.
-    return PacketValidator();
-}
-
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x001C
+// The purpose of this packet is currently unknown.
+// The client will send this packet each time the player uses a job ability while having a pet active.
+GP_CLI_PACKET(GP_CLI_COMMAND_UNKNOWN,
+              uint16_t unknown00; // This value is always set to the local players target index.
+              uint16_t padding00; // Padding; unused.
+              uint32_t unknown01; // Unknown. This value is always set to 1.
+);

@@ -19,17 +19,15 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#include "0x00d_netend.h"
 
-#include "entities/charentity.h"
-
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_NETEND::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    // Not implemented.
+    // Packet explicitly ignored.
     return PacketValidator();
 }
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_NETEND::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
+    // Do nothing.
 }

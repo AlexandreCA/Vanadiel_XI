@@ -2,11 +2,35 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/base.h
     ${CMAKE_CURRENT_SOURCE_DIR}/validation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/validation.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x00d_netend.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x00d_netend.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x017_charreq2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x017_charreq2.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01b_friendpass.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01b_friendpass.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01c_unknown.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01c_unknown.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01f_gmcommand.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x01f_gmcommand.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x02b_translate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x02b_translate.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x02c_itemsearch.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x02c_itemsearch.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x041_trophy_entry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x041_trophy_entry.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x059_effectend.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x059_effectend.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_dig.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x063_dig.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0a0_switch_proposal.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0a0_switch_proposal.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0a1_switch_vote.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0a1_switch_vote.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0b7_assist_channel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0b7_assist_channel.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0bf_job_points_spend.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0bf_job_points_spend.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0c0_job_points_req.cpp
@@ -17,6 +41,10 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0d3_faq_gmcall.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0d4_faq_gmparam.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0d4_faq_gmparam.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d5_ack_gmmsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d5_ack_gmmsg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d8_dungeon_param.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d8_dungeon_param.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0de_inspect_message.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0de_inspect_message.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0e0_set_usermsg.cpp
@@ -101,6 +129,8 @@ set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x119_emote_list.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x11b_mastery_display.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x11b_mastery_display.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x11c_party_request.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x11c_party_request.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x11d_jump.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x11d_jump.h
     PARENT_SCOPE

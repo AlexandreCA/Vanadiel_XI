@@ -19,17 +19,13 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
-{
-    // Not implemented.
-    return PacketValidator();
-}
-
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x00A1
+// This packet is sent by the client when voting in a proposal. (via /vote)
+GP_CLI_PACKET(GP_CLI_COMMAND_SWITCH_VOTE,
+              uint8_t Index;    // PS2: Index
+              uint8_t Name[15]; // PS2: Name
+);

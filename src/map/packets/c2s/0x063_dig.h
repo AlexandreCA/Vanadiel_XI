@@ -19,17 +19,16 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
-{
-    // Not implemented.
-    return PacketValidator();
-}
-
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x0063
+// This packet is sent by the client when it has completed the chocobo digging animation; informing the server it is ready for the results.
+GP_CLI_PACKET(GP_CLI_COMMAND_DIG,
+              uint32_t UniqueNo;  // PS2: UniqueNo
+              uint32_t para;      // PS2: para
+              uint16_t ActIndex;  // PS2: ActIndex
+              uint8_t  mode;      // PS2: mode
+              uint8_t  padding00; // PS2: dammy
+);
