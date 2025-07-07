@@ -369,7 +369,7 @@ void SmallPacket0x00C(MapSession* const PSession, CCharEntity* const PChar, CBas
     PChar->pushPacket<CMenuConfigPacket>(PChar);
     PChar->pushPacket<CCharJobsPacket>(PChar);
 
-    if (charutils::hasKeyItem(PChar, 2544))
+    if (charutils::hasKeyItem(PChar, KeyItem::JOB_BREAKER))
     {
         // Only send Job Points Packet if the player has unlocked them
         PChar->pushPacket<CJobPointDetailsPacket>(PChar);
@@ -1062,7 +1062,8 @@ void SmallPacket0x01A(MapSession* const PSession, CCharEntity* const PChar, CBas
         break;
         case 0x1A: // mounts
         {
-            uint8 MountID = data.ref<uint8>(0x0C);
+            uint8   MountID      = data.ref<uint8>(0x0C);
+            KeyItem mountKeyItem = static_cast<KeyItem>(static_cast<uint16_t>(KeyItem::CHOCOBO_COMPANION) + MountID);
 
             if (PChar->animation != ANIMATION_NONE)
             {
@@ -1076,7 +1077,7 @@ void SmallPacket0x01A(MapSession* const PSession, CCharEntity* const PChar, CBas
             {
                 PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 20, 0, 773);
             }
-            else if (charutils::hasKeyItem(PChar, 3072 + MountID))
+            else if (charutils::hasKeyItem(PChar, mountKeyItem))
             {
                 if (PChar->PRecastContainer->HasRecast(RECAST_ABILITY, 256, 60s))
                 {
@@ -3119,7 +3120,7 @@ void SmallPacket0x061(MapSession* const PSession, CCharEntity* const PChar, CBas
     PChar->pushPacket<CMonipulatorPacket1>(PChar);
     PChar->pushPacket<CMonipulatorPacket2>(PChar);
 
-    if (charutils::hasKeyItem(PChar, 2544))
+    if (charutils::hasKeyItem(PChar, KeyItem::JOB_BREAKER))
     {
         // Only send Job Points Packet if the player has unlocked them
         PChar->pushPacket<CMenuJobPointsPacket>(PChar);
@@ -5159,7 +5160,7 @@ void SmallPacket0x0CB(MapSession* const PSession, CCharEntity* const PChar, CBas
         // remodel mog house
         auto type = data.ref<uint8>(0x06); // Sandy: 103, Bastok: 104, Windy: 105, Patio: 106
 
-        if (type == 106 && !charutils::hasKeyItem(PChar, 3051))
+        if (type == 106 && !charutils::hasKeyItem(PChar, KeyItem::MOG_PATIO_DESIGN_DOCUMENT))
         {
             ShowWarning(fmt::format("Player {} is trying to remodel to MH2F to Patio without owning the KI to unlock it.", PChar->getName()));
             return;
