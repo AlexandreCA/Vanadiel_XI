@@ -8680,7 +8680,7 @@ void CLuaBaseEntity::completeAssault(uint8 missionID)
  *  Notes   :
  ************************************************************************/
 
-void CLuaBaseEntity::addKeyItem(uint16 keyItemID)
+void CLuaBaseEntity::addKeyItem(const KeyItem keyItemID) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -8689,12 +8689,12 @@ void CLuaBaseEntity::addKeyItem(uint16 keyItemID)
     }
 
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-    uint8 table = keyItemID >> 9;
+    uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
     if (table >= MAX_KEYS_TABLE)
     {
         // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::addKeyItem() - Attempting to add invalid key item: %d", keyItemID);
+        ShowWarning("CLuaBaseEntity::addKeyItem() - Attempting to add invalid key item: %d", static_cast<uint16_t>(keyItemID));
         return;
     }
 
@@ -8716,7 +8716,7 @@ void CLuaBaseEntity::addKeyItem(uint16 keyItemID)
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::hasKeyItem(uint16 keyItemID)
+auto CLuaBaseEntity::hasKeyItem(const KeyItem keyItemID) const -> bool
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -8734,7 +8734,7 @@ bool CLuaBaseEntity::hasKeyItem(uint16 keyItemID)
  *  Notes   :
  ************************************************************************/
 
-void CLuaBaseEntity::delKeyItem(uint16 keyItemID)
+void CLuaBaseEntity::delKeyItem(const KeyItem keyItemID) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -8743,12 +8743,12 @@ void CLuaBaseEntity::delKeyItem(uint16 keyItemID)
     }
 
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-    uint8 table = keyItemID >> 9;
+    uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
     if (table >= MAX_KEYS_TABLE)
     {
         // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::delKeyItem() - Attempting to delete invalid key item: %d", keyItemID);
+        ShowWarning("CLuaBaseEntity::delKeyItem() - Attempting to delete invalid key item: %d", static_cast<uint16_t>(keyItemID));
         return;
     }
 
@@ -8765,7 +8765,7 @@ void CLuaBaseEntity::delKeyItem(uint16 keyItemID)
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::seenKeyItem(uint16 keyItemID)
+bool CLuaBaseEntity::seenKeyItem(const KeyItem keyItemID) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -8783,7 +8783,7 @@ bool CLuaBaseEntity::seenKeyItem(uint16 keyItemID)
  *  Notes   : Some things just can't be unseen... (not implemented though)
  ************************************************************************/
 
-void CLuaBaseEntity::unseenKeyItem(uint16 keyItemID)
+void CLuaBaseEntity::unseenKeyItem(const KeyItem keyItemID) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -8792,12 +8792,12 @@ void CLuaBaseEntity::unseenKeyItem(uint16 keyItemID)
     }
 
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-    uint8 table = keyItemID >> 9;
+    uint8 table = static_cast<uint16_t>(keyItemID) >> 9;
 
     if (table >= MAX_KEYS_TABLE)
     {
         // Bail out if an invalid keyitem is being added
-        ShowWarning("CLuaBaseEntity::unseenKeyItem() - Attempting to unsee invalid key item: %d", keyItemID);
+        ShowWarning("CLuaBaseEntity::unseenKeyItem() - Attempting to unsee invalid key item: %d", static_cast<uint16_t>(keyItemID));
         return;
     }
 
