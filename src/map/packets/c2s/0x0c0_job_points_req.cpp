@@ -19,22 +19,24 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#include "0x0c0_job_points_req.h"
 
 #include "entities/charentity.h"
-#include "packets/char_status.h"
+#include "packets/jobpoint_details.h"
 #include "utils/charutils.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_JOB_POINTS_REQ::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
+    // No parameters to validate for this packet
+    return PacketValidator();
 }
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_JOB_POINTS_REQ::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    PChar->m_jobMasterDisplay = Mode;
-
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
+    // Move this check to the validate function once hasKeyItem becomes const
+    if (charutils::hasKeyItem(PChar, KeyItem::JOB_BREAKER))
+    {
+        // Only send Job Points Packet if the player has unlocked them
+        PChar->pushPacket<CJobPointDetailsPacket>(PChar);
+    }
 }

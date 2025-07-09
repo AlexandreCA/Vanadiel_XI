@@ -19,22 +19,28 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#include "0x0f2_submapchange.h"
 
 #include "entities/charentity.h"
-#include "packets/char_status.h"
 #include "utils/charutils.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_SUBMAPCHANGE::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
+    // TODO: List of valid submap numbers per zone
+    auto pv = PacketValidator()
+                  .range("State", State, GP_CLI_COMMAND_SUBMAPCHANGE_STATE::General, GP_CLI_COMMAND_SUBMAPCHANGE_STATE::Event);
+
+    if (State == static_cast<uint8_t>(GP_CLI_COMMAND_SUBMAPCHANGE_STATE::Event))
+    {
+        pv.mustNotEqual(PChar->currentEvent, nullptr, "Character not in event");
+    }
+
+    return pv;
 }
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_SUBMAPCHANGE::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    PChar->m_jobMasterDisplay = Mode;
+    PChar->loc.boundary = SubMapNumber;
 
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
+    charutils::SaveCharPosition(PChar);
 }

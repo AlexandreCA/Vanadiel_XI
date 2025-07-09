@@ -19,22 +19,13 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#pragma once
 
-#include "entities/charentity.h"
-#include "packets/char_status.h"
-#include "utils/charutils.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
-{
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
-}
-
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    PChar->m_jobMasterDisplay = Mode;
-
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x00D4
+// This packet is sent by the client when interacting with the Help Desk system. More specifically, when opening the inner Help Desk menu.
+GP_CLI_PACKET(GP_CLI_COMMAND_FAQ_GMPARAM,
+              uint16_t Id;     // PS2: Id
+              uint16_t Option; // PS2: Option
+);
