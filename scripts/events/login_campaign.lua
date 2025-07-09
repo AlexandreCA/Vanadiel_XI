@@ -9,10 +9,37 @@ xi = xi or {}
 xi.events = xi.events or {}
 xi.events.loginCampaign = xi.events.loginCampaign or {}
 
--- Change vars below to modify settings for current login campaign (ALL TIMES JST)
-local loginCampaignStart  = { year = 2025, month = 6, day = 11, hour = 17 }
-local loginCampaignEnd    = { year = 2025, month = 7, day = 2, hour = 23 }
-local loginCampaignRedeem = { year = 2025, month = 7, day = 10, hour = 0 }
+local function getCurrentCampaignDates()
+    local year = JstYear()
+    local month = JstMonth()
+    local day = JstDayOfTheMonth()
+    local hour = JstHour()
+
+    -- Si on est avant le 11 à 17h JST, on prend le mois précédent
+    if day < 11 or (day == 11 and hour < 17) then
+        month = month - 1
+        if month < 1 then
+            month = 12
+            year = year - 1
+        end
+    end
+
+    local start = { year = year, month = month, day = 11, hour = 17 }
+
+    local endMonth = month + 1
+    local endYear = year
+    if endMonth > 12 then
+        endMonth = 1
+        endYear = year + 1
+    end
+
+    local loginEnd = { year = endYear, month = endMonth, day = 2, hour = 23 }
+    local redeemEnd = { year = endYear, month = endMonth, day = 10, hour = 0 }
+
+    return start, loginEnd, redeemEnd
+end
+
+local loginCampaignStart, loginCampaignEnd, loginCampaignRedeem = getCurrentCampaignDates()
 
 -- Checks if a Login Campaign is active.
 xi.events.loginCampaign.canEarnPoints = function()
