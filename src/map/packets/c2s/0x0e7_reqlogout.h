@@ -19,22 +19,27 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#pragma once
 
-#include "entities/charentity.h"
-#include "packets/char_status.h"
-#include "utils/charutils.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+enum class GP_CLI_COMMAND_REQLOGOUT_MODE : uint16_t
 {
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
-}
+    Toggle     = 0x00,
+    LogoutOn   = 0x01, // Mode: on (Used with /logout on)
+    Off        = 0x02, // Mode: off (Used with both /logout off and /shutdown off)
+    ShutdownOn = 0x03, // Mode: on (Used with: /shutdown on)
+};
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
+enum class GP_CLI_COMMAND_REQLOGOUT_KIND : uint16_t
 {
-    PChar->m_jobMasterDisplay = Mode;
+    Logout   = 0x01,
+    Shutdown = 0x03,
+};
 
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x00E7
+// This packet is sent by the client when requesting to logout or shutdown.
+GP_CLI_PACKET(GP_CLI_COMMAND_REQLOGOUT,
+              uint16_t Mode; // PS2: Mode
+              uint16_t Kind; // PS2: (New; did not exist.)
+);

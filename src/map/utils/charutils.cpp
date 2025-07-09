@@ -848,7 +848,7 @@ namespace charutils
         }
 
         // TODO: Remove raw new's
-        PChar->PMeritPoints = new CMeritPoints(PChar);
+        PChar->PMeritPoints = std::make_unique<CMeritPoints>(PChar);
         PChar->PMeritPoints->SetMeritPoints(meritPoints);
         PChar->PMeritPoints->SetLimitPoints(limitPoints);
         PChar->PJobPoints = new CJobPoints(PChar);

@@ -29,11 +29,9 @@
 auto GP_CLI_COMMAND_SITCHAIR::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
-        .mustEqual(PChar->status, STATUS_TYPE::NORMAL, "Character abnormal status")
-        .mustEqual(PChar->StatusEffectContainer->HasPreventActionEffect(), false, "Character has Prevent Action effect")
-        .range("Mode", Mode,
-               GP_CLI_COMMAND_SITCHAIR_MODE::Toggle,
-               GP_CLI_COMMAND_SITCHAIR_MODE::Off)
+        .isNormalStatus(PChar)
+        .isNotPreventedAction(PChar)
+        .oneOf<GP_CLI_COMMAND_SITCHAIR_MODE>(Mode)
         .range("ChairId", ChairId, 0, 20); // 10 chairs + 10 reserved slots for future use
 }
 

@@ -365,7 +365,6 @@ CCharEntity::~CCharEntity()
     destroy(Container);
     destroy(UContainer);
     destroy(CraftContainer);
-    destroy(PMeritPoints);
     destroy(PJobPoints);
     destroy(PLatentEffectContainer);
 
