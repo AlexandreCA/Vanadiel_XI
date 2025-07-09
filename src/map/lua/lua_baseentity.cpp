@@ -10310,36 +10310,34 @@ void CLuaBaseEntity::capSkill(uint8 skill)
  *  Notes   :
  ************************************************************************/
 
-void CLuaBaseEntity::capAllSkills()
+void CLuaBaseEntity::capAllSkills() const
 {
-    if (m_PBaseEntity->objtype != TYPE_PC)
+    if (auto* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity))
     {
-        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+        for (uint8 i = SKILL_HAND_TO_HAND; i <= SKILL_HANDBELL; ++i) // For SKILL_HAND_TO_HAND (1) - SKILL_HANDBELL (46)
+        {
+            const char* Query = "INSERT INTO char_skills "
+                                "SET "
+                                "charid = ?, "
+                                "skillid = ?, "
+                                "value = ?, "
+                                "rank = ? "
+                                "ON DUPLICATE KEY UPDATE value = ?, rank = ?";
+
+            db::preparedStmt(Query, PChar->id, i, 5000, PChar->RealSkills.rank[i], 5000, PChar->RealSkills.rank[i]);
+
+            uint16 maxSkill               = 10 * battleutils::GetMaxSkill(static_cast<SKILLTYPE>(i), PChar->GetMJob(), PChar->GetMLevel());
+            PChar->RealSkills.skill[i]    = maxSkill; // set to capped
+            PChar->WorkingSkills.skill[i] = maxSkill / 10;
+            PChar->WorkingSkills.skill[i] |= 0x8000; // set blue capped flag
+        }
+
+        charutils::CheckWeaponSkill(PChar, SKILL_NONE);
+        PChar->pushPacket<CCharSkillsPacket>(PChar);
         return;
     }
 
-    auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-
-    for (uint8 i = SKILL_HAND_TO_HAND; i <= SKILL_HANDBELL; ++i) // For SKILL_HAND_TO_HAND (1) - SKILL_HANDBELL (46)
-    {
-        const char* Query = "INSERT INTO char_skills "
-                            "SET "
-                            "charid = ?, "
-                            "skillid = ?, "
-                            "value = ?, "
-                            "rank = ? "
-                            "ON DUPLICATE KEY UPDATE value = ?, rank = ? LIMIT 1";
-
-        db::preparedStmt(Query, PChar->id, i, 5000, PChar->RealSkills.rank[i], 5000, PChar->RealSkills.rank[i]);
-
-        uint16 maxSkill               = 10 * battleutils::GetMaxSkill(static_cast<SKILLTYPE>(i), PChar->GetMJob(), PChar->GetMLevel());
-        PChar->RealSkills.skill[i]    = maxSkill; // set to capped
-        PChar->WorkingSkills.skill[i] = maxSkill / 10;
-        PChar->WorkingSkills.skill[i] |= 0x8000; // set blue capped flag
-    }
-
-    charutils::CheckWeaponSkill(PChar, SKILL_NONE);
-    PChar->pushPacket<CCharSkillsPacket>(PChar);
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
 }
 
 /************************************************************************
