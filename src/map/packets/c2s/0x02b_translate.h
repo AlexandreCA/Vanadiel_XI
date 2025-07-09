@@ -19,17 +19,21 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+enum class GP_CLI_COMMAND_TRANSLATE_INDEX : uint8_t
 {
-    // Not implemented.
-    return PacketValidator();
-}
+    Japanese = 0,
+    English  = 1,
+};
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x002B
+// This packet is sent by the client when using the /translate command.
+GP_CLI_PACKET(GP_CLI_COMMAND_TRANSLATE,
+              uint8_t  FromIndex;
+              uint8_t  ToIndex;
+              uint16_t padding00;
+              uint8_t  Name[64]; // Variable length
+);

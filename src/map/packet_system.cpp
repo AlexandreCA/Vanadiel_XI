@@ -72,14 +72,28 @@
 #include "packets/basic.h"
 #include "packets/bazaar_message.h"
 #include "packets/blacklist_edit_response.h"
+#include "packets/c2s/0x00d_netend.h"
+#include "packets/c2s/0x017_charreq2.h"
+#include "packets/c2s/0x01b_friendpass.h"
+#include "packets/c2s/0x01c_unknown.h"
+#include "packets/c2s/0x01f_gmcommand.h"
+#include "packets/c2s/0x02b_translate.h"
+#include "packets/c2s/0x02c_itemsearch.h"
 #include "packets/c2s/0x041_trophy_entry.h"
 #include "packets/c2s/0x058_recipe.h"
+#include "packets/c2s/0x059_effectend.h"
+#include "packets/c2s/0x063_dig.h"
 #include "packets/c2s/0x066_fishing.h"
+#include "packets/c2s/0x0a0_switch_proposal.h"
+#include "packets/c2s/0x0a1_switch_vote.h"
+#include "packets/c2s/0x0b7_assist_channel.h"
 #include "packets/c2s/0x0bf_job_points_spend.h"
 #include "packets/c2s/0x0c0_job_points_req.h"
 #include "packets/c2s/0x0d2_map_group.h"
 #include "packets/c2s/0x0d3_faq_gmcall.h"
 #include "packets/c2s/0x0d4_faq_gmparam.h"
+#include "packets/c2s/0x0d5_ack_gmmsg.h"
+#include "packets/c2s/0x0d8_dungeon_param.h"
 #include "packets/c2s/0x0de_inspect_message.h"
 #include "packets/c2s/0x0e0_set_usermsg.h"
 #include "packets/c2s/0x0e1_get_lsmsg.h"
@@ -122,6 +136,7 @@
 #include "packets/c2s/0x118_unity_toggle.h"
 #include "packets/c2s/0x119_emote_list.h"
 #include "packets/c2s/0x11b_mastery_display.h"
+#include "packets/c2s/0x11c_party_request.h"
 #include "packets/c2s/0x11d_jump.h"
 #include "packets/char_abilities.h"
 #include "packets/char_appearance.h"
@@ -182,7 +197,6 @@
 #include "packets/trade_request.h"
 #include "packets/trade_update.h"
 #include "packets/wide_scan_track.h"
-#include "packets/world_pass.h"
 #include "packets/zone_in.h"
 #include "packets/zone_visited.h"
 
@@ -242,17 +256,6 @@ void PrintPacket(CBasicPacket& packet)
 void SmallPacket0x000(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
 {
     ShowWarning("parse: Unhandled game packet %03hX from user: %s", (data.ref<uint16>(0) & 0x1FF), PChar->getName());
-}
-
-/************************************************************************
- *                                                                       *
- *  Non-Implemented Packet                                               *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0xFFF_NOT_IMPLEMENTED(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    ShowWarning("parse: SmallPacket is not implemented Type<%03hX>", (data.ref<uint16>(0) & 0x1FF));
 }
 
 /************************************************************************
@@ -392,20 +395,6 @@ void SmallPacket0x00C(MapSession* const PSession, CCharEntity* const PChar, CBas
 
         PChar->resetPetZoningInfo();
     }
-}
-
-/************************************************************************
- *  Player Leaving Zone (Dezone)                                         *
- *  It is not reliable to recieve this packet, so do nothing.            *
- ************************************************************************/
-
-void SmallPacket0x00D(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    std::ignore = data;
-    std::ignore = PSession;
-    std::ignore = PChar;
 }
 
 /************************************************************************
@@ -1118,62 +1107,6 @@ void SmallPacket0x01A(MapSession* const PSession, CCharEntity* const PChar, CBas
         }
         break;
     }
-}
-
-/************************************************************************
- *                                                                       *
- *  World Pass                                                           *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x01B(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-
-    // https://github.com/atom0s/XiPackets/tree/main/world/client/0x001B
-    struct GP_CLI_FRIENDPASS
-    {
-        uint16_t id : 9;
-        uint16_t size : 7;
-        uint16_t sync;
-        uint16_t Para;      // PS2: Para
-        uint16_t padding00; // PS2: Dammy
-    };
-
-    auto* packet = data.as<GP_CLI_FRIENDPASS>();
-    switch (packet->Para)
-    {
-        case 0: // 0: Client has requested to begin the purchase of a world pass.
-            // TODO
-            break;
-        case 1: // 1: Client has confirmed the purchase of a world pass.
-            // TODO
-            break;
-        case 2: // 2: Client has requested to begin the purchase of a gold world pass.
-            // TODO
-            break;
-        case 3: // 3: Client has confirmed the purchase of a gold world pass.
-            // TODO
-            break;
-        default:
-            ShowWarning("SmallPacket0x01B: Unknown Para value %u", packet->Para);
-            break;
-    }
-
-    PChar->pushPacket<CWorldPassPacket>(data.ref<uint8>(0x04) & 1 ? (uint32)xirand::GetRandomNumber(9999999999) : 0);
-}
-
-/************************************************************************
- *                                                                       *
- *  Unknown Packet                                                       *
- *  Assumed to be when a client is requesting missing information.       *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x01C(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    PrintPacket(data);
 }
 
 /************************************************************************
@@ -2620,18 +2553,6 @@ void SmallPacket0x053(MapSession* const PSession, CCharEntity* const PChar, CBas
 
 /************************************************************************
  *                                                                       *
- *  Synthesis Complete                                                   *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x059(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
-    // Do nothing. This is handled in synth state.
-}
-
-/************************************************************************
- *                                                                       *
  *  Map Update (Conquest, Besieged, Campaign)                            *
  *                                                                       *
  ************************************************************************/
@@ -3130,17 +3051,6 @@ void SmallPacket0x061(MapSession* const PSession, CCharEntity* const PChar, CBas
     PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
     PChar->pushPacket<CCharJobExtraPacket>(PChar, false);
     PChar->pushPacket<CStatusEffectPacket>(PChar);
-}
-
-/************************************************************************
- *                                                                       *
- *  Chocobo Digging                                                      *
- *                                                                       *
- ************************************************************************/
-
-void SmallPacket0x063(MapSession* const PSession, CCharEntity* const PChar, CBasicPacket& data)
-{
-    TracyZoneScoped;
 }
 
 /************************************************************************
@@ -5633,18 +5543,21 @@ void PacketParserInitialize()
     // clang-format off
     PacketSize[0x00A] = 0x2E; PacketParser[0x00A] = &SmallPacket0x00A;
     PacketSize[0x00C] = 0x00; PacketParser[0x00C] = &SmallPacket0x00C;
-    PacketSize[0x00D] = 0x04; PacketParser[0x00D] = &SmallPacket0x00D;
+    PacketSize[0x00D] = 0x04; PacketParser[0x00D] = &ValidatedPacketHandler<GP_CLI_COMMAND_NETEND>;
     PacketSize[0x00F] = 0x00; PacketParser[0x00F] = &SmallPacket0x00F;
     PacketSize[0x011] = 0x00; PacketParser[0x011] = &SmallPacket0x011;
     PacketSize[0x015] = 0x10; PacketParser[0x015] = &SmallPacket0x015;
     PacketSize[0x016] = 0x04; PacketParser[0x016] = &SmallPacket0x016;
-    PacketSize[0x017] = 0x00; PacketParser[0x017] = &SmallPacket0x017;
+    PacketSize[0x017] = 0x00; PacketParser[0x017] = &ValidatedPacketHandler<GP_CLI_COMMAND_CHARREQ2>;
     PacketSize[0x01A] = 0x0E; PacketParser[0x01A] = &SmallPacket0x01A;
-    PacketSize[0x01B] = 0x00; PacketParser[0x01B] = &SmallPacket0x01B;
-    PacketSize[0x01C] = 0x00; PacketParser[0x01C] = &SmallPacket0x01C;
+    PacketSize[0x01B] = 0x00; PacketParser[0x01B] = &ValidatedPacketHandler<GP_CLI_COMMAND_FRIENDPASS>;
+    PacketSize[0x01C] = 0x00; PacketParser[0x01C] = &ValidatedPacketHandler<GP_CLI_COMMAND_UNKNOWN>;
     PacketSize[0x01E] = 0x00; PacketParser[0x01E] = &SmallPacket0x01E;
+    PacketSize[0x01F] = 0x00; PacketParser[0x01F] = &ValidatedPacketHandler<GP_CLI_COMMAND_GMCOMMAND>;
     PacketSize[0x028] = 0x06; PacketParser[0x028] = &SmallPacket0x028;
     PacketSize[0x029] = 0x06; PacketParser[0x029] = &SmallPacket0x029;
+    PacketSize[0x02B] = 0x00; PacketParser[0x02B] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRANSLATE>;
+    PacketSize[0x02C] = 0x00; PacketParser[0x02C] = &ValidatedPacketHandler<GP_CLI_COMMAND_ITEMSEARCH>;
     PacketSize[0x032] = 0x06; PacketParser[0x032] = &SmallPacket0x032;
     PacketSize[0x033] = 0x06; PacketParser[0x033] = &SmallPacket0x033;
     PacketSize[0x034] = 0x06; PacketParser[0x034] = &SmallPacket0x034;
@@ -5664,7 +5577,7 @@ void PacketParserInitialize()
     PacketSize[0x052] = 0x26; PacketParser[0x052] = &SmallPacket0x052;
     PacketSize[0x053] = 0x44; PacketParser[0x053] = &SmallPacket0x053;
     PacketSize[0x058] = 0x0A; PacketParser[0x058] = &ValidatedPacketHandler<GP_CLI_COMMAND_RECIPE>;
-    PacketSize[0x059] = 0x00; PacketParser[0x059] = &SmallPacket0x059;
+    PacketSize[0x059] = 0x00; PacketParser[0x059] = &ValidatedPacketHandler<GP_CLI_COMMAND_EFFECTEND>;
     PacketSize[0x05A] = 0x02; PacketParser[0x05A] = &SmallPacket0x05A;
     PacketSize[0x05B] = 0x0A; PacketParser[0x05B] = &SmallPacket0x05B;
     PacketSize[0x05C] = 0x00; PacketParser[0x05C] = &SmallPacket0x05C;
@@ -5672,7 +5585,7 @@ void PacketParserInitialize()
     PacketSize[0x05E] = 0x0C; PacketParser[0x05E] = &SmallPacket0x05E;
     PacketSize[0x060] = 0x00; PacketParser[0x060] = &SmallPacket0x060;
     PacketSize[0x061] = 0x04; PacketParser[0x061] = &SmallPacket0x061;
-    PacketSize[0x063] = 0x00; PacketParser[0x063] = &SmallPacket0x063;
+    PacketSize[0x063] = 0x00; PacketParser[0x063] = &ValidatedPacketHandler<GP_CLI_COMMAND_DIG>;
     PacketSize[0x064] = 0x26; PacketParser[0x064] = &SmallPacket0x064;
     PacketSize[0x066] = 0x0A; PacketParser[0x066] = &ValidatedPacketHandler<GP_CLI_COMMAND_FISHING>;
     PacketSize[0x06E] = 0x06; PacketParser[0x06E] = &SmallPacket0x06E;
@@ -5688,8 +5601,8 @@ void PacketParserInitialize()
     PacketSize[0x085] = 0x04; PacketParser[0x085] = &SmallPacket0x085;
     PacketSize[0x096] = 0x12; PacketParser[0x096] = &SmallPacket0x096;
     PacketSize[0x09B] = 0x00; PacketParser[0x09B] = &SmallPacket0x09B;
-    PacketSize[0x0A0] = 0x00; PacketParser[0x0A0] = &SmallPacket0xFFF_NOT_IMPLEMENTED;
-    PacketSize[0x0A1] = 0x00; PacketParser[0x0A1] = &SmallPacket0xFFF_NOT_IMPLEMENTED;
+    PacketSize[0x0A0] = 0x00; PacketParser[0x0A0] = &ValidatedPacketHandler<GP_CLI_COMMAND_SWITCH_PROPOSAL>;
+    PacketSize[0x0A1] = 0x00; PacketParser[0x0A1] = &ValidatedPacketHandler<GP_CLI_COMMAND_SWITCH_VOTE>;
     PacketSize[0x0A2] = 0x00; PacketParser[0x0A2] = &SmallPacket0x0A2;
     PacketSize[0x0AA] = 0x00; PacketParser[0x0AA] = &SmallPacket0x0AA;
     PacketSize[0x0AB] = 0x00; PacketParser[0x0AB] = &SmallPacket0x0AB;
@@ -5697,6 +5610,7 @@ void PacketParserInitialize()
     PacketSize[0x0AD] = 0x00; PacketParser[0x0AD] = &SmallPacket0x0AD;
     PacketSize[0x0B5] = 0x00; PacketParser[0x0B5] = &SmallPacket0x0B5;
     PacketSize[0x0B6] = 0x00; PacketParser[0x0B6] = &SmallPacket0x0B6;
+    PacketSize[0x0B7] = 0x00; PacketParser[0x0B7] = &ValidatedPacketHandler<GP_CLI_COMMAND_ASSIST_CHANNEL>;
     PacketSize[0x0BE] = 0x00; PacketParser[0x0BE] = &SmallPacket0x0BE;
     PacketSize[0x0BF] = 0x04; PacketParser[0x0BF] = &ValidatedPacketHandler<GP_CLI_COMMAND_JOB_POINTS_SPEND>;
     PacketSize[0x0C0] = 0x00; PacketParser[0x0C0] = &ValidatedPacketHandler<GP_CLI_COMMAND_JOB_POINTS_REQ>;
@@ -5706,6 +5620,8 @@ void PacketParserInitialize()
     PacketSize[0x0D2] = 0x04; PacketParser[0x0D2] = &ValidatedPacketHandler<GP_CLI_COMMAND_MAP_GROUP>;
     PacketSize[0x0D3] = 0x00; PacketParser[0x0D3] = &ValidatedPacketHandler<GP_CLI_COMMAND_FAQ_GMCALL>;
     PacketSize[0x0D4] = 0x04; PacketParser[0x0D4] = &ValidatedPacketHandler<GP_CLI_COMMAND_FAQ_GMPARAM>;
+    PacketSize[0x0D5] = 0x08; PacketParser[0x0D5] = &ValidatedPacketHandler<GP_CLI_COMMAND_ACK_GMMSG>;
+    PacketSize[0x0D8] = 0x00; PacketParser[0x0D8] = &ValidatedPacketHandler<GP_CLI_COMMAND_DUNGEON_PARAM>;
     PacketSize[0x0DB] = 0x00; PacketParser[0x0DB] = &SmallPacket0x0DB;
     PacketSize[0x0DC] = 0x0A; PacketParser[0x0DC] = &SmallPacket0x0DC;
     PacketSize[0x0DD] = 0x08; PacketParser[0x0DD] = &SmallPacket0x0DD;
@@ -5718,8 +5634,8 @@ void PacketParserInitialize()
     PacketSize[0x0E8] = 0x04; PacketParser[0x0E8] = &ValidatedPacketHandler<GP_CLI_COMMAND_CAMP>;
     PacketSize[0x0EA] = 0x04; PacketParser[0x0EA] = &ValidatedPacketHandler<GP_CLI_COMMAND_SIT>;
     PacketSize[0x0EB] = 0x00; PacketParser[0x0EB] = &ValidatedPacketHandler<GP_CLI_COMMAND_REQSUBMAPNUM>;
-    PacketSize[0x0F1] = 0x04; PacketParser[0x0F1] = &ValidatedPacketHandler<GP_CLI_COMMAND_BUFFCANCEL>;
     PacketSize[0x0F0] = 0x04; PacketParser[0x0F0] = &ValidatedPacketHandler<GP_CLI_COMMAND_RESCUE>;
+    PacketSize[0x0F1] = 0x04; PacketParser[0x0F1] = &ValidatedPacketHandler<GP_CLI_COMMAND_BUFFCANCEL>;
     PacketSize[0x0F2] = 0x04; PacketParser[0x0F2] = &ValidatedPacketHandler<GP_CLI_COMMAND_SUBMAPCHANGE>;
     PacketSize[0x0F4] = 0x04; PacketParser[0x0F4] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRACKING_LIST>;
     PacketSize[0x0F5] = 0x00; PacketParser[0x0F5] = &ValidatedPacketHandler<GP_CLI_COMMAND_TRACKING_START>;
@@ -5752,6 +5668,7 @@ void PacketParserInitialize()
     PacketSize[0x118] = 0x00; PacketParser[0x118] = &ValidatedPacketHandler<GP_CLI_COMMAND_UNITY_TOGGLE>;
     PacketSize[0x119] = 0x00; PacketParser[0x119] = &ValidatedPacketHandler<GP_CLI_COMMAND_EMOTE_LIST>;
     PacketSize[0x11B] = 0x00; PacketParser[0x11B] = &ValidatedPacketHandler<GP_CLI_COMMAND_MASTERY_DISPLAY>;
+    PacketSize[0x11C] = 0x08; PacketParser[0x11C] = &ValidatedPacketHandler<GP_CLI_COMMAND_PARTY_REQUEST>;
     PacketSize[0x11D] = 0x00; PacketParser[0x11D] = &ValidatedPacketHandler<GP_CLI_COMMAND_JUMP>;
     // clang-format on
 }

@@ -19,17 +19,19 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#include "0x02c_itemsearch.h"
 
 #include "entities/charentity.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_ITEMSEARCH::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // Not implemented.
-    return PacketValidator();
+    return PacketValidator()
+        .oneOf<GP_CLI_COMMAND_ITEMSEARCH_LANGUAGE>(Language);
 }
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_ITEMSEARCH::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
+    ShowDebugFmt("GP_CLI_COMMAND_ITEMSEARCH: Not implemented. Language: {}, Name: {}",
+                 Language, asStringFromUntrustedSource(Name, sizeof(Name)));
 }

@@ -517,7 +517,7 @@ public:
 
     // Skills and Abilities
     void capSkill(uint8 skill);
-    void capAllSkills();
+    void capAllSkills() const;
 
     uint16 getSkillLevel(uint16 skillId);
     void   setSkillLevel(uint8 SkillID, uint16 SkillAmount);
