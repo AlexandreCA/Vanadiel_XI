@@ -9,15 +9,42 @@ xi = xi or {}
 xi.events = xi.events or {}
 xi.events.loginCampaign = xi.events.loginCampaign or {}
 
--- Change vars below to modify settings for current login campaign (ALL TIMES JST)
-local loginCampaignStart  = { year = 2025, month = 6, day = 11, hour = 17 }
-local loginCampaignEnd    = { year = 2025, month = 7, day = 2, hour = 23 }
-local loginCampaignRedeem = { year = 2025, month = 7, day = 10, hour = 0 }
+-- Auto-generates campaign dates each month (ALL TIMES JST)
+local function getCurrentCampaignDates()
+    local year = JstYear()
+    local month = JstMonth()
+    local day = JstDayOfTheMonth()
+    local hour = JstHour()
+
+    if day < 11 or (day == 11 and hour < 17) then
+        month = month - 1
+        if month < 1 then
+            month = 12
+            year = year - 1
+        end
+    end
+
+    local start = { year = year, month = month, day = 11, hour = 17 }
+
+    local endMonth = month + 1
+    local endYear = year
+    if endMonth > 12 then
+        endMonth = 1
+        endYear = year + 1
+    end
+
+    local loginEnd = { year = endYear, month = endMonth, day = 2, hour = 23 }
+    local redeemEnd = { year = endYear, month = endMonth, day = 10, hour = 0 }
+
+    return start, loginEnd, redeemEnd
+end
+
+local loginCampaignStart, loginCampaignEnd, loginCampaignRedeem = getCurrentCampaignDates()
 
 -- Checks if a Login Campaign is active.
 xi.events.loginCampaign.canEarnPoints = function()
     if xi.settings.main.ENABLE_LOGIN_CAMPAIGN == 1 then
-        local jstNow  = { year = JstYear(), month = JstMonth(), day = JstDayOfTheMonth(), hour = JstHour() }
+        local jstNow = { year = JstYear(), month = JstMonth(), day = JstDayOfTheMonth(), hour = JstHour() }
         return utils.timeIsAfterOrEqual(jstNow, loginCampaignStart) and
             utils.timeIsBefore(jstNow, loginCampaignEnd)
     end
@@ -25,7 +52,7 @@ end
 
 xi.events.loginCampaign.canExchangePoints = function()
     if xi.settings.main.ENABLE_LOGIN_CAMPAIGN == 1 then
-        local jstNow  = { year = JstYear(), month = JstMonth(), day = JstDayOfTheMonth(), hour = JstHour() }
+        local jstNow = { year = JstYear(), month = JstMonth(), day = JstDayOfTheMonth(), hour = JstHour() }
         return utils.timeIsAfterOrEqual(jstNow, loginCampaignStart) and
             utils.timeIsBefore(jstNow, loginCampaignRedeem)
     end
@@ -33,7 +60,7 @@ end
 
 -- Gives Login Points once a day.
 xi.events.loginCampaign.onGameIn = function(player)
-    if not xi.events.loginCampaign.canEarnPoints()  then
+    if not xi.events.loginCampaign.canEarnPoints() then
         return
     end
 
@@ -46,7 +73,6 @@ xi.events.loginCampaign.onGameIn = function(player)
     local nextMidnight = player:getCharVar('LoginCampaignNextMidnight')
     local loginCount   = player:getCharVar('LoginCampaignLoginNumber')
 
-    -- Carry last months points if there's any
     if
         playercMonth ~= loginCampaignStart.month or
         playercYear ~= loginCampaignStart.year
@@ -63,19 +89,12 @@ xi.events.loginCampaign.onGameIn = function(player)
         loginCount = 0
     end
 
-    -- Show Info about campaign (month, year, login time)
     if nextMidnight ~= getMidnight() then
         player:messageSpecial(ID.text.LOGIN_CAMPAIGN_UNDERWAY, loginCampaignStart.year, loginCampaignStart.month)
 
-        if loginCount == 0 then
-            loginCount = 1
-        else
-            loginCount = loginCount + 1
-        end
-
+        loginCount = loginCount + 1
         player:setCharVar('LoginCampaignNextMidnight', getMidnight())
 
-        -- adds currency
         if loginCount == 1 then
             player:addCurrency('login_points', 500)
             player:messageSpecial(ID.text.LOGIN_NUMBER, 0, loginCount, 500, player:getCurrency('login_points'))
@@ -89,10 +108,8 @@ xi.events.loginCampaign.onGameIn = function(player)
 end
 
 -- Beginning of CS with Greeter Moogle.
--- Handles showing the correct list of prices and hiding the options that are not available
 xi.events.loginCampaign.onTrigger = function(player, csid)
     if not xi.events.loginCampaign.canExchangePoints() then
-        -- TODO: What do the moogles do when the campaign isn't active?
         return
     end
 
@@ -103,12 +120,10 @@ xi.events.loginCampaign.onTrigger = function(player, csid)
     local priceShift = {}
     local hideOptions = 0
 
-    -- Makes a table of prices
     for k, v in pairs(currentLoginCampaign) do
         price[k] = currentLoginCampaign[k]['price']
     end
 
-    -- Bit shifts values of prices (Defaults to 0 if price not in table)
     priceShift[1] = price[1] or 0
     priceShift[2] = bit.lshift(price[5] or 0, 16)
     priceShift[3] = price[9] or 0
@@ -118,55 +133,37 @@ xi.events.loginCampaign.onTrigger = function(player, csid)
     priceShift[7] = price[25] or 0
     priceShift[8] = bit.lshift(price[29] or 0, 16)
 
-    -- Combines two 16bit values to a single 32bit that will be passed as a CS param
     local priceBit1 = bit.bor(priceShift[1], priceShift[2])
     local priceBit2 = bit.bor(priceShift[3], priceShift[4])
     local priceBit3 = bit.bor(priceShift[5], priceShift[6])
     local priceBit4 = bit.bor(priceShift[7], priceShift[8])
 
-    -- Turning on bits in hideOptions will make choices disappear
     for i = 1, #priceShift do
         if priceShift[i] == 0 then
             hideOptions = bit.bor(hideOptions, bit.lshift(1, i - 1))
         end
     end
 
-    -- Eight param is not used/unknown
     player:startEvent(csid, cDate, loginPoints, priceBit1, priceBit2, priceBit3, priceBit4, hideOptions)
 end
 
--- Shows list of items depending on option selected.
--- It also is in charge of purchasing selected item.
+-- Show list of items / process purchase
 xi.events.loginCampaign.onEventUpdate = function(player, csid, option, npc)
     if not xi.events.loginCampaign.canExchangePoints() then
         return
     end
 
-    local showItems = bit.band(option, 31) -- first 32 bits are for showing correct item list
+    local showItems = bit.band(option, 31)
     local itemSelected = bit.band(bit.rshift(option, 5), 31)
     local itemQuantity = bit.band(bit.rshift(option, 11), 511)
     local currentLoginCampaign = prizes
     local loginPoints = player:getCurrency('login_points')
 
-    if
-        showItems == 1 or
-        showItems == 5 or
-        showItems == 9 or
-        showItems == 13 or
-        showItems == 17 or
-        showItems == 21 or
-        showItems == 25 or
-        showItems == 29
-    then
+    if showItems % 4 == 1 then
         local items = {}
         for i = 1, 20 do
-            if currentLoginCampaign[showItems]['items'][i] ~= nil then
-                table.insert(items, currentLoginCampaign[showItems]['items'][i])
-            else
-                table.insert(items, 0)
-            end
+            table.insert(items, currentLoginCampaign[showItems]['items'][i] or 0)
         end
-
         player:updateEvent(
             bit.bor(items[1], bit.lshift(items[2], 16)),
             bit.bor(items[3], bit.lshift(items[4], 16)),
@@ -176,26 +173,13 @@ xi.events.loginCampaign.onEventUpdate = function(player, csid, option, npc)
             bit.bor(items[11], bit.lshift(items[12], 16)),
             bit.bor(items[13], bit.lshift(items[14], 16)),
             bit.bor(items[15], bit.lshift(items[16], 16)))
-    elseif
-        showItems == 2 or
-        showItems == 6 or
-        showItems == 10 or
-        showItems == 14 or
-        showItems == 18 or
-        showItems == 22 or
-        showItems == 26 or
-        showItems == 30
-    then
+    elseif showItems % 4 == 2 then
         local price = currentLoginCampaign[showItems - 1]['price']
-        local totalItemsMask = (2 ^ 20 - 1) - (2 ^ #currentLoginCampaign[showItems - 1]['items'] - 1)  -- Uses 20 bits and sets to 1 for items not used.
+        local totalItemsMask = (2 ^ 20 - 1) - (2 ^ #currentLoginCampaign[showItems - 1]['items'] - 1)
         local items = {}
 
         for i = 1, 20 do
-            if currentLoginCampaign[showItems - 1]['items'][i] ~= nil then
-                table.insert(items, currentLoginCampaign[showItems - 1]['items'][i])
-            else
-                table.insert(items, 0)
-            end
+            table.insert(items, currentLoginCampaign[showItems - 1]['items'][i] or 0)
         end
 
         player:updateEvent(
@@ -209,10 +193,20 @@ xi.events.loginCampaign.onEventUpdate = function(player, csid, option, npc)
             player:delCurrency('login_points', currentLoginCampaign[showItems - 2]['price'] * itemQuantity)
             player:updateEvent(
                 currentLoginCampaign[showItems - 2]['items'][itemSelected + 1],
-                player:getCurrency('login_points'), -- Login Points after purchase
-                0, -- Unknown (most likely totalItemMask)
+                player:getCurrency('login_points'),
+                0,
                 currentLoginCampaign[showItems - 2]['price'],
-                loginPoints) -- Login points before purchase
+                loginPoints)
         end
+    end
+end
+
+-- Optional: GM command to display current campaign period
+xi.events.loginCampaign.onCommand = function(player)
+    if player:getGMLevel() >= 1 then
+        player:PrintToPlayer(string.format("[LoginCampaign] Active from %04d-%02d-11 17:00 JST to %04d-%02d-02 23:00 JST",
+            loginCampaignStart.year, loginCampaignStart.month, loginCampaignEnd.year, loginCampaignEnd.month))
+        player:PrintToPlayer(string.format("[LoginCampaign] Redeem until %04d-%02d-10 00:00 JST",
+            loginCampaignRedeem.year, loginCampaignRedeem.month))
     end
 end
