@@ -19,17 +19,17 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
-{
-    // Not implemented.
-    return PacketValidator();
-}
-
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x0017
+// This packet is sent by the client if it is attempting to access an entity that is in an unexpected state.
+GP_CLI_PACKET(GP_CLI_COMMAND_CHARREQ2,
+              uint16_t ActIndex;  // PS2: ActIndex
+              uint16_t padding00; // PS2: dammy
+              uint32_t UniqueNo2; // PS2: UniqueNo2
+              uint32_t UniqueNo3; // PS2: UniqueNo3
+              uint16_t Flg;       // PS2: Flg
+              uint16_t Flg2;      // PS2: Flg2
+);

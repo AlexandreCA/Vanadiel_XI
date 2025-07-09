@@ -19,17 +19,19 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#include "0x0b7_assist_channel.h"
 
 #include "entities/charentity.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_ASSIST_CHANNEL::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // Not implemented.
-    return PacketValidator();
+    return PacketValidator()
+        .oneOf<GP_CLI_COMMAND_ASSIST_CHANNEL_KIND>(Kind);
 }
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_ASSIST_CHANNEL::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
+    ShowDebugFmt("GP_CLI_COMMAND_ASSIST_CHANNEL: Not implemented. Kind: {}, sName: {}, unknown00: {}",
+                 Kind, asStringFromUntrustedSource(sName, sizeof(sName)), unknown00);
 }

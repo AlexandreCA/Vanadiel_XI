@@ -19,17 +19,18 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#include "0x01c_unknown.h"
 
 #include "entities/charentity.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_UNKNOWN::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // Not implemented.
     return PacketValidator();
 }
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_UNKNOWN::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
+    // Purpose of this packet is currently unknown
+    ShowDebug("GP_CLI_COMMAND_UNKNOWN: unknown00=%u padding00=%u unknown01=%u", unknown00, padding00, unknown01);
 }

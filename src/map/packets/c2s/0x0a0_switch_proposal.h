@@ -19,17 +19,22 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+enum class GP_CLI_COMMAND_SWITCH_PROPOSAL_KIND : uint8_t
 {
-    // Not implemented.
-    return PacketValidator();
-}
+    Party      = 0x01,
+    Linkshell1 = 0x02,
+    Linkshell2 = 0x03,
+    Say        = 0x05,
+    Shout      = 0x06,
+};
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x00A0
+// This packet is sent by the client when making a proposal. (via /nominate or /propose)
+GP_CLI_PACKET(GP_CLI_COMMAND_SWITCH_PROPOSAL,
+              uint8_t Kind;     // PS2: Kind
+              uint8_t Str[128]; // PS2: Str
+);

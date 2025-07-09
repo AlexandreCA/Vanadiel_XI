@@ -19,17 +19,17 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#include "0x017_charreq2.h"
 
 #include "entities/charentity.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_CHARREQ2::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // Not implemented.
     return PacketValidator();
 }
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_CHARREQ2::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
+    ShowWarning("GP_CLI_COMMAND_CHARREQ2: Incorrect NPC(%u,%u) type(%u)", ActIndex, UniqueNo2, Flg);
 }

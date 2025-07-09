@@ -19,17 +19,21 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+enum class GP_CLI_COMMAND_FRIENDPASS_PARA : uint16_t
 {
-    // Not implemented.
-    return PacketValidator();
-}
+    BeginPurchase       = 0, // Client has requested to begin the purchase of a world pass.
+    ConfirmPurchase     = 1, // Client has confirmed the purchase of a world pass.
+    BeginGoldPurchase   = 2, // Client has requested to begin the purchase of a gold world pass.
+    ConfirmGoldPurchase = 3, // Client has confirmed the purchase of a gold world pass.
+};
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x001B
+// This packet is sent by the client when it is interacting with, and ultimately purchasing from, a world pass vendor NPC.
+GP_CLI_PACKET(GP_CLI_COMMAND_FRIENDPASS,
+              uint16_t Para;      // PS2: Para
+              uint16_t padding00; // PS2: Dammy
+);
