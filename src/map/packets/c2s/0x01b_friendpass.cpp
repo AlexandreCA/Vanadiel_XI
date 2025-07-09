@@ -19,17 +19,31 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#include "0x01b_friendpass.h"
 
 #include "entities/charentity.h"
+#include "packets/world_pass.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_FRIENDPASS::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     // Not implemented.
-    return PacketValidator();
+    return PacketValidator()
+        .oneOf<GP_CLI_COMMAND_FRIENDPASS_PARA>(Para);
 }
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_FRIENDPASS::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
+    switch (static_cast<GP_CLI_COMMAND_FRIENDPASS_PARA>(Para))
+    {
+        case GP_CLI_COMMAND_FRIENDPASS_PARA::BeginPurchase:
+            break;
+        case GP_CLI_COMMAND_FRIENDPASS_PARA::ConfirmPurchase:
+            break;
+        case GP_CLI_COMMAND_FRIENDPASS_PARA::BeginGoldPurchase:
+            break;
+        case GP_CLI_COMMAND_FRIENDPASS_PARA::ConfirmGoldPurchase:
+            break;
+    }
+
+    PChar->pushPacket<CWorldPassPacket>(Para & 1 ? static_cast<uint32>(xirand::GetRandomNumber(9999999999)) : 0);
 }

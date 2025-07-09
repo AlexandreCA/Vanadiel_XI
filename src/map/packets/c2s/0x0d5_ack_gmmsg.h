@@ -19,17 +19,14 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
-{
-    // Not implemented.
-    return PacketValidator();
-}
-
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x00D5
+// This packet is sent by the client when deleting a received GM message from the Help Desk system.
+GP_CLI_PACKET(GP_CLI_COMMAND_ACK_GMMSG,
+              uint32_t msgId;  // PS2: msgId
+              uint16_t seqId;  // PS2: seqId
+              uint16_t seqNum; // PS2: seqNum
+);

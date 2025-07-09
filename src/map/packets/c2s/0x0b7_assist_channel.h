@@ -19,17 +19,23 @@
 ===========================================================================
 */
 
-#include "0x0d4_faq_gmparam.h"
+#pragma once
 
-#include "entities/charentity.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+enum class GP_CLI_COMMAND_ASSIST_CHANNEL_KIND : uint8_t
 {
-    // Not implemented.
-    return PacketValidator();
-}
+    GiveThumbsUp       = 0x24,
+    IssueWarning       = 0x25,
+    AddToMuteList      = 0x26,
+    RemoveFromMuteList = 0x27,
+};
 
-void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x00B7
+// This packet is sent by the client when interacting with the newer Assist channel mentor features. (Thumbs Up, Warning, Mute, Unmute)
+GP_CLI_PACKET(GP_CLI_COMMAND_ASSIST_CHANNEL,
+              uint8_t Kind;
+              uint8_t unknown00;
+              uint8_t sName[15];
+              uint8_t Mes[1]; // Always set to single space character
+);
