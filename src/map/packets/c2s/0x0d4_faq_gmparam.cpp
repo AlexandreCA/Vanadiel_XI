@@ -19,22 +19,17 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#include "0x0d4_faq_gmparam.h"
 
 #include "entities/charentity.h"
-#include "packets/char_status.h"
-#include "utils/charutils.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_FAQ_GMPARAM::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
+    // Unimplemented packet
+    return PacketValidator();
 }
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_FAQ_GMPARAM::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    PChar->m_jobMasterDisplay = Mode;
-
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
+    ShowDebugFmt("GP_CLI_COMMAND_FAQ_GMPARAM: Not implemented. Id: {}, Option: {}", Id, Option);
 }

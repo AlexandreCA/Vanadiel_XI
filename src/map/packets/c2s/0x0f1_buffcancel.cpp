@@ -19,22 +19,19 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#include "0x0f1_buffcancel.h"
 
 #include "entities/charentity.h"
-#include "packets/char_status.h"
-#include "utils/charutils.h"
+#include "status_effect_container.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_BUFFCANCEL::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
+    // TODO: Build a list of known cancellable buffs
     return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
+        .range("BuffNo", BuffNo, 0, MAX_EFFECTID);
 }
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_BUFFCANCEL::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    PChar->m_jobMasterDisplay = Mode;
-
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
+    PChar->StatusEffectContainer->DelStatusEffectsByIcon(BuffNo);
 }

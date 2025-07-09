@@ -1,11 +1,46 @@
 set(PACKET_C2S_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/base.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/validation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/validation.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x041_trophy_entry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x041_trophy_entry.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x058_recipe.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x066_fishing.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0bf_job_points_spend.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0bf_job_points_spend.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0c0_job_points_req.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0c0_job_points_req.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d2_map_group.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d2_map_group.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d3_faq_gmcall.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d3_faq_gmcall.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d4_faq_gmparam.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0d4_faq_gmparam.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0de_inspect_message.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0de_inspect_message.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e0_set_usermsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e0_set_usermsg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_get_lsmsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e1_get_lsmsg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e2_set_lsmsg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e2_set_lsmsg.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_get_lspriv.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e4_get_lspriv.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_reqlogout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e7_reqlogout.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_camp.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0e8_camp.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_sit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0ea_sit.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_reqsubmapnum.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0eb_reqsubmapnum.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f0_rescue.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f0_rescue.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_buffcancel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f1_buffcancel.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_submapchange.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x0f2_submapchange.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f4_tracking_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f4_tracking_list.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0f5_tracking_start.cpp

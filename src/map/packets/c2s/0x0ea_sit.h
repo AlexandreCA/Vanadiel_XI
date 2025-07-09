@@ -19,22 +19,19 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#pragma once
 
-#include "entities/charentity.h"
-#include "packets/char_status.h"
-#include "utils/charutils.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+enum class GP_CLI_COMMAND_SIT_MODE : uint32_t
 {
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
-}
+    Toggle = 0x00,
+    On     = 0x01,
+    Off    = 0x02,
+};
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    PChar->m_jobMasterDisplay = Mode;
-
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x00EA
+// This packet is sent by the client when requesting to sit. (/sit)
+GP_CLI_PACKET(GP_CLI_COMMAND_SIT,
+              uint32_t Mode; // PS2: Mode
+);

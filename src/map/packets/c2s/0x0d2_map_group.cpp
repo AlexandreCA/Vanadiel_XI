@@ -19,22 +19,30 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#include "0x0d2_map_group.h"
 
 #include "entities/charentity.h"
-#include "packets/char_status.h"
-#include "utils/charutils.h"
+#include "packets/party_map.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto GP_CLI_COMMAND_MAP_GROUP::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
 {
     return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
+        .mustEqual(ZoneNo, PChar->getZone(), "ZoneNo does not match character zone");
 }
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
+void GP_CLI_COMMAND_MAP_GROUP::process(MapSession* PSession, CCharEntity* PChar) const
 {
-    PChar->m_jobMasterDisplay = Mode;
-
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
+    // clang-format off
+    PChar->ForAlliance([PChar](CBattleEntity* PPartyMember)
+    {
+        if (PPartyMember)
+        {
+            auto* partyMember = static_cast<CCharEntity*>(PPartyMember);
+            if (partyMember->getZone() == PChar->getZone() && partyMember->m_moghouseID == PChar->m_moghouseID)
+            {
+                PChar->pushPacket<CPartyMapPacket>(partyMember);
+            }
+        }
+    });
+    // clang-format on
 }

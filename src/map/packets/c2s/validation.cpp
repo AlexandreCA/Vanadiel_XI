@@ -19,22 +19,39 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#include "validation.h"
 
 #include "entities/charentity.h"
-#include "packets/char_status.h"
-#include "utils/charutils.h"
+#include "status_effect_container.h"
+#include "trade_container.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+auto PacketValidator::isNotCrafting(const CCharEntity* PChar) -> PacketValidator&
 {
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
+    if (PChar->animation == ANIMATION_SYNTH ||
+        (PChar->CraftContainer && PChar->CraftContainer->getItemsCount() > 0))
+    {
+        result_.addError("Character is crafting.");
+    }
+
+    return *this;
 }
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
+auto PacketValidator::isNormalStatus(const CCharEntity* PChar) -> PacketValidator&
 {
-    PChar->m_jobMasterDisplay = Mode;
+    if (PChar->status != STATUS_TYPE::NORMAL)
+    {
+        result_.addError("Character has abnormal status.");
+    }
 
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
+    return *this;
+}
+
+auto PacketValidator::isNotPreventedAction(const CCharEntity* PChar) -> PacketValidator&
+{
+    if (PChar->StatusEffectContainer->HasPreventActionEffect())
+    {
+        result_.addError("Character has prevent action effect.");
+    }
+
+    return *this;
 }

@@ -19,22 +19,19 @@
 ===========================================================================
 */
 
-#include "0x11b_mastery_display.h"
+#pragma once
 
-#include "entities/charentity.h"
-#include "packets/char_status.h"
-#include "utils/charutils.h"
+#include "base.h"
 
-auto GP_CLI_COMMAND_MASTERY_DISPLAY::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
+enum class GP_CLI_COMMAND_SUBMAPCHANGE_STATE : uint16_t
 {
-    return PacketValidator()
-        .oneOf<GP_CLI_COMMAND_MASTERY_DISPLAY_MODE>(Mode);
-}
+    General = 0x01, // When the client is moving around the world freely, it will make use of State value 0x01 any time it enters a different sub-region within the map.
+    Event   = 0x02, // The only time State value 0x02 is used is during events that cause the player to be moved between sub-regions.
+};
 
-void GP_CLI_COMMAND_MASTERY_DISPLAY::process(MapSession* PSession, CCharEntity* PChar) const
-{
-    PChar->m_jobMasterDisplay = Mode;
-
-    charutils::SaveJobMasterDisplay(PChar);
-    PChar->pushPacket<CCharStatusPacket>(PChar);
-}
+// https://github.com/atom0s/XiPackets/tree/main/world/client/0x00F2
+// This packet is sent by the client when updating their sub-map region.
+GP_CLI_PACKET(GP_CLI_COMMAND_SUBMAPCHANGE,
+              uint16_t State;        // PS2: State
+              uint16_t SubMapNumber; // PS2: SubMapNumber
+);
