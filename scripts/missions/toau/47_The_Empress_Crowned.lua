@@ -1,17 +1,17 @@
 -----------------------------------
--- Fangs of the Lion
--- Aht Uhrgan Mission 43
+-- The Empress Crowned
+-- Aht Uhrgan Mission 47
 -----------------------------------
--- !addmission 4 42
+-- !addmission 4 46
 -----------------------------------
 
-local mission = Mission:new(xi.mission.log_id.TOAU, xi.mission.id.toau.FANGS_OF_THE_LION)
+local mission = Mission:new(xi.mission.log_id.TOAU, xi.mission.id.toau.THE_EMPRESS_CROWNED)
 
 mission.reward =
 {
-    keyItem     = xi.ki.MYTHRIL_MIRROR,
-    title       = xi.title.NASHMEIRAS_LOYALIST,
-    nextMission = { xi.mission.log_id.TOAU, xi.mission.id.toau.NASHMEIRAS_PLEA },
+    item        = xi.item.GLORY_CROWN,
+    title       = xi.title.ETERNAL_MERCENARY,
+    nextMission = { xi.mission.log_id.TOAU, xi.mission.id.toau.ETERNAL_MERCENARY },
 }
 
 mission.sections =
@@ -26,20 +26,20 @@ mission.sections =
             onTriggerAreaEnter =
             {
                 [3] = function(player, triggerArea)
-                    return mission:progressEvent(3138, xi.besieged.getMercenaryRank(player), 1, 0, 0, 0, 0, 0, 0, 0) -- Your mercenary rank is mentioned in the CS.
+                    return mission:progressEvent(3144, xi.besieged.getMercenaryRank(player), 1, 0, 0, 0, 0, 0, 0, 0)
                 end,
             },
 
             onEventUpdate =
             {
-                [3138] = function(player, csid, option, npc)
-                    player:updateEvent(0, 1, 0, 0, 0, 0, 0, 0, 0)
+                [3144] = function(player, csid, option, npc)
+                    player:updateEvent(0, 1, 0, 0, 1, 1, 0, 0, 0)
                 end,
             },
 
             onEventFinish =
             {
-                [3138] = function(player, csid, option, npc)
+                [3144] = function(player, csid, option, npc)
                     mission:complete(player)
                 end,
             },
