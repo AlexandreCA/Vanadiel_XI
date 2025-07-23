@@ -1,18 +1,18 @@
 -----------------------------------
--- Area: Mhaura
---  NPC: Condor Eye
+-- Area: Nashmau
+--  NPC: Belligerent Sheep
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
     -- Outside dock zone.
-    if player:getZPos() >= 39 then
-        player:startEvent(229)
+    if player:getZPos() >= -65 then
+        player:startEvent(237)
 
     -- Inside dock zone.
     else
-        player:startEvent(13)
+        player:startEvent(223)
     end
 end
 
