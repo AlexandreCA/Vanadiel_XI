@@ -11670,7 +11670,7 @@ uint16 CLuaBaseEntity::copyConfrontationEffect(uint16 targetID)
  *  Notes   : Used to check if entity is inside a battlefield
  ************************************************************************/
 
-auto CLuaBaseEntity::getBattlefield() -> CBattlefield*
+auto CLuaBaseEntity::getBattlefield() const -> CBattlefield*
 {
     return m_PBaseEntity->PBattlefield;
 }
@@ -11682,7 +11682,7 @@ auto CLuaBaseEntity::getBattlefield() -> CBattlefield*
  *  Notes   :
  ************************************************************************/
 
-int32 CLuaBaseEntity::getBattlefieldID()
+auto CLuaBaseEntity::getBattlefieldID() const -> int32
 {
     return m_PBaseEntity->PBattlefield ? m_PBaseEntity->PBattlefield->GetID() : -1;
 }
@@ -11694,8 +11694,14 @@ int32 CLuaBaseEntity::getBattlefieldID()
  *  Notes   : Returns BATTLEFIELD_RETURNCODE (see scripts/globals/battlefield.lua or src/map/battlefield.h)
  ************************************************************************/
 
-uint8 CLuaBaseEntity::registerBattlefield(sol::object const& arg0, sol::object const& arg1, sol::object const& arg2, sol::object const& arg3)
+auto CLuaBaseEntity::registerBattlefield(sol::object const& arg0, sol::object const& arg1, sol::object const& arg2, sol::object const& arg3) const -> uint8
 {
+    if (!m_PBaseEntity->loc.zone)
+    {
+        ShowWarning("Attempted to register %s without valid zone.", m_PBaseEntity->getName());
+        return BATTLEFIELD_RETURN_CODE_BATTLEFIELD_FULL;
+    }
+
     if (m_PBaseEntity->loc.zone->m_BattlefieldHandler == nullptr)
     {
         ShowWarning("m_BattlefieldHandler was null for %s.", m_PBaseEntity->getName());
@@ -11750,7 +11756,7 @@ uint8 CLuaBaseEntity::registerBattlefield(sol::object const& arg0, sol::object c
     return PZone->m_BattlefieldHandler->RegisterBattlefield(PChar, registration);
 }
 
-bool CLuaBaseEntity::battlefieldAtCapacity(int battlefieldID)
+auto CLuaBaseEntity::battlefieldAtCapacity(const int battlefieldID) const -> bool
 {
     if (m_PBaseEntity->loc.zone->m_BattlefieldHandler == nullptr)
     {
@@ -11789,7 +11795,7 @@ bool CLuaBaseEntity::battlefieldAtCapacity(int battlefieldID)
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::enterBattlefield(sol::object const& area)
+auto CLuaBaseEntity::enterBattlefield(sol::object const& area) const -> bool
 {
     if (m_PBaseEntity->objtype != TYPE_PC || m_PBaseEntity->loc.zone->m_BattlefieldHandler == nullptr)
     {
@@ -11817,7 +11823,7 @@ bool CLuaBaseEntity::enterBattlefield(sol::object const& area)
  *  Notes   : leaveCode can be found in scripts/globals/battlefield.lua or src/map/battlefield.h
  ************************************************************************/
 
-bool CLuaBaseEntity::leaveBattlefield(uint8 leavecode)
+auto CLuaBaseEntity::leaveBattlefield(const uint8 leavecode) const -> bool
 {
     if (m_PBaseEntity->objtype == TYPE_NPC || m_PBaseEntity->loc.zone->m_BattlefieldHandler == nullptr)
     {
@@ -11835,7 +11841,7 @@ bool CLuaBaseEntity::leaveBattlefield(uint8 leavecode)
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::isInDynamis()
+auto CLuaBaseEntity::isInDynamis() const -> bool
 {
     if (m_PBaseEntity->objtype == TYPE_NPC)
     {
@@ -11853,7 +11859,7 @@ bool CLuaBaseEntity::isInDynamis()
  *  Notes   :
  ************************************************************************/
 
-void CLuaBaseEntity::setEnteredBattlefield(bool entered)
+void CLuaBaseEntity::setEnteredBattlefield(const bool entered) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -11875,7 +11881,7 @@ void CLuaBaseEntity::setEnteredBattlefield(bool entered)
  *  Notes   :
  ************************************************************************/
 
-bool CLuaBaseEntity::hasEnteredBattlefield()
+auto CLuaBaseEntity::hasEnteredBattlefield() const -> bool
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
