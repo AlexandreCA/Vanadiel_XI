@@ -8,6 +8,7 @@ zones[xi.zone.WINDURST_WALLS] =
     text =
     {
         CONQUEST_BASE                  = 0,     -- Tallying conquest results...
+        ASSIST_CHANNEL                 = 6539,  -- You will be able to use the Assist Channel until #/#/# at #:# (JST).
         ITEM_CANNOT_BE_OBTAINED        = 6543,  -- You cannot obtain the <item>. Come back after sorting your inventory.
         FULL_INVENTORY_AFTER_TRADE     = 6547,  -- You cannot obtain the <item>. Try trading again after sorting your inventory.
         ITEM_OBTAINED                  = 6549,  -- Obtained: <item>.

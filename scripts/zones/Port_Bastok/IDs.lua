@@ -8,6 +8,7 @@ zones[xi.zone.PORT_BASTOK] =
     text =
     {
         NOTHING_HAPPENS               = 119,   -- Nothing happens...
+        ASSIST_CHANNEL                = 6380,  -- You will be able to use the Assist Channel until #/#/# at #:# (JST).
         ITEM_CANNOT_BE_OBTAINED       = 6384,  -- You cannot obtain the <item>. Come back after sorting your inventory.
         FULL_INVENTORY_AFTER_TRADE    = 6388,  -- You cannot obtain the <item>. Try trading again after sorting your inventory.
         ITEM_OBTAINED                 = 6390,  -- Obtained: <item>.

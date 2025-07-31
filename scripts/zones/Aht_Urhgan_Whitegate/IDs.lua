@@ -7,6 +7,7 @@ zones[xi.zone.AHT_URHGAN_WHITEGATE] =
 {
     text =
     {
+        ASSIST_CHANNEL                = 217,   -- You will be able to use the Assist Channel until #/#/# at #:# (JST).
         ITEM_CANNOT_BE_OBTAINED       = 221,   -- You cannot obtain the <item>. Come back after sorting your inventory.
         ITEM_CANNOT_BE_OBTAINEDX      = 225,   -- You cannot obtain the <item>. Try trading again after sorting your inventory.
         ITEM_OBTAINED                 = 227,   -- Obtained: <item>.

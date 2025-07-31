@@ -8,6 +8,7 @@ zones[xi.zone.UPPER_JEUNO] =
     text =
     {
         CONQUEST_BASE                    = 0,     -- Tallying conquest results...
+        ASSIST_CHANNEL                   = 6539,  -- You will be able to use the Assist Channel until #/#/# at #:# (JST).
         ITEM_CANNOT_BE_OBTAINED          = 6543,  -- You cannot obtain the <item>. Come back after sorting your inventory.
         ITEM_OBTAINED                    = 6549,  -- Obtained: <item>.
         GIL_OBTAINED                     = 6550,  -- Obtained <number> gil.
