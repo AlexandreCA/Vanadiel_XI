@@ -675,3 +675,12 @@ xi.job_utils.beastmaster.attemptCharm = function(charmer, target)
 
     return xi.msg.basic.CHARM_FAIL
 end
+
+xi.job_utils.beastmaster.onUseAbilitySpur = function(player)
+    local power = 20 + player:getMod(xi.mod.ENHANCES_SPUR)-- bonus STORETP
+    local subpower = player:getJobPointLevel(xi.jp.SPUR_EFFECT) * 3 -- bonus attack
+    local pet = player:getPet()
+    if pet then
+        pet:addStatusEffect(xi.effect.SPUR, power, 0, 90, 0, subpower)
+    end
+end
