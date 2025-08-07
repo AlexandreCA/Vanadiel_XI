@@ -2143,7 +2143,6 @@ INSERT INTO `nm_spawn_points` VALUES (17383443,0,281.000,43.000,96.000);
 INSERT INTO `nm_spawn_points` VALUES (17387567,0,333.895,-0.582,-144.558); -- Hawkeyed Dnatbat
 INSERT INTO `nm_spawn_points` VALUES (17387585,0,244.000,4.000,-240.000); -- Steelbiter Gudrud
 INSERT INTO `nm_spawn_points` VALUES (17387606,0,174.212,2.068,-20.285); -- Tigerbane Bakdak
-INSERT INTO `nm_spawn_points` VALUES (17387644,0,-60.045,-0.517,41.996); -- Poisonhand Gnadgad
 INSERT INTO `nm_spawn_points` VALUES (17387920,0,-225.237,2.295,-294.764);
 INSERT INTO `nm_spawn_points` VALUES (17391802,0,219.000,-2.000,-99.000);
 INSERT INTO `nm_spawn_points` VALUES (17395800,0,-207.840,-0.498,109.939);
