@@ -347,8 +347,6 @@ INSERT INTO `nm_spawn_points` VALUES (17215888,47,-318.258,29.993,-347.883);
 INSERT INTO `nm_spawn_points` VALUES (17215888,48,-309.062,28.860,-321.399);
 INSERT INTO `nm_spawn_points` VALUES (17215888,49,-317.119,30.000,-322.596);
 INSERT INTO `nm_spawn_points` VALUES (17219795,0,-257.465,-15.805,-117.638); -- Stray Mary
-INSERT INTO `nm_spawn_points` VALUES (17219886,0,160.000,24.000,121.000); -- Rampaging Ram
-INSERT INTO `nm_spawn_points` VALUES (17219887,0,-10.000,7.000,45.000); -- Steelfleece Baldarich
 INSERT INTO `nm_spawn_points` VALUES (17219933,0,-212.268,39.477,329.581); -- Stray Mary
 INSERT INTO `nm_spawn_points` VALUES (17223797,0,-429.953,24.500,-305.450); -- Ni'Zho Bladebender. Need retail capture. Using PH coords.
 INSERT INTO `nm_spawn_points` VALUES (17223797,1,11.309,23.904,-337.923);

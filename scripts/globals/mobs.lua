@@ -50,11 +50,12 @@ end
 xi.mob.phOnDespawn = function(ph, nmLuaName, chance, cooldown, params)
     params = params or {}
     --[[
-        params.immediate   = true    pop NM without waiting for next PH pop time
-        params.dayOnly     = true    spawn NM only at day time
-        params.nightOnly   = true    spawn NM only at night time
-        params.noPosUpdate = true    do not run UpdateNMSpawnPoint()
-        params.spawnPoints = { {x = , y = , z = } } table of spawn points to choose from, overrides NM's lua-defined table
+        params.immediate          = true    pop NM without waiting for next PH pop time
+        params.dayOnly            = true    spawn NM only at day time
+        params.nightOnly          = true    spawn NM only at night time
+        params.noPosUpdate        = true    do not run UpdateNMSpawnPoint()
+        params.spawnPoints        = { {x = , y = , z = } } table of spawn points to choose from, overrides NM's lua-defined table
+        params.doNotEnablePhSpawn = true    Don't enable ph respawns after NM is killed (for chained ph systems like steelfleece)
     ]]
 
     local phList = nil
@@ -80,6 +81,7 @@ xi.mob.phOnDespawn = function(ph, nmLuaName, chance, cooldown, params)
         'dayOnly',
         'nightOnly',
         'noPosUpdate',
+        'doNotEnablePhSpawn',
     }
 
     for _, pKey in ipairs(paramKeys) do
@@ -154,8 +156,10 @@ xi.mob.phOnDespawn = function(ph, nmLuaName, chance, cooldown, params)
                 nm:addListener('DESPAWN', 'DESPAWN_' .. nmId, function(m)
                     -- on NM death, replace NM repop with PH repop
                     DisallowRespawn(nmId, true)
-                    DisallowRespawn(phId, false)
-                    GetMobByID(phId):setRespawnTime(GetMobRespawnTime(phId))
+                    if not params.doNotEnablePhSpawn then
+                        DisallowRespawn(phId, false)
+                        GetMobByID(phId):setRespawnTime(GetMobRespawnTime(phId))
+                    end
 
                     if m:getLocalVar('doNotInvokeCooldown') == 0 then
                         m:setLocalVar('pop', GetSystemTime() + cooldown)
