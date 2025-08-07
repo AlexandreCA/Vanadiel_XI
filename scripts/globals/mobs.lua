@@ -47,30 +47,45 @@ xi.mob.updateNMSpawnPoint = function(mob, spawnPoints)
 end
 
 -- potential lottery placeholder was killed
-xi.mob.phOnDespawn = function(ph, phList, chance, cooldown, params)
+xi.mob.phOnDespawn = function(ph, nmLuaName, chance, cooldown, params)
     params = params or {}
     --[[
         params.immediate   = true    pop NM without waiting for next PH pop time
         params.dayOnly     = true    spawn NM only at day time
         params.nightOnly   = true    spawn NM only at night time
         params.noPosUpdate = true    do not run UpdateNMSpawnPoint()
-        params.spawnPoints = {x = , y = , z = } table of spawn points to choose from
+        params.spawnPoints = { {x = , y = , z = } } table of spawn points to choose from, overrides NM's lua-defined table
     ]]
 
-    if type(params.immediate) ~= 'boolean' then
-        params.immediate = false
+    local phList = nil
+    -- temporary while phLists are defined in PH lua files instead of the NM lua file
+    if type(nmLuaName) == 'table' then
+        phList = nmLuaName
+    else
+        local mobEntityObj = xi.zones[ph:getZoneName()].mobs[nmLuaName]
+        if mobEntityObj then
+            phList = mobEntityObj.phList
+            params.spawnPoints = params.spawnPoints or mobEntityObj.spawnPoints
+        end
     end
 
-    if type(params.dayOnly) ~= 'boolean' then
-        params.dayOnly = false
+    if phList == nil then
+        return false
     end
 
-    if type(params.nightOnly) ~= 'boolean' then
-        params.nightOnly = false
-    end
+    -- ensure certain boolean params exist
+    local paramKeys =
+    {
+        'immediate',
+        'dayOnly',
+        'nightOnly',
+        'noPosUpdate',
+    }
 
-    if type(params.noPosUpdate) ~= 'boolean' then
-        params.noPosUpdate = false
+    for _, pKey in ipairs(paramKeys) do
+        if type(params[pKey]) ~= 'boolean' then
+            params[pKey] = false
+        end
     end
 
     if xi.settings.main.NM_LOTTERY_CHANCE then
