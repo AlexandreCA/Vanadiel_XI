@@ -1251,9 +1251,13 @@ function Battlefield:handleLootRolls(battlefield, lootTable, npc)
         if lootGroup then
             local max = 0
 
-            for _, entry in pairs(lootGroup) do
+            for j, entry in pairs(lootGroup) do
                 if type(entry) == 'table' then
                     max = max + entry.weight
+
+                    if entry.item == nil then
+                        print(fmt('[ERROR] Battlefield ({}) has nil item at index {} of lootgroup with index {}', battlefield:getID(), j, i))
+                    end
                 end
             end
 
@@ -1268,7 +1272,7 @@ function Battlefield:handleLootRolls(battlefield, lootTable, npc)
                         current = current + entry.weight
 
                         if current >= roll then
-                            if entry.item == 0 then
+                            if entry.item == 0 or entry.item == nil then
                                 break
                             end
 
