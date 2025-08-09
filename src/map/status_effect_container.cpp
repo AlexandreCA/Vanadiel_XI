@@ -1518,7 +1518,7 @@ void CStatusEffectContainer::RemoveAllStatusEffectsInIDRange(EFFECT start, EFFEC
  *                                                                       *
  ************************************************************************/
 
-void CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect)
+auto CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect) -> void
 {
     if (StatusEffect->GetStatusID() >= MAX_EFFECTID)
     {
