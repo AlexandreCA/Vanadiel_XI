@@ -53,9 +53,10 @@ When a status effect is gained twice on a player. It can do one or more of the f
 #include "entities/mobentity.h"
 #include "entities/trustentity.h"
 #include "latent_effect_container.h"
-#include "map_server.h"
 #include "notoriety_container.h"
 #include "status_effect_container.h"
+
+#include "map_engine.h"
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
 #include "utils/itemutils.h"
