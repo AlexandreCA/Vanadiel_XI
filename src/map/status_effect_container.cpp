@@ -1564,22 +1564,19 @@ void CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect)
         }
     }
 
-    // Determine if this is a BRD Song or COR Effect.
-    if (!effectFromItemEnchant &&
-        (subType == 0 ||
-         subType > 20000 ||
-         (effect >= EFFECT_REQUIEM && effect <= EFFECT_NOCTURNE) ||
-         (effect >= EFFECT_DOUBLE_UP_CHANCE && effect <= EFFECT_NATURALISTS_ROLL) ||
-         effect == EFFECT_RUNEISTS_ROLL ||
-         effect == EFFECT_DRAIN_DAZE ||
-         effect == EFFECT_ASPIR_DAZE ||
-         effect == EFFECT_HASTE_DAZE ||
-         effect == EFFECT_ATMA ||
-         effect == EFFECT_BATTLEFIELD))
+    // Effects that use /server/scripts/effects/ as their lua file source.
+    if (!effectFromItemEnchant &&                                           // The effect is not from an item enchantment (See condition above).
+        effect != EFFECT_ENCHANTMENT &&                                     // The effect is not an enchantment that has an effect source defined currently.
+        StatusEffect->GetSourceType() != EffectSourceType::EQUIPPED_ITEM && // The source is not from an equipped item
+        (effect != EFFECT_FOOD || (subType == 0 && effect == EFFECT_FOOD))) // Exclude food effects with a subType > 0 (See condition below)
     {
         name.insert(0, "effects/");
         name.insert(name.size(), effects::EffectsParams[effect].Name);
     }
+
+    // Is an effect from a usable item not caught above.
+    // Known use cases: Food effects with a subPower > 0 (Food effects from items) and enchantments without an effect source.
+    // Food effects from FoV/Gov Books have a subType of 0 and are handled in the scripts/effects/food.lua
     else
     {
         CItem* Ptem = itemutils::GetItemPointer(subType);
