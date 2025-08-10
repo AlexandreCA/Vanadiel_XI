@@ -76,6 +76,7 @@
 #include "grades.h"
 #include "ipc_client.h"
 #include "item_container.h"
+#include "items.h"
 #include "latent_effect_container.h"
 #include "linkshell.h"
 #include "map_networking.h"
@@ -2296,6 +2297,13 @@ namespace charutils
 
             CItemWeapon* PWeapon = dynamic_cast<CItemWeapon*>(PItem);
             CItemWeapon* AWeapon = dynamic_cast<CItemWeapon*>(AItem);
+
+            // Marvelous Cheer special case
+            // It is not technically a Wind Instrument, but it can lockstyle one.
+            if (AItem->getID() == MARVELOUS_CHEER && PWeapon->getSkillType() == SKILL_WIND_INSTRUMENT)
+            {
+                return HasItem(PChar, AItem->getID());
+            }
 
             if (PWeapon && AWeapon && PWeapon->getSkillType() == AWeapon->getSkillType())
             {
