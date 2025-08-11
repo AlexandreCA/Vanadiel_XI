@@ -147,14 +147,12 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
     finalDamage = math.floor(finalDamage * liberatorMultiplier)
     finalDamage = math.floor(finalDamage * netherVoidMultiplier)
 
-    -- Clamp: We cannot absorb more HP/MP than the target has.
-    finalDamage = utils.clamp(finalDamage, 0, targetPoints)
-
     -- Final operations.
     if modAbsorbed == xi.mod.HP then
         finalDamage = utils.clamp(finalDamage - target:getMod(xi.mod.PHALANX), 0, 99999)
         finalDamage = utils.clamp(utils.oneforall(target, finalDamage), 0, 99999)
         finalDamage = utils.clamp(utils.stoneskin(target, finalDamage), -99999, 99999)
+        finalDamage = utils.clamp(finalDamage, 0, targetPoints)
         finalDamage = target:checkDamageCap(finalDamage)
 
         -- Handle Bind break and TP?
@@ -165,6 +163,8 @@ xi.spells.absorb.doDrainingSpell = function(caster, target, spell)
 
         -- Handle Enmity.
         target:updateEnmityFromDamage(caster, finalDamage)
+    else
+        finalDamage = utils.clamp(finalDamage, 0, targetPoints)
     end
 
     -- Drain II and Drain III increase max HP via effect.
