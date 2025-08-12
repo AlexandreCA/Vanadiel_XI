@@ -31,7 +31,7 @@ entity.onMobDespawn = function(mob)
     {
         doNotEnablePhSpawn = true,
     }
-    xi.mob.phOnDespawn(mob, 'Steelfleece_Baldarich', 10, 75600, params) -- 21 hours minimum, do not re-enable rampaging ram spawn after killing steelfleece
+    xi.mob.phOnDespawn(mob, ID.mob.STEELFLEECE, 10, 75600, params) -- 21 hours minimum, do not re-enable rampaging ram spawn after killing steelfleece
 end
 
 return entity

@@ -3,6 +3,7 @@
 --   NM: Tremor Ram
 -- Note: PH for Rampaging Ram
 -----------------------------------
+local ID = zones[xi.zone.KONSCHTAT_HIGHLANDS]
 require('scripts/quests/tutorial')
 -----------------------------------
 ---@type TMobEntity
@@ -13,7 +14,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, 'Rampaging_Ram', 10, 1200) -- 20 min
+    xi.mob.phOnDespawn(mob, ID.mob.RAMPAGING_RAM, 10, 1200) -- 20 min
 end
 
 return entity

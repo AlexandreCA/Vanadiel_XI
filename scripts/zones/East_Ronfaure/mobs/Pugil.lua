@@ -3,6 +3,8 @@
 --  Mob: Pugil
 -- Note: PH for Swamfisk
 -----------------------------------
+local ID = zones[xi.zone.EAST_RONFAURE]
+-----------------------------------
 ---@type TMobEntity
 local entity = {}
 
@@ -11,7 +13,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, 'Swamfisk', 7, 3600) -- 1 hour minimum
+    xi.mob.phOnDespawn(mob, ID.mob.SWAMFISK[1], 7, 3600) -- 1 hour minimum
 end
 
 return entity
