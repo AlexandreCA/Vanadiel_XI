@@ -2952,6 +2952,7 @@ namespace luautils
         return result.get_type(0) == sol::type::boolean ? result.get<bool>(0) : true;
     }
 
+    // Party building is performed after this, so it's safe to set link/superlink behavior in onMobInitialize
     void OnMobInitialize(CBaseEntity* PMob)
     {
         TracyZoneScoped;
@@ -5583,6 +5584,14 @@ namespace luautils
             luautils::OnEntityLoad(PMob);
 
             luautils::OnMobInitialize(PMob);
+            if (PInstance)
+            {
+                PInstance->FindPartyForMob(PMob);
+            }
+            else
+            {
+                PZone->FindPartyForMob(PMob);
+            }
             luautils::ApplyMixins(PMob);
             luautils::ApplyZoneMixins(PMob);
 

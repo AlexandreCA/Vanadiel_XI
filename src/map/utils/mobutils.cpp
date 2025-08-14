@@ -1699,6 +1699,10 @@ namespace mobutils
                 luautils::OnEntityLoad(PMob);
 
                 luautils::OnMobInitialize(PMob);
+                if (CZone* PZone = zoneutils::GetZone(zoneID))
+                {
+                    PZone->FindPartyForMob(PMob);
+                }
                 luautils::ApplyMixins(PMob);
                 luautils::ApplyZoneMixins(PMob);
 
