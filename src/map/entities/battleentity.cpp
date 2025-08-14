@@ -503,7 +503,7 @@ uint16 CBattleEntity::GetWeaponDelay(bool tp)
 
                 if (weapon->isTwoHanded())
                 {
-                    hasteAbility = hasteAbility - getMod(Mod::TWOHAND_HASTE_ABILITY) / 10000.0f;
+                    hasteAbility = hasteAbility + getMod(Mod::TWOHAND_HASTE_ABILITY) / 10000.0f;
                 }
 
                 hasteMagic   = std::clamp<float>(hasteMagic, -1.0f, 0.4375f);
