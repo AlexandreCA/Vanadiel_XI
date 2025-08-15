@@ -25862,7 +25862,7 @@ INSERT INTO `item_mods` VALUES (15122,1,34);  -- DEF: 34
 INSERT INTO `item_mods` VALUES (15122,2,19);  -- HP: 19
 INSERT INTO `item_mods` VALUES (15122,27,4);  -- ENMITY: 4
 INSERT INTO `item_mods` VALUES (15122,298,5); -- STEAL: 5
-INSERT INTO `item_mods` VALUES (15122,897,1); -- GILFINDER: 1 (Unconfirmed)
+INSERT INTO `item_mods` VALUES (15122,897,1); -- GILFINDER: 1
 
 -- Valor Breeches
 INSERT INTO `item_mods` VALUES (15123,1,43);   -- DEF: 43
@@ -31373,7 +31373,7 @@ INSERT INTO `item_mods` VALUES (16276,72,1);  -- HPHEAL: 1
 
 -- Bandolero Scarf
 INSERT INTO `item_mods` VALUES (16277,68,5);  -- EVA: 5
-INSERT INTO `item_mods` VALUES (16277,897,1); -- GILFINDER: 1 (Unconfirmed)
+INSERT INTO `item_mods` VALUES (16277,897,1); -- GILFINDER: 1
 
 -- Pipers Torque
 INSERT INTO `item_mods` VALUES (16278,14,5);  -- CHR: 5
