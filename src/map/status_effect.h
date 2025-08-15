@@ -19,10 +19,10 @@
 ===========================================================================
 */
 
-#ifndef _STATUSEFFECT_H
-#define _STATUSEFFECT_H
+#pragma once
 
 #include "common/cbasetypes.h"
+#include "common/logging.h"
 #include "common/mmo.h"
 
 #include <vector>
@@ -853,5 +853,3 @@ private:
 
     std::string m_Name; // Effect name for scripts
 };
-
-#endif

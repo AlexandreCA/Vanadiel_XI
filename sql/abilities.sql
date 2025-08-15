@@ -635,6 +635,7 @@ INSERT INTO `abilities` VALUES (779,'spider_web',9,25,257,2,102,0,0,0,2000,0,6,1
 -- INSERT INTO `abilities` VALUES (782,'gloom_spray',9,25,257,rec,102,0,0,0,2000,0,6,18.0,0,2,60,0,0,NULL); -- ROTZ
 -- INSERT INTO `abilities` VALUES (786,'disembowel',22,1,1,0,300,0,0,???,2000,0,6,20.0,0,450,900,0,0,NULL);
 -- INSERT INTO `abilities` VALUES (787,'extirpating_salvo',22,1,1,0,300,0,0,???,2000,0,6,20.0,0,450,900,0,0,NULL);
+INSERT INTO `abilities` VALUES (790,'frenzied_rage',9,25,257,1,102,0,0,0,2000,0,6,18.0,0,2,60,0,0,NULL);
 INSERT INTO `abilities` VALUES (960,'clarsach_call',15,1,4,60,173,0,0,175,2000,0,6,30.0,1,1,60,0,2,NULL);
 INSERT INTO `abilities` VALUES (961,'welt',15,1,4,60,173,326,317,176,2000,0,6,30.0,0,0,60,0,0,NULL);
 -- INSERT INTO `abilities` VALUES (962,'katabatic_blades',15,1,1,0,300,0,0,???,2000,0,6,30.0,0,0,60,0,0,NULL);
