@@ -13300,8 +13300,9 @@ bool CLuaBaseEntity::addStatusEffect(sol::variadic_args va)
         auto subType         = va[4].is<uint32>() ? va[4].as<uint32>() : 0;
         auto subPower        = va[5].is<double>() ? static_cast<uint16>(va[5].as<double>()) : 0;
         auto tier            = va[6].is<uint16>() ? va[6].as<uint16>() : 0;
-        auto sourceType      = va[7].is<EffectSourceType>() ? va[7].as<EffectSourceType>() : EffectSourceType::SOURCE_NONE;
-        auto sourceTypeParam = va[8].is<uint16>() ? va[8].as<uint16>() : 0;
+        auto sourceType      = va[7].is<uint16>() ? va[7].as<uint16>() : 0;
+        auto sourceTypeParam = va[8].is<uint32>() ? va[8].as<uint32>() : 0;
+        auto originID        = va[9].is<uint32>() ? va[9].as<uint32>() : 0;
 
         CStatusEffect* PEffect = new CStatusEffect(effectID,
                                                    effectIcon,
@@ -13316,6 +13317,9 @@ bool CLuaBaseEntity::addStatusEffect(sol::variadic_args va)
         {
             PEffect->SetSource(sourceType, sourceTypeParam);
         }
+
+        // Set the originID. This is the original source of the effect(Usually an entity)
+        PEffect->SetOriginID(originID);
 
         if (PEffect->GetStatusID() == EFFECT_FOOD)
         {
