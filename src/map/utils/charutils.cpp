@@ -4281,6 +4281,16 @@ namespace charutils
             gil += std::clamp<uint32>(gBonus, 1, settings::get<uint32>("map.MAX_GIL_BONUS"));
         }
 
+        // TODO: pin down moghancement money which seems to be a % bonus applied individually?
+        // Gilfinder bonus is 1 + (128 + 0..GF level * 16)/256
+        // https://docs.google.com/spreadsheets/d/134YjiVWoqn9UKOFrJFXZPHZChNa6heWzY0xXOGIteC8/edit
+        if (PMob->m_GilfinderLevel > 0)
+        {
+            double multiplier = 1 + ((128 + xirand::GetRandomNumber<uint16_t>(0, PMob->m_GilfinderLevel * 16)) / 256.);
+
+            gil = gil * multiplier;
+        }
+
         // Distribute gil to player/party/alliance
         if (PChar->PParty != nullptr)
         {
@@ -4290,7 +4300,7 @@ namespace charutils
             // clang-format off
             PChar->ForAlliance([PMob, &members](CBattleEntity* PPartyMember)
             {
-                if (PPartyMember->getZone() == PMob->getZone() && isWithinDistance(PPartyMember->loc.p, PMob->loc.p, 100.f))
+                if (PPartyMember->getZone() == PMob->getZone() && isWithinDistance(PPartyMember->loc.p, PMob->loc.p, 100.f)) // TODO: verify range
                 {
                     members.emplace_back((CCharEntity*)PPartyMember);
                 }
@@ -4300,20 +4310,8 @@ namespace charutils
             // all members might not be in range
             if (!members.empty())
             {
-                // Check for highest gilfinder tier
-                uint16 gilFinderActive = 0;
-
-                for (auto PMember : members)
-                {
-                    if (PMember->getMod(Mod::GILFINDER) > gilFinderActive)
-                    {
-                        gilFinderActive = PMember->getMod(Mod::GILFINDER);
-                    }
-                }
-
                 // Calculate gil for each party member.
                 uint32 gilPerPerson = static_cast<uint32>(gil / members.size());
-                gilPerPerson        = gilPerPerson * (100 + gilFinderActive) / 100;
 
                 for (auto PMember : members)
                 {
@@ -4324,8 +4322,6 @@ namespace charutils
         }
         else if (isWithinDistance(PChar->loc.p, PMob->loc.p, 100.f))
         {
-            // Check for gilfinder
-            gil += gil * PChar->getMod(Mod::GILFINDER) / 100;
             UpdateItem(PChar, LOC_INVENTORY, 0, static_cast<int32>(gil));
             PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, static_cast<int32>(gil), 0, 565);
         }
