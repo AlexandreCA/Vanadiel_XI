@@ -1,27 +1,26 @@
 -----------------------------------
 -- Area: Selbina
---  NPC: Mathilde
--- Involved in Quest: Riding on the Clouds
--- !pos 12.578 -8.287 -7.576 248
+--  NPC: Ramona
+-- !pos 15.1869 -7.2878 -1.1016 171
 -----------------------------------
 ---@type TNpcEntity
 local entity = {}
 
 entity.onTrigger = function(player, npc)
-    if player:getRank(player:getNation()) >= 6 then
-        if not player:hasCompletedUniqueEvent(xi.uniqueEvent.MET_MATHILDES_SON) then
-            player:startEvent(173)
-        else
-            player:startEvent(174)
-        end
+    if not player:hasCompletedUniqueEvent(xi.uniqueEvent.RAMONA_INTRODUCTION) then
+        player:startEvent(172)
     else
-        player:startEvent(171)
+        if not player:hasCompletedUniqueEvent(xi.uniqueEvent.MET_MATHILDES_SON) then
+            player:startEvent(170)
+        else
+            player:startEvent(175)
+        end
     end
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
-    if csid == 173 then
-        player:setUniqueEvent(xi.uniqueEvent.MET_MATHILDES_SON)
+    if csid == 172 then
+        player:setUniqueEvent(xi.uniqueEvent.RAMONA_INTRODUCTION)
     end
 end
 
