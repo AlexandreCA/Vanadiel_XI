@@ -3132,13 +3132,15 @@ void CCharEntity::changeMoghancement(uint16 moghancementID, bool isAdding)
             }
             break;
         case MOGHANCEMENT_MONEY:
-            addModifier(Mod::GILFINDER, 10 * multiplier);
+            // TODO: this is NOT gilfinder
+            // addModifier(Mod::GILFINDER, 10 * multiplier);
             break;
         case MOGHANCEMENT_CAMPAIGN:
             addModifier(Mod::CAMPAIGN_BONUS, 5 * multiplier);
             break;
         case MOGHANCEMENT_MONEY_II:
-            addModifier(Mod::GILFINDER, 15 * multiplier);
+            // TODO: this is NOT gilfinder
+            // addModifier(Mod::GILFINDER, 15 * multiplier);
             break;
         case MOGHANCEMENT_SKILL_GAINS:
             // NOTE: Exact value is unknown but considering this only granted by a newish item it makes sense SE made it fairly strong
