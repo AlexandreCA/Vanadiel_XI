@@ -35,7 +35,12 @@ itemObject.onItemUse = function(target, user, item)
 end
 
 itemObject.onEffectGain = function(target, effect)
-    if target:getRace() == xi.race.ELVAAN_M or target:getRace() == xi.race.ELVAAN_F then
+    local targetRace = target:getRace()
+
+    if
+        targetRace == xi.race.ELVAAN_M or
+        targetRace == xi.race.ELVAAN_F
+    then
         target:addMod(xi.mod.FOOD_HP, 20)
         target:addMod(xi.mod.FOOD_MP, 20)
         target:addMod(xi.mod.STR, 6)
@@ -60,7 +65,12 @@ itemObject.onEffectGain = function(target, effect)
 end
 
 itemObject.onEffectLose = function(target, effect)
-    if target:getRace() == xi.race.ELVAAN_M or target:getRace() == xi.race.ELVAAN_F then
+    local targetRace = target:getRace()
+
+    if
+        targetRace == xi.race.ELVAAN_M or
+        targetRace == xi.race.ELVAAN_F
+    then
         target:delMod(xi.mod.FOOD_HP, 20)
         target:delMod(xi.mod.FOOD_MP, 20)
         target:delMod(xi.mod.STR, 6)
