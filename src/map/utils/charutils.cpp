@@ -3048,7 +3048,8 @@ namespace charutils
             {
                 PItem = dynamic_cast<CItemWeapon*>(PChar->m_Weapons[std::get<0>(slot)]);
 
-                if (PItem)
+                // As of writing, the only unlockable weapons are: wsnm, ksnm, nyzul vigil weapons
+                if (PItem && (!PItem->isUnlockable() || PItem->isUnlocked()))
                 {
                     std::get<1>(slot) = battleutils::GetScaledItemModifier(PChar, PItem, Mod::ADDS_WEAPONSKILL);
                     std::get<2>(slot) = battleutils::GetScaledItemModifier(PChar, PItem, Mod::ADDS_WEAPONSKILL_DYN);
@@ -6860,8 +6861,10 @@ namespace charutils
             if (PWeapon->addWsPoints(wspoints))
             {
                 // weapon is now broken
+                charutils::BuildingCharWeaponSkills(PChar);
                 PChar->PLatentEffectContainer->CheckLatentsWeaponBreak(slotid);
                 PChar->pushPacket<CCharStatsPacket>(PChar);
+                PChar->pushPacket<CCharAbilitiesPacket>(PChar);
             }
 
             db::preparedStmt("UPDATE char_inventory SET extra = ? WHERE charid = ? AND location = ? AND slot = ? LIMIT 1",
