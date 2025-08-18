@@ -4292,6 +4292,14 @@ namespace charutils
             gil = gil * multiplier;
         }
 
+        int16 killshotBonus = PChar->getMod(Mod::MOGHANCEMENT_GIL_BONUS_P);
+        if (killshotBonus > 0)
+        {
+            double multiplier = (100.0 + killshotBonus) / 100.0;
+
+            gil = gil * multiplier;
+        }
+
         // Distribute gil to player/party/alliance
         if (PChar->PParty != nullptr)
         {
