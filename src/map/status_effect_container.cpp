@@ -1537,15 +1537,19 @@ auto CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect) -> voi
     }
 
     std::string name;
-    EFFECT      effect = StatusEffect->GetStatusID();
+    EFFECT      effect                = StatusEffect->GetStatusID();
+    auto        effectSourceType      = StatusEffect->GetSourceType();
+    auto        effectSourceTypeParam = StatusEffect->GetSourceTypeParam();
 
     // check if status effect is special case from a usable equipped item that grants enchantment
     bool effectFromItemEnchant = false;
-    if (StatusEffect->GetSourceType() != EffectSourceType::SOURCE_NONE && StatusEffect->GetSourceTypeParam() > 0)
+    bool effectFromItemFood    = false;
+
+    if (effectSourceType != EffectSourceType::SOURCE_NONE && effectSourceTypeParam > 0)
     {
-        if (StatusEffect->GetSourceType() == EffectSourceType::EQUIPPED_ITEM)
+        if (effectSourceType == EffectSourceType::SOURCE_EQUIPPED_ITEM)
         {
-            auto PItem = itemutils::GetItemPointer(StatusEffect->GetSourceTypeParam());
+            auto PItem = itemutils::GetItemPointer(effectSourceTypeParam);
             if (PItem != nullptr)
             {
                 // get the item lua script and check if it has valid functions
@@ -1564,21 +1568,43 @@ auto CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect) -> voi
                 }
             }
         }
+        else if (effectSourceType == EffectSourceType::SOURCE_FOOD)
+        {
+            auto PItem = itemutils::GetItemPointer(StatusEffect->GetSourceTypeParam());
+            if (PItem != nullptr)
+            {
+                // get the item lua script and check if it has valid functions
+                auto itemName     = "items/" + PItem->getName();
+                auto itemFullName = fmt::format("./scripts/{}.lua", itemName);
+                auto cacheEntry   = luautils::GetCacheEntryFromFilename(itemFullName);
+                auto onEffectGain = cacheEntry["onEffectGain"].get<sol::function>();
+                auto onEffectLose = cacheEntry["onEffectLose"].get<sol::function>();
+
+                effectFromItemFood = onEffectGain.valid() && onEffectLose.valid();
+
+                // if it does have valid functions then set the status effect name as the script (similar to actual status effects)
+                if (effectFromItemFood)
+                {
+                    name = itemName;
+                }
+            }
+        }
     }
 
     // Effects that use /server/scripts/effects/ as their lua file source.
-    if (!effectFromItemEnchant &&                                           // The effect is not from an item enchantment (See condition above).
-        effect != EFFECT_ENCHANTMENT &&                                     // The effect is not an enchantment that has an effect source defined currently.
-        StatusEffect->GetSourceType() != EffectSourceType::EQUIPPED_ITEM && // The source is not from an equipped item
-        (effect != EFFECT_FOOD || (subType == 0 && effect == EFFECT_FOOD))) // Exclude food effects with a subType > 0 (See condition below)
+    if (!effectFromItemEnchant &&                                     // The effect is not from an item enchantment (See condition above).
+        !effectFromItemFood &&                                        // The effect is not from a usable food item.
+        effect != EFFECT_ENCHANTMENT &&                               // The effect is not an enchantment that has an effect source defined currently.
+        effectSourceType != EffectSourceType::SOURCE_EQUIPPED_ITEM && // The source is not from an equipped item
+        (effect != EFFECT_FOOD ||                                     // Exclude food effects with a sourceTypeParam > 0 (See condition below)
+        (effect == EFFECT_FOOD && effectSourceTypeParam == 0)))       // Food effects from FoV/Gov Books have a subType of 0 and are handled in the scripts/effects/food.lua
     {
         name.insert(0, "effects/");
         name.insert(name.size(), effects::EffectsParams[effect].Name);
     }
 
     // Is an effect from a usable item not caught above.
-    // Known use cases: Food effects with a subPower > 0 (Food effects from items) and enchantments without an effect source.
-    // Food effects from FoV/Gov Books have a subType of 0 and are handled in the scripts/effects/food.lua
+    // Known use cases: Enchantments without an effect source.
     else
     {
         CItem* Ptem = itemutils::GetItemPointer(subType);
