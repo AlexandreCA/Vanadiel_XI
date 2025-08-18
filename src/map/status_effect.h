@@ -772,10 +772,11 @@ class CBattleEntity;
 
 enum EffectSourceType : uint8_t
 {
-    SOURCE_NONE    = 0,
-    EQUIPPED_ITEM  = 1,
-    TEMPORARY_ITEM = 2,
-    MOB            = 3,
+    SOURCE_NONE           = 0,
+    SOURCE_EQUIPPED_ITEM  = 1,
+    SOURCE_TEMPORARY_ITEM = 2,
+    SOURCE_MOB            = 3,
+    SOURCE_FOOD           = 4,
 };
 
 class CStatusEffect
