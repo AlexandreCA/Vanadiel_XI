@@ -1915,7 +1915,7 @@ void CCharEntity::OnAbility(CAbilityState& state, action_t& action)
                         int16 bloodBoonRate = getMod(Mod::BLOOD_BOON);
                         if (xirand::GetRandomNumber(100) < bloodBoonRate)
                         {
-                            mpCost *= xirand::GetRandomNumber(8.f, 16.f) / 16.f;
+                            mpCost *= xirand::GetRandomNumber(8.0f, 16.0f) / 16.0f;
                         }
                     }
 
