@@ -2840,10 +2840,11 @@ end
 ---@param subType integer?
 ---@param subPower integer?
 ---@param tier integer?
----@param SourceType integer?
----@param SourceTypeParam integer?
+---@param sourceType integer?
+---@param sourceTypeParam integer?
+---@param originID integer?
 ---@return boolean
-function CBaseEntity:addStatusEffect(effectID, power, tick, duration, subType, subPower, tier, SourceType, SourceTypeParam)
+function CBaseEntity:addStatusEffect(effectID, power, tick, duration, subType, subPower, tier, sourceType, sourceTypeParam, originID)
 end
 
 ---@param effect CStatusEffect
