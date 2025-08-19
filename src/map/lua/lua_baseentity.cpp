@@ -15337,6 +15337,17 @@ int32 CLuaBaseEntity::checkDamageCap(int32 damage)
     return 0;
 }
 
+auto CLuaBaseEntity::handleSevereDamage(int32 damage, bool isPhysical) -> int32
+{
+    if (auto* PBattle = dynamic_cast<CBattleEntity*>(m_PBaseEntity))
+    {
+        return battleutils::HandleSevereDamage(PBattle, damage, isPhysical);
+    }
+
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+    return 0;
+}
+
 /************************************************************************
  *  Function: spawnPet()
  *  Purpose : Spawns a pet if a few correct conditions are met
@@ -19912,6 +19923,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("takeSpellDamage", CLuaBaseEntity::takeSpellDamage);
     SOL_REGISTER("takeSwipeLungeDamage", CLuaBaseEntity::takeSwipeLungeDamage);
     SOL_REGISTER("checkDamageCap", CLuaBaseEntity::checkDamageCap);
+    SOL_REGISTER("handleSevereDamage", CLuaBaseEntity::handleSevereDamage);
 
     // Pets and Automations
     SOL_REGISTER("spawnPet", CLuaBaseEntity::spawnPet);

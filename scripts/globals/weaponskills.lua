@@ -319,6 +319,7 @@ local function calculateHybridMagicDamage(tp, physicaldmg, attacker, target, wsP
     magicdmg = math.floor(magicdmg + calcParams.bonusfTP * physicaldmg)
     magicdmg = math.floor(magicdmg * applyResistanceAbility(attacker, target, wsParams.ele, wsParams.skill, calcParams.bonusAcc))
     magicdmg = math.floor(magicdmg * xi.spells.damage.calculateTMDA(target, wsParams.ele))
+    magicdmg = math.floor(target:handleSevereDamage(magicdmg, false))
 
     if magicdmg > 0 then
         magicdmg = math.floor(magicdmg * xi.spells.damage.calculateNukeAbsorbOrNullify(target, wsParams.ele))
@@ -871,6 +872,7 @@ xi.weaponskills.doMagicWeaponskill = function(attacker, target, wsID, wsParams, 
         dmg = math.floor(addBonusesAbility(attacker, wsParams.ele, target, dmg, wsParams))
         dmg = math.floor(dmg * applyResistanceAbility(attacker, target, wsParams.ele, wsParams.skill, gearAcc))
         dmg = math.floor(dmg * xi.spells.damage.calculateTMDA(target, wsParams.ele))
+        dmg = math.floor(target:handleSevereDamage(dmg, false))
 
         if dmg < 0 then
             calcParams.finalDmg = dmg

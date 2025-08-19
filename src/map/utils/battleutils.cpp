@@ -5298,10 +5298,11 @@ namespace battleutils
         return damage;
     }
 
-    int32 HandleSevereDamage(CBattleEntity* PDefender, int32 damage, bool isPhysical)
+    auto HandleSevereDamage(CBattleEntity* PDefender, int32 damage, bool isPhysical) -> int32
     {
         damage = HandleSevereDamageEffect(PDefender, EFFECT_MIGAWARI, damage, true);
-        // In the future, handle other Severe Damage Effects like Earthen Armor here
+        // TODO: Earthen Armor effect
+        // TODO: Sentinel's Scherzo effect
 
         if (isPhysical && PDefender->objtype == TYPE_PET && PDefender->getMod(Mod::AUTO_SCHURZEN) != 0 && damage >= PDefender->health.hp &&
             ((CPetEntity*)PDefender)->PMaster->StatusEffectContainer->GetEffectsCount(EFFECT_EARTH_MANEUVER) >= 1)
@@ -5349,7 +5350,7 @@ namespace battleutils
         }
     }
 
-    int32 HandleSevereDamageEffect(CBattleEntity* PDefender, EFFECT effect, int32 damage, bool removeEffect)
+    auto HandleSevereDamageEffect(CBattleEntity* PDefender, EFFECT effect, int32 damage, bool removeEffect) -> int32
     {
         if (PDefender->StatusEffectContainer->HasStatusEffect(effect))
         {
