@@ -3635,11 +3635,11 @@ namespace charutils
             if ((SkillID >= 1 && SkillID <= 12) || (SkillID >= 25 && SkillID <= 31))
             // if should effect automaton replace the above with: (SkillID >= 1 && SkillID <= 31)
             {
-                SkillUpChance *= ((100.f + PChar->getMod(Mod::COMBAT_SKILLUP_RATE)) / 100.f);
+                SkillUpChance *= ((100.0f + PChar->getMod(Mod::COMBAT_SKILLUP_RATE)) / 100.0f);
             }
             else if (SkillID >= 32 && SkillID <= 44)
             {
-                SkillUpChance *= ((100.f + PChar->getMod(Mod::MAGIC_SKILLUP_RATE)) / 100.f);
+                SkillUpChance *= ((100.0f + PChar->getMod(Mod::MAGIC_SKILLUP_RATE)) / 100.0f);
             }
 
             if (Diff > 0 && (random < SkillUpChance || forceSkillUp))
@@ -4309,7 +4309,7 @@ namespace charutils
             // clang-format off
             PChar->ForAlliance([PMob, &members](CBattleEntity* PPartyMember)
             {
-                if (PPartyMember->getZone() == PMob->getZone() && isWithinDistance(PPartyMember->loc.p, PMob->loc.p, 100.f)) // TODO: verify range
+                if (PPartyMember->getZone() == PMob->getZone() && isWithinDistance(PPartyMember->loc.p, PMob->loc.p, 100.0f)) // TODO: verify range
                 {
                     members.emplace_back((CCharEntity*)PPartyMember);
                 }
@@ -4329,7 +4329,7 @@ namespace charutils
                 }
             }
         }
-        else if (isWithinDistance(PChar->loc.p, PMob->loc.p, 100.f))
+        else if (isWithinDistance(PChar->loc.p, PMob->loc.p, 100.0f))
         {
             UpdateItem(PChar, LOC_INVENTORY, 0, static_cast<int32>(gil));
             PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, static_cast<int32>(gil), 0, 565);
@@ -4529,22 +4529,22 @@ namespace charutils
 
                     if (PMob->getMobMod(MOBMOD_EXP_BONUS))
                     {
-                        const float monsterbonus = 1.f + PMob->getMobMod(MOBMOD_EXP_BONUS) / 100.f;
+                        const float monsterbonus = 1.0f + PMob->getMobMod(MOBMOD_EXP_BONUS) / 100.0f;
                         exp *= monsterbonus;
                     }
 
                     // Per monster caps pulled from: https://ffxiclopedia.fandom.com/wiki/Experience_Points
                     if (PMember->GetMLevel() <= 50)
                     {
-                        exp = std::fmin(exp, 400.f);
+                        exp = std::fmin(exp, 400.0f);
                     }
                     else if (PMember->GetMLevel() <= 60)
                     {
-                        exp = std::fmin(exp, 500.f);
+                        exp = std::fmin(exp, 500.0f);
                     }
                     else
                     {
-                        exp = std::fmin(exp, 600.f);
+                        exp = std::fmin(exp, 600.0f);
                     }
 
                     if (mobCheck > EMobDifficulty::DecentChallenge)
@@ -4944,7 +4944,7 @@ namespace charutils
             }
         }
 
-        capacityPoints *= 1.f + rawBonus / 100;
+        capacityPoints *= 1.0f + rawBonus / 100;
         return capacityPoints;
     }
 
@@ -7316,7 +7316,7 @@ namespace charutils
 
         if (highestItem > 99)
         {
-            itemLevelDiff += (highestItem - 99) / 2.f;
+            itemLevelDiff += (highestItem - 99) / 2.0f;
         }
 
         for (uint8 slotID = 4; slotID < 9; ++slotID)
@@ -7325,7 +7325,7 @@ namespace charutils
 
             if (PItem && PItem->getILvl() > 99)
             {
-                itemLevelDiff += (PItem->getILvl() - 99) / 10.f;
+                itemLevelDiff += (PItem->getILvl() - 99) / 10.0f;
             }
         }
 
