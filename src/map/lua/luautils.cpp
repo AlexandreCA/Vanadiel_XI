@@ -282,6 +282,7 @@ namespace luautils
         lua.set_function("VanadielMoonDirection", &luautils::VanadielMoonDirection);
         lua.set_function("VanadielRSERace", &luautils::VanadielRSERace);
         lua.set_function("VanadielRSELocation", &luautils::VanadielRSELocation);
+        lua.set_function("SetTimeOffset", &luautils::SetTimeOffset);
         lua.set_function("IsMoonNew", &luautils::IsMoonNew);
         lua.set_function("IsMoonFull", &luautils::IsMoonFull);
         lua.set_function("RunElevator", &luautils::StartElevator);
@@ -1627,6 +1628,14 @@ namespace luautils
     {
         TracyZoneScoped;
         return vanadiel_time::rse::get_location();
+    }
+
+    void SetTimeOffset(const int32 offset)
+    {
+        TracyZoneScoped;
+
+        earth_time::reset_offset();
+        earth_time::add_offset(std::chrono::seconds(offset));
     }
 
     bool IsMoonNew()
