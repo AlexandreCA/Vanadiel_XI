@@ -1227,19 +1227,12 @@ namespace luautils
         return PNpc;
     }
 
-    void InitInteractionGlobal()
+    void InitInteractionGlobal(const std::vector<uint16>& zoneIds)
     {
         auto initZones = lua["InteractionGlobal"]["initZones"];
+        auto table     = sol::as_table(zoneIds);
 
-        std::vector<uint16> zoneIds;
-        // clang-format off
-        zoneutils::ForEachZone([&zoneIds](CZone* PZone)
-        {
-            zoneIds.emplace_back(PZone->GetID());
-        });
-        // clang-format on
-
-        auto result = initZones(zoneIds);
+        auto result = initZones(table);
 
         if (!result.valid())
         {
@@ -3475,6 +3468,8 @@ namespace luautils
             sol::error err = result;
             ShowError("luautils::onMobSpawn: %s", err.what());
         }
+
+        PMob->PAI->EventHandler.triggerListener("SPAWN", PMob);
     }
 
     void OnMobRoamAction(CBaseEntity* PMob)
