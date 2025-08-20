@@ -282,6 +282,7 @@ namespace luautils
         lua.set_function("VanadielMoonDirection", &luautils::VanadielMoonDirection);
         lua.set_function("VanadielRSERace", &luautils::VanadielRSERace);
         lua.set_function("VanadielRSELocation", &luautils::VanadielRSELocation);
+        lua.set_function("SetTimeOffset", &luautils::SetTimeOffset);
         lua.set_function("IsMoonNew", &luautils::IsMoonNew);
         lua.set_function("IsMoonFull", &luautils::IsMoonFull);
         lua.set_function("RunElevator", &luautils::StartElevator);
@@ -1226,19 +1227,12 @@ namespace luautils
         return PNpc;
     }
 
-    void InitInteractionGlobal()
+    void InitInteractionGlobal(const std::vector<uint16>& zoneIds)
     {
         auto initZones = lua["InteractionGlobal"]["initZones"];
+        auto table     = sol::as_table(zoneIds);
 
-        std::vector<uint16> zoneIds;
-        // clang-format off
-        zoneutils::ForEachZone([&zoneIds](CZone* PZone)
-        {
-            zoneIds.emplace_back(PZone->GetID());
-        });
-        // clang-format on
-
-        auto result = initZones(zoneIds);
+        auto result = initZones(table);
 
         if (!result.valid())
         {
@@ -1627,6 +1621,14 @@ namespace luautils
     {
         TracyZoneScoped;
         return vanadiel_time::rse::get_location();
+    }
+
+    void SetTimeOffset(const int32 offset)
+    {
+        TracyZoneScoped;
+
+        earth_time::reset_offset();
+        earth_time::add_offset(std::chrono::seconds(offset));
     }
 
     bool IsMoonNew()
@@ -3466,6 +3468,8 @@ namespace luautils
             sol::error err = result;
             ShowError("luautils::onMobSpawn: %s", err.what());
         }
+
+        PMob->PAI->EventHandler.triggerListener("SPAWN", PMob);
     }
 
     void OnMobRoamAction(CBaseEntity* PMob)

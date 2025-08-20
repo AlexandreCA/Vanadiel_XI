@@ -211,7 +211,7 @@ namespace luautils
     void PopulateIDLookupsByZone(std::optional<uint16> maybeZoneId = std::nullopt);
 
     void SendEntityVisualPacket(uint32 npcid, const char* command);
-    void InitInteractionGlobal();
+    void InitInteractionGlobal(const std::vector<uint16>& zoneIds);
     auto GetZone(uint16 zoneId) -> CZone*;
     auto GetItemByID(uint32 itemId) -> CItem*;
     auto GetNPCByID(uint32 npcid, sol::object const& instanceObj) -> CBaseEntity*;
@@ -269,6 +269,7 @@ namespace luautils
     uint8  VanadielMoonDirection();
     uint8  VanadielRSERace();
     uint8  VanadielRSELocation();
+    void   SetTimeOffset(int32 offset); // Manipulate earth time forward or backward by offset seconds. Affects Vana'Diel time.
     bool   IsMoonNew();
     bool   IsMoonFull();
     void   StartElevator(uint32 ElevatorID);
