@@ -1959,7 +1959,7 @@ bool CLuaBaseEntity::pathThrough(sol::table const& pointsTable, sol::object cons
             }
 
             auto wait  = pointData["wait"];
-            point.wait = wait.valid() ? std::chrono::seconds(wait.get<uint32>()) : 0s;
+            point.wait = wait.valid() ? std::chrono::milliseconds(wait.get<uint32>()) : 0s;
             points.emplace_back(point);
         }
     }
