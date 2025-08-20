@@ -403,7 +403,7 @@ namespace zoneutils
 
                 auto* PZone = g_PZoneList[zoneId];
 
-                const auto query = "SELECT mobname, mobid, pos_rot, pos_x, pos_y, pos_z, "
+                const auto query = "SELECT mobname, packet_name, mobid, pos_rot, pos_x, pos_y, pos_z, "
                     "respawntime, spawntype, dropid, mob_groups.HP, mob_groups.MP, minLevel, maxLevel, "
                     "modelid, mJob, sJob, cmbSkill, cmbDmgMult, cmbDelay, behavior, links, mobType, immunity, "
                     "ecosystemID, mobradius, speed, "
@@ -436,6 +436,7 @@ namespace zoneutils
                             CMobEntity* PMob = new CMobEntity;
 
                             PMob->name = rset->get<std::string>("mobname");
+                            PMob->packetName = rset->get<std::string>("packet_name");
                             PMob->id   = rset->get<uint32>("mobid");
 
                             PMob->targid = static_cast<uint16>(PMob->id & 0x0FFF);

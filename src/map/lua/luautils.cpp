@@ -3468,6 +3468,8 @@ namespace luautils
             sol::error err = result;
             ShowError("luautils::onMobSpawn: %s", err.what());
         }
+
+        PMob->PAI->EventHandler.triggerListener("SPAWN", PMob);
     }
 
     void OnMobRoamAction(CBaseEntity* PMob)
