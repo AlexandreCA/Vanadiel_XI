@@ -2733,6 +2733,34 @@ bool CLuaBaseEntity::isBeside(CLuaBaseEntity const* target, sol::object const& a
 }
 
 /************************************************************************
+ *  Function: isToEntitysLeft()
+ *  Purpose : Returns true if an entityA is to the left side of entityB (From EntityB's perspective)
+ *  Example : if attacker:isToEntitysLeft(target) then
+ *  Notes   : Can specify angle for wider/narrower ranges
+ ************************************************************************/
+
+auto CLuaBaseEntity::isToEntitysLeft(CLuaBaseEntity const* target, sol::object const& angleArg) -> bool
+{
+    uint8 angle = (angleArg != sol::lua_nil) ? angleArg.as<uint8>() : 64;
+
+    return toEntitysLeft(m_PBaseEntity->loc.p, target->GetBaseEntity()->loc.p, angle);
+}
+
+/************************************************************************
+ *  Function: isToEntitysRight()
+ *  Purpose : Returns true if an entityA is to the right side of entityB (From EntityB's perspective)
+ *  Example : if entityA:isToEntitysRight(EntityB) then
+ *  Notes   : Can specify angle for wider/narrower ranges
+ ************************************************************************/
+
+auto CLuaBaseEntity::isToEntitysRight(CLuaBaseEntity const* target, sol::object const& angleArg) -> bool
+{
+    uint8 angle = (angleArg != sol::lua_nil) ? angleArg.as<uint8>() : 64;
+
+    return toEntitysRight(m_PBaseEntity->loc.p, target->GetBaseEntity()->loc.p, angle);
+}
+
+/************************************************************************
  *  Function: getZone(isZoning)
  *  Purpose : Returns a pointer to a zone object?
  *  Example : if player:getZone() == mob:getZone() then
@@ -19351,6 +19379,8 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("isInfront", CLuaBaseEntity::isInfront);
     SOL_REGISTER("isBehind", CLuaBaseEntity::isBehind);
     SOL_REGISTER("isBeside", CLuaBaseEntity::isBeside);
+    SOL_REGISTER("isToEntitysLeft", CLuaBaseEntity::isToEntitysLeft);
+    SOL_REGISTER("isToEntitysRight", CLuaBaseEntity::isToEntitysRight);
 
     SOL_REGISTER("getZone", CLuaBaseEntity::getZone);
     SOL_REGISTER("getZoneID", CLuaBaseEntity::getZoneID);

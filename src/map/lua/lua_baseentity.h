@@ -176,12 +176,14 @@ public:
     void sendEmote(CLuaBaseEntity* target, uint8 emID, uint8 emMode);
 
     // Location and Positioning
-    int16 getWorldAngle(sol::variadic_args va);                                 // return angle (rot) between two points (vector from a to b), aligned to absolute cardinal degree
-    int16 getFacingAngle(CLuaBaseEntity const* target);                         // return angle between entity rot and target pos, aligned to number of degrees of difference
-    bool  isFacing(CLuaBaseEntity const* target, sol::object const& angleArg);  // true if you are facing the target
-    bool  isInfront(CLuaBaseEntity const* target, sol::object const& angleArg); // true if you're infront of the input target
-    bool  isBehind(CLuaBaseEntity const* target, sol::object const& angleArg);  // true if you're behind the input target
-    bool  isBeside(CLuaBaseEntity const* target, sol::object const& angleArg);  // true if you're to the side of the input target
+    int16 getWorldAngle(sol::variadic_args va);                                                // return angle (rot) between two points (vector from a to b), aligned to absolute cardinal degree
+    int16 getFacingAngle(CLuaBaseEntity const* target);                                        // return angle between entity rot and target pos, aligned to number of degrees of difference
+    bool  isFacing(CLuaBaseEntity const* target, sol::object const& angleArg);                 // true if you are facing the target
+    bool  isInfront(CLuaBaseEntity const* target, sol::object const& angleArg);                // true if you're infront of the input target
+    bool  isBehind(CLuaBaseEntity const* target, sol::object const& angleArg);                 // true if you're behind the input target
+    bool  isBeside(CLuaBaseEntity const* target, sol::object const& angleArg);                 // true if you're to the side of the input target
+    auto  isToEntitysLeft(CLuaBaseEntity const* target, sol::object const& angleArg) -> bool;  // true if you're to the left side of the input target (from target's perspective)
+    auto  isToEntitysRight(CLuaBaseEntity const* target, sol::object const& angleArg) -> bool; // true if you're to the right side of the input target (from target's perspective)
 
     auto   getZone(sol::object const& arg0) -> CZone*;
     uint16 getZoneID();
