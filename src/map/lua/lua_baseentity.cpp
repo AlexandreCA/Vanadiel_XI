@@ -18215,7 +18215,7 @@ bool CLuaBaseEntity::hasTPMoves()
  *  Example : mob:drawIn()     mob:drawIn(player)
  *  Notes   : Draws in a player even if within the draw-in leash
  ************************************************************************/
-void CLuaBaseEntity::drawIn(sol::variadic_args va)
+void CLuaBaseEntity::drawIn(const sol::variadic_args& va) const
 {
     if (m_PBaseEntity->objtype != TYPE_MOB)
     {
@@ -18223,23 +18223,24 @@ void CLuaBaseEntity::drawIn(sol::variadic_args va)
         return;
     }
 
-    auto mobObj = dynamic_cast<CMobEntity*>(m_PBaseEntity);
+    const auto mobObj = dynamic_cast<CMobEntity*>(m_PBaseEntity);
 
     if (va.size() == 0)
     {
-        auto defaultTarget = mobObj->GetBattleTarget();
+        const auto defaultTarget = mobObj->GetBattleTarget();
 
-        if (defaultTarget == nullptr)
+        if (defaultTarget == nullptr || !defaultTarget->loc.zone)
         {
             return;
         }
+
         battleutils::DrawIn(defaultTarget, mobObj->loc.p, 0, 0);
         return;
     }
 
-    CLuaBaseEntity* PLuaBaseEntity = va.get<CLuaBaseEntity*>(0);
-    float           offset         = va.get<float>(1);
-    float           degrees        = va.get<float>(2);
+    const CLuaBaseEntity* PLuaBaseEntity = va.get<CLuaBaseEntity*>(0);
+    const float           offset         = va.get<float>(1);
+    const float           degrees        = va.get<float>(2);
 
     if (!PLuaBaseEntity)
     {
@@ -18250,7 +18251,7 @@ void CLuaBaseEntity::drawIn(sol::variadic_args va)
     CBaseEntity*   PBaseEntity = PLuaBaseEntity->m_PBaseEntity;
     CBattleEntity* PTarget     = nullptr;
 
-    if (PBaseEntity && PBaseEntity->getZone() == m_PBaseEntity->getZone())
+    if (PBaseEntity && PBaseEntity->loc.zone && PBaseEntity->getZone() == m_PBaseEntity->getZone())
     {
         PTarget = dynamic_cast<CBattleEntity*>(PBaseEntity);
     }
@@ -18259,8 +18260,6 @@ void CLuaBaseEntity::drawIn(sol::variadic_args va)
     {
         battleutils::DrawIn(PTarget, mobObj->loc.p, offset, degrees);
     }
-
-    return;
 }
 
 /************************************************************************
