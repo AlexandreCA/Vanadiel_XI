@@ -4964,6 +4964,12 @@ namespace luautils
 
     sol::table GetFurthestValidPosition(CLuaBaseEntity* fromTarget, float distance, float theta)
     {
+        if (!fromTarget || !fromTarget->GetBaseEntity())
+        {
+            ShowError("luautils::GetFurthestValidPosition: fromTarget is null or invalid");
+            return sol::lua_nil;
+        }
+
         CBaseEntity* entity = fromTarget->GetBaseEntity();
         position_t   pos    = nearPosition(entity->loc.p, distance, theta);
 
