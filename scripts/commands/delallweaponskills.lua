@@ -1,6 +1,6 @@
 -----------------------------------
--- func: addallweaponskills
--- desc: Adds all learned weaponskills to the given target. If no target then to the current player.
+-- func: delallweaponskills
+-- desc: Removes all learned weaponskills to the given target. If no target then to the current player.
 -----------------------------------
 ---@type TCommand
 local commandObj = {}
@@ -13,7 +13,7 @@ commandObj.cmdprops =
 
 local function error(player, msg)
     player:printToPlayer(msg)
-    player:printToPlayer('!addallweaponskills (player)')
+    player:printToPlayer('!delallweaponskills (player)')
 end
 
 commandObj.onTrigger = function(player, target)
@@ -31,10 +31,10 @@ commandObj.onTrigger = function(player, target)
 
     -- add all learned weaponskills
     for _, wsUnlockId in pairs(xi.wsUnlock) do
-        targ:addLearnedWeaponskill(wsUnlockId)
+        targ:delLearnedWeaponskill(wsUnlockId)
     end
 
-    player:printToPlayer(string.format('%s now has all learned weaponskills.', targ:getName()))
+    player:printToPlayer(string.format('%s now has zero learned weaponskills.', targ:getName()))
 end
 
 return commandObj
