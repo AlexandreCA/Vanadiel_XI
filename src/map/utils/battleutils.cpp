@@ -5666,18 +5666,24 @@ namespace battleutils
         }
     }
 
-    void DrawIn(CBattleEntity* PTarget, position_t pos, float offset, float degrees)
+    void DrawIn(CBattleEntity* PTarget, const position_t pos, const float offset, const float degrees)
     {
-        float      radian     = degrees * (M_PI / 180.0f);
-        position_t nearEntity = nearPosition(pos, offset, radian);
+        const float radian     = degrees * (M_PI / 180.0f);
+        position_t  nearEntity = nearPosition(pos, offset, radian);
+
+        // Target may be in the middle of zoning (Alliance-based Draw-In)
+        if (!PTarget->loc.zone)
+        {
+            return;
+        }
 
         // Make sure we can raycast to that position
         // from the position's "eyeline" to the ground where we want to draw players in to
         if (PTarget->loc.zone->lineOfSight)
         {
-            auto entityHeight = 2.0f;
-            auto posEyeline   = position_t{ pos.x, pos.y - entityHeight, pos.z, 0, 0 };
-            if (auto optHit = PTarget->loc.zone->lineOfSight->Raycast(posEyeline, nearEntity))
+            const auto entityHeight = 2.0f;
+            const auto posEyeline   = position_t{ pos.x, pos.y - entityHeight, pos.z, 0, 0 };
+            if (const auto optHit = PTarget->loc.zone->lineOfSight->Raycast(posEyeline, nearEntity))
             {
                 auto hit   = *optHit;
                 nearEntity = { hit.x, hit.y, hit.z, 0, 0 };
@@ -5708,8 +5714,6 @@ namespace battleutils
                 PTarget->loc.zone->PushPacket(PTarget, CHAR_INRANGE_SELF, std::make_unique<CMessageBasicPacket>(PTarget, PTarget, 0, 0, 232));
             }
         }
-
-        return;
     }
 
     /************************************************************************
