@@ -4793,7 +4793,7 @@ namespace luautils
         }
     }
 
-    void UpdateNMSpawnPoint(uint32 mobid)
+    bool UpdateNMSpawnPoint(uint32 mobid)
     {
         TracyZoneScoped;
 
@@ -4810,7 +4810,7 @@ namespace luautils
             else
             {
                 ShowDebug("UpdateNMSpawnPoint: SQL error: No entries for mobid <%u> found.", mobid);
-                return;
+                return false;
             }
 
             const auto rset2 = db::preparedStmt("SELECT pos_x, pos_y, pos_z FROM `nm_spawn_points` WHERE mobid = ? AND pos = ?", mobid, r);
@@ -4820,6 +4820,8 @@ namespace luautils
                 PMob->m_SpawnPoint.x        = rset2->get<float>(0);
                 PMob->m_SpawnPoint.y        = rset2->get<float>(1);
                 PMob->m_SpawnPoint.z        = rset2->get<float>(2);
+
+                return true;
             }
             else
             {
@@ -4830,6 +4832,8 @@ namespace luautils
         {
             ShowDebug("UpdateNMSpawnPoint: mob <%u> not found", mobid);
         }
+
+        return false;
     }
 
     /************************************************************************
@@ -4960,6 +4964,12 @@ namespace luautils
 
     sol::table GetFurthestValidPosition(CLuaBaseEntity* fromTarget, float distance, float theta)
     {
+        if (!fromTarget || !fromTarget->GetBaseEntity())
+        {
+            ShowError("luautils::GetFurthestValidPosition: fromTarget is null or invalid");
+            return sol::lua_nil;
+        }
+
         CBaseEntity* entity = fromTarget->GetBaseEntity();
         position_t   pos    = nearPosition(entity->loc.p, distance, theta);
 

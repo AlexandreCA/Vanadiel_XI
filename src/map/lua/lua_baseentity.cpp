@@ -4302,6 +4302,17 @@ bool CLuaBaseEntity::delContainerItems(sol::object const& containerID)
     auto* PItemContainer = PChar->getStorage(location);
     uint8 containerSize  = PItemContainer->GetSize();
 
+    // ensure we unequip equipped items before deletion
+    for (uint8 equipmentSlot = 0; equipmentSlot <= 15; equipmentSlot++)
+    {
+        if (PChar->equipLoc[equipmentSlot] == location)
+        {
+            // UnequipItem doesn't consider SLOT_MAIN removing SLOT_SUB, so we say to Equip nothing in this equipment slot
+            // this is the same thing that equipset_set packet does to remove a slot
+            charutils::EquipItem(PChar, 0, equipmentSlot, 0);
+        }
+    }
+
     for (uint8 i = 1; i <= containerSize; ++i)
     {
         auto* PItem = PItemContainer->GetItem(i);
@@ -11563,6 +11574,12 @@ uint8 CLuaBaseEntity::checkSoloPartyAlliance()
 
 bool CLuaBaseEntity::checkKillCredit(CLuaBaseEntity* PLuaBaseEntity, sol::object const& minRange)
 {
+    if (PLuaBaseEntity == nullptr)
+    {
+        ShowWarning("CLuaBaseEntity::checkKillCredit() - PLuaBaseEntity received null value.");
+        return false;
+    }
+
     if (m_PBaseEntity->objtype != TYPE_PC || (PLuaBaseEntity && PLuaBaseEntity->GetBaseEntity()->objtype != TYPE_MOB))
     {
         ShowWarning("CLuaBaseEntity::checkKillCredit() - Non-PC type calling function, or PLuaBaseEntity is not a MOB.");
@@ -11600,6 +11617,12 @@ bool CLuaBaseEntity::checkKillCredit(CLuaBaseEntity* PLuaBaseEntity, sol::object
  ************************************************************************/
 uint8 CLuaBaseEntity::checkDifficulty(CLuaBaseEntity* PLuaBaseEntity)
 {
+    if (PLuaBaseEntity == nullptr)
+    {
+        ShowWarning("CLuaBaseEntity::checkDifficulty() - PLuaBaseEntity received null value.");
+        return 0;
+    }
+
     CMobEntity*  PMob  = dynamic_cast<CMobEntity*>(PLuaBaseEntity->GetBaseEntity());
     CCharEntity* PChar = dynamic_cast<CCharEntity*>(m_PBaseEntity);
 
@@ -15367,6 +15390,17 @@ int32 CLuaBaseEntity::checkDamageCap(int32 damage)
     if (auto* PBattle = dynamic_cast<CBattleEntity*>(m_PBaseEntity))
     {
         return battleutils::CheckAndApplyDamageCap(damage, PBattle);
+    }
+
+    ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+    return 0;
+}
+
+auto CLuaBaseEntity::handleSevereDamage(int32 damage, bool isPhysical) -> int32
+{
+    if (auto* PBattle = dynamic_cast<CBattleEntity*>(m_PBaseEntity))
+    {
+        return battleutils::HandleSevereDamage(PBattle, damage, isPhysical);
     }
 
     ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
@@ -19949,6 +19983,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("takeSpellDamage", CLuaBaseEntity::takeSpellDamage);
     SOL_REGISTER("takeSwipeLungeDamage", CLuaBaseEntity::takeSwipeLungeDamage);
     SOL_REGISTER("checkDamageCap", CLuaBaseEntity::checkDamageCap);
+    SOL_REGISTER("handleSevereDamage", CLuaBaseEntity::handleSevereDamage);
 
     // Pets and Automations
     SOL_REGISTER("spawnPet", CLuaBaseEntity::spawnPet);
