@@ -414,7 +414,7 @@ namespace luautils
 
     uint32 GetMobRespawnTime(uint32 mobid);
     void   DisallowRespawn(uint32 mobid, bool allowRespawn);
-    void   UpdateNMSpawnPoint(uint32 mobid);
+    bool   UpdateNMSpawnPoint(uint32 mobid);
 
     std::string GetServerMessage(uint8 language);               // Get the message to be delivered to player on first zone in of a session
     auto        GetRecentFishers(uint16 minutes) -> sol::table; // returns a list of recently active fishers (that fished in the last specified minutes)
