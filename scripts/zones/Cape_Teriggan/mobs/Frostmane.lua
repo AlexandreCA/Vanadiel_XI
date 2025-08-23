@@ -2,8 +2,12 @@
 -- Area: Cape Teriggan
 --   NM: Frostmane
 -----------------------------------
+local ID = zones[xi.zone.CAPE_TERIGGAN]
+-----------------------------------
 ---@type TMobEntity
 local entity = {}
+
+
 
 entity.onMobDeath = function(mob, player, optParams)
     xi.hunts.checkHunt(mob, player, 405)

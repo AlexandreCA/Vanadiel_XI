@@ -7,7 +7,6 @@ local ID = zones[xi.zone.CAPE_TERIGGAN]
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
-
 local frostmaneSpawnPoints =
 {
     { x = -283.874, y = -0.660, z = 485.504 },
@@ -75,7 +74,6 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, frostmanePHTable, 5, 3600, { spawnPoints = frostmaneSpawnPoints }) -- 1 hour
 end
 
 return entity
