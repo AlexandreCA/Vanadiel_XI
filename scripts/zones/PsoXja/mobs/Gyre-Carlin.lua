@@ -1,17 +1,18 @@
 -----------------------------------
 -- Area: Pso'Xja
---  Mob: Diremite
+--  Mob: Gyre-Carlin
 -----------------------------------
 local ID = zones[xi.zone.PSOXJA]
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
 
-entity.onMobDeath = function(mob, player, optParams)
-end
+entity.phList =
+{
+    [ID.mob.GYRE_CARLIN - 1] = ID.mob.GYRE_CARLIN,
+}
 
-entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, ID.mob.GYRE_CARLIN, 5, 1800) -- 30 minutes.
+entity.onMobDeath = function(mob, player, optParams)
 end
 
 return entity
