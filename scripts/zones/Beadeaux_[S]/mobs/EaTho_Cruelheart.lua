@@ -1,21 +1,20 @@
 -----------------------------------
--- Area: Beadeaux (254)
---   NM: Bi'Gho Headtaker
+-- Area: Beadeaux [S]
+--   NM: Ea'Tho Cruelheart
 -----------------------------------
 mixins = { require('scripts/mixins/job_special') }
 -----------------------------------
-local ID = zones[xi.zone.BEADEAUX]
+local ID = zones[xi.zone.BEADEAUX_S]
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
 
 entity.phList =
 {
-    [ID.mob.BI_GHO_HEADTAKER - 1] = ID.mob.BI_GHO_HEADTAKER, -- -98.611 0.498 71.212
+    [ID.mob.EATHO_CRUELHEART - 1] = ID.mob.EATHO_CRUELHEART,
 }
 
 entity.onMobDeath = function(mob, player, optParams)
-    xi.hunts.checkHunt(mob, player, 239)
 end
 
 return entity
