@@ -14,7 +14,7 @@ entity.onMobDeath = function(mob, player, optParams)
 end
 
 entity.onMobDespawn = function(mob)
-    xi.mob.phOnDespawn(mob, ID.mob.NIGHTMARE_VASE[1], 10, 3600, { spawnPoints = nightmareSpawnPoints }) -- 1 hour
+    xi.mob.phOnDespawn(mob, ID.mob.NIGHTMARE_VASE[1], 10, 3600) -- 1 hour
     xi.mob.phOnDespawn(mob, ID.mob.ROGUE_RECEPTACLE, 10, 7200) -- 2 hour
 end
 

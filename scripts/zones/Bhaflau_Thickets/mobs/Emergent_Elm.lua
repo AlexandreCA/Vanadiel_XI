@@ -67,12 +67,6 @@ entity.spawnPoints =
     { x = 246.619, y = -31.446, z = 473.172 },
 }
 
-
-entity.phList =
-{
-    [ID.mob.EMERGENT_ELM - 2] = ID.mob.EMERGENT_ELM, -- 86.000 -35.000 621.000
-}
-
 entity.onMobDeath = function(mob, player, optParams)
     xi.hunts.checkHunt(mob, player, 452)
 end
