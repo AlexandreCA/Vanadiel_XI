@@ -690,11 +690,11 @@ void CAttack::ProcessDamage()
     // Apply "Double Attack" damage and "Triple Attack" damage mods
     if (m_attackType == PHYSICAL_ATTACK_TYPE::DOUBLE && m_attacker->objtype == TYPE_PC)
     {
-        m_damage = (int32)(m_damage * ((100.0f + m_attacker->getMod(Mod::DOUBLE_ATTACK_DMG)) / 100.0f));
+        m_damage = (int32)(m_damage * (1.0f + m_attacker->getMod(Mod::DOUBLE_ATTACK_DMG) / 100.0f));
     }
     else if (m_attackType == PHYSICAL_ATTACK_TYPE::TRIPLE && m_attacker->objtype == TYPE_PC)
     {
-        m_damage = (int32)(m_damage * ((100.0f + m_attacker->getMod(Mod::TRIPLE_ATTACK_DMG)) / 100.0f));
+        m_damage = (int32)(m_damage * (1.0f + m_attacker->getMod(Mod::TRIPLE_ATTACK_DMG) / 100.0f));
     }
 
     // Soul eater.
@@ -705,25 +705,25 @@ void CAttack::ProcessDamage()
 
     // Set attack type to Samba if the attack type is normal.  Don't overwrite other types.  Used for Samba double damage.
     if (m_attackType == PHYSICAL_ATTACK_TYPE::NORMAL && (m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_DRAIN_SAMBA) ||
-                                                         m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_ASPIR_SAMBA) || m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_HASTE_SAMBA)))
+                                                         m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_ASPIR_SAMBA) ||
+                                                         m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_HASTE_SAMBA)))
     {
         SetAttackType(PHYSICAL_ATTACK_TYPE::SAMBA);
     }
 
     // Get damage multipliers.
-    m_damage =
-        attackutils::CheckForDamageMultiplier((CCharEntity*)m_attacker, dynamic_cast<CItemWeapon*>(m_attacker->m_Weapons[slot]), m_damage, m_attackType, slot, m_isFirstSwing);
+    m_damage = attackutils::CheckForDamageMultiplier((CCharEntity*)m_attacker, dynamic_cast<CItemWeapon*>(m_attacker->m_Weapons[slot]), m_damage, m_attackType, slot, m_isFirstSwing);
 
     // Apply Sneak Attack Augment Mod
     if (m_attacker->getMod(Mod::AUGMENTS_SA) > 0 && IsSneakAttack() && m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK_ATTACK))
     {
-        m_damage += (int32)(m_damage * ((100 + (m_attacker->getMod(Mod::AUGMENTS_SA))) / 100.0f));
+        m_damage = (int32)(m_damage * (1.0f + m_attacker->getMod(Mod::AUGMENTS_SA) / 100.0f));
     }
 
     // Apply Trick Attack Augment Mod
     if (m_attacker->getMod(Mod::AUGMENTS_TA) > 0 && IsTrickAttack() && m_attacker->StatusEffectContainer->HasStatusEffect(EFFECT_TRICK_ATTACK))
     {
-        m_damage += (int32)(m_damage * ((100 + (m_attacker->getMod(Mod::AUGMENTS_TA))) / 100.0f));
+        m_damage = (int32)(m_damage * (1.0f + m_attacker->getMod(Mod::AUGMENTS_TA) / 100.0f));
     }
 
     // low level mobs can get negative fSTR so low they crater their (base weapon damage + fstr) to below 0.

@@ -82,8 +82,8 @@ local shieldSizeToBlockRateTable =
 
 -- WARNING: This function is used in src/map/attack.cpp "ProcessDamage" function.
 -- If you update these parameters, update them there as well.
----@param attacker CBaseEntity
----@param victim CBaseEntity
+---@param actor CBaseEntity
+---@param target CBaseEntity
 ---@param slot xi.slot
 ---@param physicalAttackType xi.physicalAttackType
 ---@param isH2H boolean
@@ -91,76 +91,78 @@ local shieldSizeToBlockRateTable =
 ---@param isSneakAttack boolean
 ---@param isTrickAttack boolean
 ---@param damageRatio number
-xi.combat.physical.calculateAttackDamage = function(attacker, victim, slot, physicalAttackType, isH2H, isFirstSwing, isSneakAttack, isTrickAttack, damageRatio)
+xi.combat.physical.calculateAttackDamage = function(actor, target, slot, physicalAttackType, isH2H, isFirstSwing, isSneakAttack, isTrickAttack, damageRatio)
     local bonusBasePhysicalDamage = 0
-    local damage = 0
+    local damage                  = 0
 
     -- Sneak Attack
     if isSneakAttack then
-        bonusBasePhysicalDamage = bonusBasePhysicalDamage + math.floor((attacker:getStat(xi.mod.DEX) * (1 + attacker:getMod(xi.mod.SNEAK_ATK_DEX) / 100)))
+        bonusBasePhysicalDamage = math.floor(bonusBasePhysicalDamage + actor:getStat(xi.mod.DEX) * (1 + actor:getMod(xi.mod.SNEAK_ATK_DEX) / 100))
     end
 
     -- Trick Attack
     if isTrickAttack then
-        bonusBasePhysicalDamage = bonusBasePhysicalDamage + math.floor((attacker:getStat(xi.mod.AGI) * (1 + attacker:getMod(xi.mod.TRICK_ATK_AGI) / 100)))
+        bonusBasePhysicalDamage = math.floor(bonusBasePhysicalDamage + actor:getStat(xi.mod.AGI) * (1 + actor:getMod(xi.mod.TRICK_ATK_AGI) / 100))
     end
 
     -- Consume Mana
-    if attacker:isPC() then
-        bonusBasePhysicalDamage = bonusBasePhysicalDamage + xi.combat.effect.handleConsumeMana(attacker)
-    end
+    bonusBasePhysicalDamage = bonusBasePhysicalDamage + xi.combat.damage.consumeManaAddition(actor)
+
+    -- Apply damage ratio multiplier.
+    local baseDamage = 0
 
     if isH2H then
-        local naturalH2hDamage = math.floor(attacker:getSkillLevel(xi.skill.HAND_TO_HAND) * 0.11) + 3
-
+        local naturalH2hDamage = math.floor(actor:getSkillLevel(xi.skill.HAND_TO_HAND) * 0.11) + 3
         if physicalAttackType == xi.physicalAttackType.KICK then
-            local kickDamage = naturalH2hDamage + attacker:getMod(xi.mod.KICK_DMG)
-            damage = math.floor(damageRatio * (kickDamage + bonusBasePhysicalDamage + xi.combat.physical.calculateMeleeStatFactor(attacker, victim)))
+            baseDamage = naturalH2hDamage + actor:getMod(xi.mod.KICK_DMG) + bonusBasePhysicalDamage + xi.combat.physical.calculateMeleeStatFactor(actor, target)
         else
-            damage = math.floor(damageRatio * (attacker:getWeaponDmg() + naturalH2hDamage + bonusBasePhysicalDamage + xi.combat.physical.calculateMeleeStatFactor(attacker, victim)))
+            baseDamage = naturalH2hDamage + actor:getWeaponDmg() + bonusBasePhysicalDamage + xi.combat.physical.calculateMeleeStatFactor(actor, target)
         end
     elseif slot == xi.slot.MAIN then
-        damage = math.floor(damageRatio * (attacker:getWeaponDmg() + bonusBasePhysicalDamage + xi.combat.physical.calculateMeleeStatFactor(attacker, victim)))
+        baseDamage = actor:getWeaponDmg() + bonusBasePhysicalDamage + xi.combat.physical.calculateMeleeStatFactor(actor, target)
     elseif slot == xi.slot.SUB then
-        damage = math.floor(damageRatio * (attacker:getOffhandDmg() + bonusBasePhysicalDamage + xi.combat.physical.calculateMeleeStatFactor(attacker, victim)))
+        baseDamage = actor:getOffhandDmg() + bonusBasePhysicalDamage + xi.combat.physical.calculateMeleeStatFactor(actor, target)
     elseif slot == xi.slot.AMMO then
-        damage = math.floor(damageRatio * (attacker:getRangedDmg() + xi.combat.physical.calculateMeleeStatFactor(attacker, victim)))
+        baseDamage = actor:getRangedDmg() + xi.combat.physical.calculateRangedStatFactor(actor, target)
     end
 
-    -- Scarlet Delirium
-    damage = math.floor(damage * xi.combat.damage.scarletDeliriumMultiplier(attacker))
+    damage = math.floor(baseDamage * damageRatio)
 
-    -- Double Attack and Triple Attack
-    if physicalAttackType == xi.physicalAttackType.DOUBLE and attacker:isPC() then
-        damage = math.floor(damage * ((100 + attacker:getMod(xi.mod.DOUBLE_ATTACK_DMG)) / 100))
-    elseif physicalAttackType == xi.physicalAttackType.TRIPLE and attacker:isPC() then
-        damage = math.floor(damage * ((100 + attacker:getMod(xi.mod.TRIPLE_ATTACK_DMG)) / 100))
+    -- Scarlet Delirium multiplier.
+    damage = math.floor(damage * xi.combat.damage.scarletDeliriumMultiplier(actor))
+
+    -- Double/Triple Attack multipliers.
+    local multiAttackMultiplier = 1
+    if physicalAttackType == xi.physicalAttackType.DOUBLE then
+        multiAttackMultiplier = 1 + actor:getMod(xi.mod.DOUBLE_ATTACK_DMG) / 100
+    elseif physicalAttackType == xi.physicalAttackType.TRIPLE then
+        multiAttackMultiplier = 1 + actor:getMod(xi.mod.TRIPLE_ATTACK_DMG) / 100
     end
 
-    -- Soul Eater
-    if attacker:isPC() then
-        damage = xi.combat.effect.handleSoulEater(attacker, damage)
-    end
+    damage = math.floor(damage * multiAttackMultiplier)
+
+    -- Soul Eater additive damage.
+    damage = damage + xi.combat.damage.souleaterAddition(actor)
 
     -- Damage multipliers
-    damage = attacker:addDamageFromMultipliers(damage, physicalAttackType, slot, isFirstSwing)
+    damage = actor:addDamageFromMultipliers(damage, physicalAttackType, slot, isFirstSwing)
 
     -- Sneak Attack Augment
     if
-        attacker:getMod(xi.mod.AUGMENTS_SA) > 0 and
+        actor:getMod(xi.mod.AUGMENTS_SA) > 0 and
         isSneakAttack and
-        attacker:hasStatusEffect(xi.effect.SNEAK_ATTACK)
+        actor:hasStatusEffect(xi.effect.SNEAK_ATTACK)
     then
-        damage = damage + math.floor(damage * ((100 + attacker:getMod(xi.mod.AUGMENTS_SA)) / 100))
+        damage = math.floor(damage * (1 + actor:getMod(xi.mod.AUGMENTS_SA) / 100))
     end
 
     -- Trick Attack Augment
     if
-        attacker:getMod(xi.mod.AUGMENTS_TA) > 0 and
+        actor:getMod(xi.mod.AUGMENTS_TA) > 0 and
         isTrickAttack and
-        attacker:hasStatusEffect(xi.effect.TRICK_ATTACK)
+        actor:hasStatusEffect(xi.effect.TRICK_ATTACK)
     then
-        damage = damage + math.floor(damage * ((100 + attacker:getMod(xi.mod.AUGMENTS_TA)) / 100))
+        damage = math.floor(damage * (1 + actor:getMod(xi.mod.AUGMENTS_TA) / 100))
     end
 
     --- Low level mobs can get negative fSTR so low they crater their (base weapon damage + fstr) to below 0.
@@ -170,8 +172,40 @@ xi.combat.physical.calculateAttackDamage = function(attacker, victim, slot, phys
     end
 
     -- Apply Restraint Weaponskill Damage
-    if isFirstSwing then
-        xi.combat.effect.handleRestraint(attacker)
+    if
+        isFirstSwing and
+        actor:hasStatusEffect(xi.effect.RESTRAINT)
+    then
+        local effect = actor:getStatusEffect(xi.effect.RESTRAINT)
+        local power  = effect and effect:getPower() or 30
+
+        if
+            effect and
+            power < 30
+        then
+            local jpBonus = actor:getJobPointLevel(xi.jp.RESTRAINT) * 2
+
+            -- Convert weapon delay and divide
+            -- Pull remainder of previous hit's value from Effect Sub Power
+            local boostPerRound = (3 * actor:getBaseDelay() / 50) / 385
+            local remainder     = effect:getSubPower() / 100
+
+            -- Calculate bonuses from Enhances Restraint, Job Point upgrades, and remainder from previous hit
+            boostPerRound = remainder + boostPerRound * (1 + actor:getMod(xi.Mod.ENHANCES_RESTRAINT) / 100) * (1 + jpBonus / 100)
+
+            -- Calculate new remainder and multiply by 100 so significant digits aren't lost
+            remainder     = math.floor((1 - (math.ceil(boostPerRound) - boostPerRound)) * 100)
+            boostPerRound = math.floor(boostPerRound)
+
+            -- Cap total power to +30% WSD
+            if power + boostPerRound > 30 then
+                boostPerRound = 30 - power
+            end
+
+            effect:setPower(power + boostPerRound)
+            effect:setSubPower(remainder)
+            actor:setMod(xi.mod.ALL_WSDMG_FIRST_HIT, boostPerRound)
+        end
     end
 
     -- TODO: add charutils::TrySkillUP call
