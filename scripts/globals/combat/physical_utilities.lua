@@ -485,7 +485,7 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
     local levelDifFactor = 0
 
     if applyLevelCorrection then
-        levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * 0.05
+        levelDifFactor = (actor:getMainLvl() - target:getMainLvl()) * 3 / 64 -- 3/64 from JP model which fits better
     end
 
     -- Only players suffer from negative level difference.
@@ -504,17 +504,27 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
         levelDifFactor = 0
     end
 
-    local cRatio = utils.clamp(baseRatio + levelDifFactor, 0, 10) -- Clamp for the lower limit, mainly.
-
     ----------------------------------------
     -- Step 3: wRatio and pDif Caps (Melee)
     ----------------------------------------
-    local wRatio             = cRatio + (isCritical and 1 or 0)
+    local wRatio             = baseRatio + (isCritical and 1 or 0)
     local pDifUpperCap       = 0
     local pDifLowerCap       = 0
     local damageLimitPlus    = actor:getMod(xi.mod.DAMAGE_LIMIT) / 100
     local damageLimitPercent = 1 + actor:getMod(xi.mod.DAMAGE_LIMITP) / 100
     local pDifFinalCap       = (xi.combat.physical.pDifWeaponCapTable[weaponType][2] + damageLimitPlus) * damageLimitPercent + (isCritical and 1 or 0)
+
+    -- https://www.bg-wiki.com/ffxi/PDIF#Average_Melee_pDIF(qRatio)
+    -- This is also known as "pDIF spike"
+    if wRatio > 0.5 and wRatio < 1.5 then -- 0.5 and 1.5 are 0% chance
+        local sRatio = (0.5 - math.abs(wRatio - 1)) * 1.2
+
+        sRatio = utils.clamp(sRatio, 0, 1 / 3) -- 1/3 (one-third), not 0.33
+
+        if math.random() <= sRatio then
+            return 1.0
+        end
+    end
 
     -- pDIF upper cap.
     if wRatio < 0.5 then
@@ -542,6 +552,11 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
         pDifLowerCap = wRatio - 0.375
     end
 
+    -- Apply level correction to UL/LL
+    -- https://www.ffxiah.com/forum/topic/57989/post-2016-level-correction-testing/
+    pDifLowerCap = pDifLowerCap + levelDifFactor
+    pDifUpperCap = pDifUpperCap + levelDifFactor
+
     pDif = math.random(pDifLowerCap * 1000, pDifUpperCap * 1000) / 1000
 
     ----------------------------------------
@@ -552,7 +567,7 @@ xi.combat.physical.calculateMeleePDIF = function(actor, target, weaponType, wsAt
     ----------------------------------------
     -- Step 5: Melee random factor.
     ----------------------------------------
-    local meleeRandom = math.random(100, 105) / 100
+    local meleeRandom = 1 + math.random(0, 5) * 0.01 -- 5 distinct values
 
     pDif = pDif * meleeRandom
 
