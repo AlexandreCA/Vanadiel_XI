@@ -9,6 +9,7 @@ local entity = {}
 
 entity.phList =
 {
+    [ID.mob.MARQUIS_SABNOCK + 1] = ID.mob.MARQUIS_SABNOCK,
     [ID.mob.MARQUIS_SABNOCK - 2] = ID.mob.MARQUIS_SABNOCK,
 }
 
