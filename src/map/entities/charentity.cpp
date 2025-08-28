@@ -1562,22 +1562,6 @@ void CCharEntity::OnWeaponSkillFinished(CWeaponSkillState& state, action_t& acti
 
             if (primary)
             {
-                if (isRangedWS)
-                {
-                    uint16 recycleChance = getMod(Mod::RECYCLE) + PMeritPoints->GetMeritValue(MERIT_RECYCLE, this) + this->PJobPoints->GetJobPointValue(JP_AMMO_CONSUMPTION);
-
-                    if (StatusEffectContainer->HasStatusEffect(EFFECT_UNLIMITED_SHOT))
-                    {
-                        StatusEffectContainer->DelStatusEffect(EFFECT_UNLIMITED_SHOT);
-                        recycleChance = 100;
-                    }
-
-                    if (xirand::GetRandomNumber(100) > recycleChance)
-                    {
-                        battleutils::RemoveAmmo(this);
-                    }
-                }
-
                 // See battleentity.h for REACTION class
                 // On retail, weaponskills will contain 0x08, 0x10 (HIT, ABILITY) on hit and may include the following:
                 // 0x01, 0x02, 0x04 (MISS, GUARDED, BLOCK)
