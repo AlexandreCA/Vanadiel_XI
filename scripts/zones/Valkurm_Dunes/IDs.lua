@@ -73,7 +73,7 @@ zones[xi.zone.VALKURM_DUNES] =
         PIRATE_CHART_TARU = GetFirstID('Pirate_Chart_Taru'),
         SHIMMERING_POINT  = GetFirstID('Shimmering_Point'),
         SUNSAND_QM        = GetFirstID('qm1'),
-        WHM_AF1_QM        = GetFirstID('qm2'							 
+        WHM_AF1_QM        = GetFirstID('qm2'),							 
     },
 }
 
