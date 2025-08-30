@@ -9,5 +9,5 @@ return {
     ['qm7']            = { messageSpecial = ID.text.NOTHING_OUT_OF_ORDINARY },
     ['qm_maw']         = { messageSpecial = ID.text.NOTHING_HAPPENS },
     ['Tiger_Bones']    = { messageSpecial = ID.text.MANY_TIGER_BONES },
-	['Stone_Monument'] = { event = 900 },									 
+    ['Stone_Monument'] = { event = 900 },
 }

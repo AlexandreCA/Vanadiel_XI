@@ -18,6 +18,6 @@ return {
     ['Ramaufont']      = { text = ID.text.RAMAUFONT_DIALOG },
     ['Saradorial']     = { event = 139 },
     ['Vilatroire']     = { event = 136 },
-	['Stone_Monument'] = { event = 900 },									 
+    ['Stone_Monument'] = { event = 900 },
     ['Zovriace']       = { text = ID.text.ZOVRIACE_DIALOG },
 }
