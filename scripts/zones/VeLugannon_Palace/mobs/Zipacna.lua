@@ -291,7 +291,7 @@ local setZipPath = function(mob, door, currPath)
                 end
             else -- East to West
                 mob:pathThrough(pathNodes[currPath + 1], xi.path.flag.COORDS)
-                if currPath + 1 ~= paths.YELLLOW_TO_BASEMENT then
+                if currPath + 1 ~= paths.YELLOW_TO_BASEMENT then
                     currentDirection = pathingDirection.TO_EAST
                 end
             end
