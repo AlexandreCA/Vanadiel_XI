@@ -4,6 +4,7 @@
 -----------------------------------
 ---@type TMobEntity
 local entity = {}
+
 local ID = zones[xi.zone.VELUGANNON_PALACE]
 
 -- Spawn points from nm_spawn_points.sql
@@ -357,7 +358,7 @@ entity.onMobRoam = function(mob)
 end
 
 entity.onMobDespawn = function(mob)
-    UpdateNMSpawnPoint(mob:getID())
+    xi.mob.updateNMSpawnPoint(mob)
     mob:setRespawnTime(math.random(10800, 14400)) -- respawn 3-4 hrs
 end
 
