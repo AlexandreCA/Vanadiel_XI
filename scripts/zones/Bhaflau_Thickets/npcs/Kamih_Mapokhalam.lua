@@ -15,8 +15,8 @@ entity.onTrade = function(player, npc, trade)
         count == 1 and
         trade:hasItemQty(xi.item.IMPERIAL_SILVER_PIECE, 1)
     then
-        player:startEvent(121)      
         player:tradeComplete()
+        player:startEvent(121)      
     elseif
         count == 3 and
         trade:hasItemQty(xi.item.IMPERIAL_MYTHRIL_PIECE, 3)
