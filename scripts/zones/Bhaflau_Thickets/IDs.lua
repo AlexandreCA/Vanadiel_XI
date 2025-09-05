@@ -60,7 +60,6 @@ zones[xi.zone.BHAFLAU_THICKETS] =
     {
         HARVESTING        = GetTableOfIDs('Harvesting_Point'),
 	    HOOFPRINT         = GetFirstID('Warhorse_Hoofprint'),
-        KAMIH_MAPOKHALAM  = GetFirstID('Kamih_Mapokhalam'),
     },
 }
 
