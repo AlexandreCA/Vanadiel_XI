@@ -28,10 +28,12 @@ zones[xi.zone.THE_GARDEN_OF_RUHMET] =
         PORTAL_WONT_OPEN_ON_THIS_SIDE = 7629, -- The portal won't open from this side.
         NO_NEED_INVESTIGATE           = 7635, -- There is no need to investigate further.
         PORTAL_SEALED                 = 7664, -- The portal is firmly sealed by a mysterious energy.
+        FORTITUDE_QM                  = 7771, -- You hear something vaguely resembling a voice emanating from the depths of your soul. Bring...mem...ries...hrah...
         UNKNOWN_PRESENCE              = 7772, -- You sense some unknown presence...
         NONE_HOSTILE                  = 7773, -- You sense some unknown presence, but it does not seem hostile.
         MENACING_CREATURES            = 7774, -- Menacing creatures appear out of nowhere!
         SHEER_ANIMOSITY               = 7775, -- <name> is enveloped in sheer animosity!
+        FAITH_QM                      = 7777, -- You hear something vaguely resembling a voice emanating from the depths of your soul. Bring me...euv...recccepta...
         HOMEPOINT_SET                 = 7780, -- Home point set!
     },
 
