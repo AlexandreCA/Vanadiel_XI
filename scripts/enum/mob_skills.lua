@@ -235,11 +235,15 @@ xi.mobSkill =
     VOID_OF_REPENTANCE       = 2146,
     DIVINE_JUDGMENT          = 2147,
 
+    GRIM_GLOWER              = 2156,
+
     PEDAL_PIROUETTE          = 2210,
 
     HELL_SCISSORS            = 2221,
 
     QUEASYSHROOM_2           = 2232,
+
+    OPPRESSIVE_GLARE         = 2392,
 
     ROAR_3                   = 2406,
 
