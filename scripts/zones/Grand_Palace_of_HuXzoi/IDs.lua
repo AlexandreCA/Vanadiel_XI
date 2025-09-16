@@ -32,6 +32,7 @@ zones[xi.zone.GRAND_PALACE_OF_HUXZOI] =
         RECENTLY_ACTIVATED            = 7382, -- The alcove has recently been activated...
         TIME_RESTRICTION              = 7383, -- Time restriction: <number> [minute/minutes] (Earth time)
         QUASILUMIN_MAP_QUEST_OFFSET   = 7384, -- Warning. Chamber of Eventide accessed by unauthorized personnel, 4789209-980 increments previous.
+        IXAERN_MNK_QM                 = 7395, -- You hear something vaguely resembling a voice emanating from the depths of your soul. Bring me...aer...reccceptac...
         HOMEPOINT_SET                 = 7468, -- Home point set!
     },
     mob =
