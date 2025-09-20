@@ -264,6 +264,8 @@ xi.mobSkill =
 
     QUEASYSHROOM_2           = 2232,
 
+    DAMSEL_MEMENTO           = 2337,
+
     OPPRESSIVE_GLARE         = 2392,
 
     ROAR_3                   = 2406,

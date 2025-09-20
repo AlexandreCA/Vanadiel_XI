@@ -2354,8 +2354,8 @@ INSERT INTO `mob_skills` VALUES (2337,1653,'damsel_memento',0,0.0,7.0,2000,1000,
 INSERT INTO `mob_skills` VALUES (2338,1641,'rampant_stance',1,0.0,35.0,2000,3000,4,8,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (2339,1643,'di_trample',0,0.0,35.0,0,0,4,8,0,2,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2340,2084,'extreme_purgation',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (2341,1647,'di_kick_attack',0,0.0,35.0,1000,0,4,8,0,0,0,0,0);
-INSERT INTO `mob_skills` VALUES (2342,1645,'di_horn_attack',0,0.0,35.0,1000,0,4,8,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (2341,1647,'di_kick_attack',0,0.0,35.0,1000,0,4,12,0,0,0,0,0);
+INSERT INTO `mob_skills` VALUES (2342,1645,'di_horn_attack',0,0.0,35.0,1000,0,4,12,0,0,0,0,0);
 INSERT INTO `mob_skills` VALUES (2343,1638,'di_glow',0,0.0,30.0,4000,0,4,8,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2344,2088,'.',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (2345,2089,'.',0,0.0,7.0,2000,1500,4,0,0,0,0,0,0);
