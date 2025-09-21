@@ -123,6 +123,7 @@ zones[xi.zone.NORTHERN_SAN_DORIA] =
         THANK_YOU                     = 13091, -- Thank you...
         EGG_HUNT_OFFSET               = 13126, -- Egg-cellent! Here's your prize, kupo! Now if only somebody would bring me a super combo... Oh, egg-scuse me! Forget I said that, kupo!
         FFR_LOOKS_CURIOUSLY_BASE      = 13415, -- Coullene looks over curiously for a moment.
+        YOU_STAND_BEFORE              = 14645, -- You stand before Chateau d'Oraguille. If you've no business here, begone!
         FRAGMENT_FAR_TOO_SMALL        = 18123, -- You obtain <keyitem>. However, it is far too small to house an adequate amount of energy. Alone, it serves no purpose.
         FRAGMENTS_MELD                = 18124, -- The tiny fragments of Lilisette's memory meld together to form <keyitem>!
         RETRIEVE_DIALOG_ID            = 18159, -- You retrieve <item> from the porter moogle's care.
