@@ -37,6 +37,7 @@ zones[xi.zone.LOWER_JEUNO] =
         CHOCOBO_DIALOG                = 7336,  -- Hmph.
         MERTAIRE_MALLIEBELL_LEFT      = 7417,  -- Ugh... Malliebell... This time she's left me forever...
         MERTAIRE_DEFAULT              = 7442,  -- Who are you? Leave me alone!
+        VHANA_DEFAULT                 = 7546,  -- Sorry, I'm busy.
         ITS_LOCKED                    = 7604,  -- It's locked.
         PAWKRIX_SHOP_DIALOG           = 7652,  -- Hey, we're fixin' up some stew. Gobbie food's good food!
         PACKAGE_DELIVERED             = 7690,  -- You have completed your delivery of the <keyitem>.
