@@ -50,10 +50,12 @@ zones[xi.zone.PORT_JEUNO] =
         DRYEYES_3                     = 8184, -- Hey, you already got <item>. What you tryin' to pull here? Save some for my other customers, eh?
         DRYEYES_4                     = 8199, -- Huh? You don't got enough beastmen's seals! You tryin' to waste my time? Take a hike!
         DRYEYES_5                     = 8200, -- Huh? You don't got enough gil! You tryin' to waste my time? Take a hike!
+        WOULD_YE_MIND                 = 8404, -- Sorry, lass, but would ye mind leavin' me in peace?
         OBTAINED_NUM_KEYITEMS         = 8474, -- Obtained key item: <number> <keyitem>!
         CHEST_IS_EMPTY                = 8672, -- The chest is empty.
         KINDLIX_SHOP_DIALOG           = 8691, -- Our fam'ly peddle sky flowers. You want have nice scenery? Send fireworks sky high! It's great feeling. Bwee hee hee.
         PYROPOX_SHOP_DIALOG           = 8695, -- Bwee hee. I get fireworks from all 'round globe. Kindlix never sell more than me.
+        STRANGE_DEVICE                = 9403, -- There is a strange device here.
     },
     mob =
     {
