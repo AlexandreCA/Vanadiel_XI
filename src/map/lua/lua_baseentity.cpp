@@ -97,7 +97,6 @@
 
 #include "packets/action.h"
 #include "packets/auction_house.h"
-#include "packets/change_music.h"
 #include "packets/char_abilities.h"
 #include "packets/char_appearance.h"
 #include "packets/char_emotion.h"
@@ -150,10 +149,10 @@
 #include "packets/release.h"
 #include "packets/roe_questlog.h"
 #include "packets/s2c/0x039_mapschedulor.h"
+#include "packets/s2c/0x05f_music.h"
 #include "packets/server_ip.h"
 #include "packets/shop_items.h"
 #include "packets/shop_menu.h"
-#include "packets/weather.h"
 
 #include "utils/battleutils.h"
 #include "utils/blueutils.h"
@@ -2422,9 +2421,9 @@ void CLuaBaseEntity::updateNPCHideTime(sol::object const& seconds)
  *  Example : if player:getWeather() == xi.weather.WIND then
  ************************************************************************/
 
-uint8 CLuaBaseEntity::getWeather(sol::object const& ignoreScholar)
+auto CLuaBaseEntity::getWeather(sol::object const& ignoreScholar) const -> uint8
 {
-    WEATHER weather = WEATHER_NONE;
+    auto weather = Weather::None;
 
     if (m_PBaseEntity->objtype & TYPE_PC || m_PBaseEntity->objtype & TYPE_MOB)
     {
@@ -2446,11 +2445,11 @@ uint8 CLuaBaseEntity::getWeather(sol::object const& ignoreScholar)
  *  Notes   : Only used for GM command: scripts/commands/setweather.lua
  ************************************************************************/
 
-void CLuaBaseEntity::setWeather(uint8 weatherType)
+void CLuaBaseEntity::setWeather(Weather weatherType)
 {
-    if (weatherType < MAX_WEATHER_ID)
+    if (magic_enum::enum_contains<Weather>(weatherType))
     {
-        zoneutils::GetZone(m_PBaseEntity->getZone())->SetWeather(static_cast<WEATHER>(weatherType));
+        zoneutils::GetZone(m_PBaseEntity->getZone())->SetWeather(weatherType);
         luautils::OnZoneWeatherChange(m_PBaseEntity->getZone(), weatherType);
     }
 }
@@ -2462,7 +2461,7 @@ void CLuaBaseEntity::setWeather(uint8 weatherType)
  *  Notes   : Used for mounting Chocobo and changing Jeuno music in Winter
  ************************************************************************/
 
-void CLuaBaseEntity::changeMusic(uint16 blockID, uint16 musicTrackID)
+void CLuaBaseEntity::changeMusic(MusicSlot slotId, uint16 trackId) const
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
     {
@@ -2471,7 +2470,7 @@ void CLuaBaseEntity::changeMusic(uint16 blockID, uint16 musicTrackID)
     }
 
     auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-    PChar->pushPacket<CChangeMusicPacket>(blockID, musicTrackID);
+    PChar->pushPacket<GP_SERV_COMMAND_MUSIC>(slotId, trackId);
 }
 
 /************************************************************************

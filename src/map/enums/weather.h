@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
   Copyright (c) 2025 LandSandBoat Dev Teams
@@ -19,34 +19,29 @@
 ===========================================================================
 */
 
-#include "common/lua.h"
-#include "common/tracy.h"
-#include "test_application.h"
+#pragma once
 
-#include <iostream>
-#include <memory>
-
-int main(int argc, char** argv)
+enum class Weather : uint16_t
 {
-    TracySetThreadName("Test Thread");
-
-    auto testApp = std::make_unique<TestApplication>(argc, argv);
-
-    testApp->run();
-
-    // Explicitly destroy TestApplication before the lua state get cleaned up
-    testApp.reset();
-
-    // TODO: This should be in ~Application but it needs more testing for xi_map
-    // TODO: This wouldn't be needed if lua wasn't global
-    lua_cleanup();
-
-#ifdef TRACY_ENABLE
-    // TODO: Tracy profiler exits when program is done
-    // Is there an option to keep it running despite the program exiting?
-    std::cout << "Press Enter to exit..." << std::endl;
-    std::cin.get();
-#endif
-
-    return 0;
-}
+    None          = 0,
+    Sunshine      = 1,
+    Clouds        = 2,
+    Fog           = 3,
+    HotSpell      = 4,
+    HeatWave      = 5,
+    Rain          = 6,
+    Squall        = 7,
+    DustStorm     = 8,
+    SandStorm     = 9,
+    Wind          = 10,
+    Gales         = 11,
+    Snow          = 12,
+    Blizzards     = 13,
+    Thunder       = 14,
+    Thunderstorms = 15,
+    Auroras       = 16,
+    StellarGlare  = 17,
+    Gloom         = 18,
+    Darkness      = 19,
+    // There's a repeating set 0x14-0x27 according to XiPackets but their usage is unknown.
+};

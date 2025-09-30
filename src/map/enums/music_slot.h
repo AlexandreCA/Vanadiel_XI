@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,10 +19,16 @@
 ===========================================================================
 */
 
-#include "downloading_data.h"
+#pragma once
 
-CDownloadingDataPacket::CDownloadingDataPacket()
+enum class MusicSlot : uint16_t
 {
-    this->setType(0x4F);
-    this->setSize(0x08);
-}
+    ZoneDay     = 0,
+    ZoneNight   = 1,
+    CombatSolo  = 2,
+    CombatParty = 3,
+    Mount       = 4,
+    Dead        = 5,
+    MogHouse    = 6,
+    Fishing     = 7,
+};

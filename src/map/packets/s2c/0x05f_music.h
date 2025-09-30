@@ -1,7 +1,7 @@
 ﻿/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,20 +19,21 @@
 ===========================================================================
 */
 
-#include "change_music.h"
+#pragma once
 
-CChangeMusicPacket::CChangeMusicPacket(uint16 BlockID, uint16 MusicTrackID)
+#include "base.h"
+#include "enums/music_slot.h"
+
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x005F
+// This packet is sent by the server to update a music file to be played.
+class GP_SERV_COMMAND_MUSIC final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_MUSIC, GP_SERV_COMMAND_MUSIC>
 {
-    // Block IDs:
-    // 0 Background Music (Day time, 7:00 -> 18:00)
-    // 1 Background Music (Night time, 18:00 -> 7:00)
-    // 2 SoloBattle Music
-    // 3 Party Battle Music
-    // 4 Chocobo/Mount Music
+public:
+    struct PacketData
+    {
+        MusicSlot Slot;
+        uint16_t  MusicNum;
+    };
 
-    this->setType(0x5F);
-    this->setSize(0x08);
-
-    ref<uint16>(0x04) = BlockID;      // block
-    ref<uint16>(0x06) = MusicTrackID; // music
-}
+    GP_SERV_COMMAND_MUSIC(MusicSlot slotId, uint16 trackId);
+};

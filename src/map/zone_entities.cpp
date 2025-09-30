@@ -38,7 +38,6 @@
 #include "entities/npcentity.h"
 #include "entities/trustentity.h"
 
-#include "packets/change_music.h"
 #include "packets/char_sync.h"
 #include "packets/entity_update.h"
 #include "packets/wide_scan.h"
@@ -46,6 +45,8 @@
 #include "lua/luautils.h"
 
 #include "battlefield.h"
+#include "enums/weather.h"
+#include "packets/s2c/0x05f_music.h"
 #include "utils/battleutils.h"
 #include "utils/charutils.h"
 #include "utils/moduleutils.h"
@@ -404,7 +405,7 @@ void CZoneEntities::TransportDepart(uint16 boundary, uint16 prevZoneId, uint16 t
     }
 }
 
-void CZoneEntities::WeatherChange(WEATHER weather)
+void CZoneEntities::WeatherChange(Weather weather)
 {
     TracyZoneScoped;
 
@@ -417,7 +418,7 @@ void CZoneEntities::WeatherChange(WEATHER weather)
         // can't detect by scent in this weather
         if (PCurrentMob->getMobMod(MOBMOD_DETECTION) & DETECT_SCENT)
         {
-            PCurrentMob->m_disableScent = (weather == WEATHER_RAIN || weather == WEATHER_SQUALL || weather == WEATHER_BLIZZARDS);
+            PCurrentMob->m_disableScent = (weather == Weather::Rain || weather == Weather::Squall || weather == Weather::Blizzards);
         }
 
         if (PCurrentMob->m_EcoSystem == ECOSYSTEM::ELEMENTAL && PCurrentMob->PMaster == nullptr && PCurrentMob->m_SpawnType & SPAWNTYPE_WEATHER)
@@ -436,7 +437,7 @@ void CZoneEntities::WeatherChange(WEATHER weather)
         }
         else if (PCurrentMob->m_SpawnType & SPAWNTYPE_FOG)
         {
-            if (weather == WEATHER_FOG)
+            if (weather == Weather::Fog)
             {
                 PCurrentMob->SetDespawnTime(0s);
                 PCurrentMob->m_AllowRespawn = true;
@@ -457,13 +458,13 @@ void CZoneEntities::WeatherChange(WEATHER weather)
     }
 }
 
-void CZoneEntities::MusicChange(uint16 BlockID, uint16 MusicTrackID)
+void CZoneEntities::MusicChange(MusicSlot slotId, uint16 trackId)
 {
     TracyZoneScoped;
 
     FOR_EACH_PAIR_CAST_SECOND(CCharEntity*, PChar, m_charList)
     {
-        PChar->pushPacket<CChangeMusicPacket>(BlockID, MusicTrackID);
+        PChar->pushPacket<GP_SERV_COMMAND_MUSIC>(slotId, trackId);
     }
 }
 
