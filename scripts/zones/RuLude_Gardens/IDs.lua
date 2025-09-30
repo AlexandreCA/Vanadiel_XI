@@ -18,6 +18,7 @@ zones[xi.zone.RULUDE_GARDENS] =
         KEYITEM_LOST                     = 6534,  -- Lost key item: <keyitem>.
         ITEMS_OBTAINED                   = 6539,  -- You obtain <number> <item>!
         RETURN_ITEM                      = 6542,  -- The <item> is returned to you.
+        RETURN_ITEMS                     = 6543,  -- The <number> <item> are returned to you.
         NOTHING_OUT_OF_ORDINARY          = 6544,  -- There is nothing out of the ordinary here.
         CARRIED_OVER_POINTS              = 6569,  -- You have carried over <number> login point[/s].
         LOGIN_CAMPAIGN_UNDERWAY          = 6570,  -- The [/January/February/March/April/May/June/July/August/September/October/November/December] <number> Login Campaign is currently underway!
