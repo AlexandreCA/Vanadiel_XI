@@ -26,19 +26,19 @@ zones[xi.zone.VALKURM_DUNES] =
         DIG_THROW_AWAY                 = 7258,  -- You dig up <item>, but your inventory is full. You regretfully throw the <item> away.
         FIND_NOTHING                   = 7260,  -- You dig and you dig, but find nothing.
         AMK_DIGGING_OFFSET             = 7326,  -- You spot some familiar footprints. You are convinced that your moogle friend has been digging in the immediate vicinity.
-		FOUND_ITEM_WITH_EASE           = 7336,  -- It appears your chocobo found this item with ease.
+	FOUND_ITEM_WITH_EASE           = 7336,  -- It appears your chocobo found this item with ease.
         SONG_RUNES_DEFAULT             = 7345,  -- Lyrics on the old monument sing the story of lovers torn apart.
         UNLOCK_BARD                    = 7366,  -- You can now become a bard!
         JUST_A_PILE_OF_SAND            = 7367,  -- Just a pile of sand.
         SIGNPOST2                      = 7374,  -- Northeast: La Theine Plateau Southeast: Konschtat Highlands West: Selbina
         SIGNPOST1                      = 7375,  -- Northeast: La Theine Plateau Southeast: Konschtat Highlands Southwest: Selbina
         CONQUEST                       = 7385,  -- You've earned conquest points!
-		FOUL_PRESENCE                  = 7722,  -- You sense a foul presence.																	 
+	FOUL_PRESENCE                  = 7722,  -- You sense a foul presence.																	 
         YOU_SENSE_AN_EVIL_PRESENCE     = 7729,  -- You sense an evil presence...
         WHAT_DO_YOU_THINK              = 7731,  -- What do you think you are doing!?
         AN_EMPTY_LIGHT_SWIRLS          = 7763,  -- An empty light swirls about the cave, eating away at the surroundings...
         GARRISON_BASE                  = 7765,  -- Hm? What is this? %? How do I know this is not some [San d'Orian/Bastokan/Windurstian] trick?
-		TIME_ELAPSED                   = 7812,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)
+	TIME_ELAPSED                   = 7812,  -- Time elapsed: <number> [hour/hours] (Vana'diel time) <number> [minute/minutes] and <number> [second/seconds] (Earth time)
         RETURN_TO_SEA                  = 7816,  -- You return the <item> to the sea.
         TOO_MANY_IN_PARTY              = 7836,  -- Nothing happens. Your party exceeds the maximum number of <number> members.
         ALLIANCE_NOT_ALLOWED           = 7837,  -- Nothing happens. You must dissolve your alliance.
@@ -58,6 +58,7 @@ zones[xi.zone.VALKURM_DUNES] =
         REGIME_REGISTERED              = 10275, -- New training regime registered!
         COMMON_SENSE_SURVIVAL          = 12329, -- It appears that you have arrived at a new survival guide provided by the Adventurers' Mutual Aid Network. Common sense dictates that you should now be able to teleport here from similar tomes throughout the world.
     },
+
     mob =
     {
         BEACH_MONK          = GetFirstID('Beach_Monk'),
@@ -69,6 +70,7 @@ zones[xi.zone.VALKURM_DUNES] =
         ONRYO               = GetFirstID('Onryo'),
         VALKURM_EMPEROR     = GetFirstID('Valkurm_Emperor'),											
     },
+
     npc =
     {
         BARNACLED_BOX     = GetFirstID('Barnacled_Box'),
