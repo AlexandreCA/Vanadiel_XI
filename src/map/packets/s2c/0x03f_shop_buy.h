@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,17 +19,22 @@
 ===========================================================================
 */
 
-#ifndef _CWORLDPASSPACKET_H
-#define _CWORLDPASSPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
+#include "base.h"
 
-#include "basic.h"
-
-class CWorldPassPacket : public CBasicPacket
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x003F
+// This packet is sent by the server to inform the client of a completed purchase.
+class GP_SERV_COMMAND_SHOP_BUY final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_SHOP_BUY, GP_SERV_COMMAND_SHOP_BUY>
 {
 public:
-    CWorldPassPacket(uint32 WorldPass);
-};
+    struct PacketData
+    {
+        uint16_t ShopItemIndex;
+        uint8_t  BuyState;
+        uint8_t  padding00;
+        uint32_t Count;
+    };
 
-#endif
+    GP_SERV_COMMAND_SHOP_BUY(uint8_t slotId, uint32_t quantity);
+};

@@ -33,8 +33,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/char_emote_list.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_emotion.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/char_emotion.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/char_emotion_jump.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/char_emotion_jump.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_equip.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/char_equip.h
     ${CMAKE_CURRENT_SOURCE_DIR}/char_health.cpp
@@ -67,10 +65,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/conquest_map.h
     ${CMAKE_CURRENT_SOURCE_DIR}/cs_position.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/cs_position.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/currency1.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/currency1.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/currency2.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/currency2.h
     ${CMAKE_CURRENT_SOURCE_DIR}/delivery_box.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/delivery_box.h
     ${CMAKE_CURRENT_SOURCE_DIR}/entity_animation.cpp
@@ -123,8 +117,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_jobpoints.h
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_merit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_merit.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/menu_mog.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/menu_mog.h
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_raisetractor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_raisetractor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/merit_points_categories.cpp
@@ -179,10 +171,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/server_ip.h
     ${CMAKE_CURRENT_SOURCE_DIR}/server_message.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server_message.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/shop_appraise.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/shop_appraise.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/shop_buy.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/shop_buy.h
     ${CMAKE_CURRENT_SOURCE_DIR}/shop_items.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/shop_items.h
     ${CMAKE_CURRENT_SOURCE_DIR}/shop_menu.cpp
@@ -207,16 +195,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/trade_request.h
     ${CMAKE_CURRENT_SOURCE_DIR}/trade_update.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/trade_update.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/treasure_find_item.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/treasure_find_item.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/treasure_lot_item.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/treasure_lot_item.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/wide_scan.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/wide_scan.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/wide_scan_track.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/wide_scan_track.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/world_pass.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/world_pass.h
     ${CMAKE_CURRENT_SOURCE_DIR}/zone_in.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/zone_in.h
     ${CMAKE_CURRENT_SOURCE_DIR}/zone_visited.cpp

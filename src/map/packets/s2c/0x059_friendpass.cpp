@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,28 +19,26 @@
 ===========================================================================
 */
 
-#ifndef _CTREASURELOTITEMPACKET_H
-#define _CTREASURELOTITEMPACKET_H
+#include "0x059_friendpass.h"
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
-
-enum ITEMLOTTYPE
+GP_SERV_COMMAND_FRIENDPASS::GP_SERV_COMMAND_FRIENDPASS(uint32_t worldPass)
 {
-    ITEMLOT_WIN      = 0x01,
-    ITEMLOT_WINERROR = 0x02,
-    ITEMLOT_LOST     = 0x03,
-};
+    auto& packet = this->data();
 
-class CBaseEntity;
+    // TODO: All of this is wrong
+    packet.passPop   = 10000; // price
+    packet.Type      = 0x03;
+    packet.unknown21 = 0x01;
 
-class CTreasureLotItemPacket : public CBasicPacket
-{
-public:
-    CTreasureLotItemPacket(CBaseEntity* PHighestLotter, uint16 HighestLot, CBaseEntity* PLotter, uint8 SlotID, uint16 Lot);
-    CTreasureLotItemPacket(uint8 slotID, ITEMLOTTYPE MessageType);
-    CTreasureLotItemPacket(CBaseEntity* PWinner, uint8 SlotID, uint16 Lot, ITEMLOTTYPE MessageType);
-};
+    if (worldPass != 0)
+    {
+        packet.leftNum  = 1;   // number of uses left
+        packet.leftDays = 167; // pass becomes invalid in (hours)
+        packet.Type     = 0x06;
 
-#endif
+        // Force to be 10 digits
+        const std::string strbuff = fmt::format("{:0>10}", worldPass);
+
+        std::memcpy(packet.String, strbuff.c_str(), strbuff.length());
+    }
+}

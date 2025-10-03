@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,10 +19,13 @@
 ===========================================================================
 */
 
-#include "menu_mog.h"
+#include "0x03d_shop_sell.h"
 
-CMenuMogPacket::CMenuMogPacket()
+GP_SERV_COMMAND_SHOP_SELL::GP_SERV_COMMAND_SHOP_SELL(const uint8_t slotId, const uint32_t sellPrice)
 {
-    this->setType(0x2E);
-    this->setSize(0x04);
+    auto& packet = this->data();
+
+    packet.Price             = sellPrice;
+    packet.PropertyItemIndex = slotId;
+    packet.Type              = 0; // 0 = appraisal
 }
