@@ -615,7 +615,7 @@ namespace mobutils
                 sjHP = std::ceil((sjJobScale * (std::max((mLvlScale - 1), 0)) + (0.5 + 0.5 * sjScaleXHP) * (std::max(mLvlScale - 10, 0)) + std::max(mLvlScale - 30, 0) + std::max(mLvlScale - 50, 0) + std::max(mLvlScale - 70, 0)) / 2);
 
                 // Orcs 5% more hp
-                if ((PMob->m_Family == 189) || (PMob->m_Family == 190) || (PMob->m_Family == 334) || (PMob->m_Family == 407))
+                if ((PMob->m_Family == 189) || (PMob->m_Family == 190))
                 {
                     mobHP = (baseMobHP + sjHP) * 1.05;
                 }

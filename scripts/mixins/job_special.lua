@@ -144,7 +144,6 @@ local familyEES =
     [270] = xi.jsa.EES_YAGUDO,  -- Yagudo
     [327] = xi.jsa.EES_GOBLIN,  -- Goblin
     [328] = xi.jsa.EES_GIGA,    -- Gigas
-    [334] = xi.jsa.EES_ORC,     -- OrcNM
     [335] = xi.jsa.EES_MAAT,    -- Maat
     [337] = xi.jsa.EES_QUADAV,  -- QuadavNM
     [358] = xi.jsa.EES_KINDRED, -- Kindred

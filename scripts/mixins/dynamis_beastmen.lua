@@ -27,8 +27,8 @@ g_mixins.dynamis_beastmen = function(dynamisBeastmenMob)
 
     local familyCurrency =
     {
+        [189] = 1452, -- Orc (bronzepiece)
         [270] = 1449, -- Yagudo (whiteshell)
-        [334] = 1452, -- OrcNM (bronzepiece)
         [337] = 1455, -- QuadavNM (1 byne bill)
     }
 
