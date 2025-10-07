@@ -620,9 +620,9 @@ namespace mobutils
                     mobHP = (baseMobHP + sjHP) * 1.05;
                 }
                 // Quadavs 5% less hp
-                else if ((PMob->m_Family == 200) || (PMob->m_Family == 201) || (PMob->m_Family == 202) || (PMob->m_Family == 337) || (PMob->m_Family == 397) || (PMob->m_Family == 408))
+                else if (PMob->m_Family == 202)
                 {
-                    mobHP = (baseMobHP + sjHP) * .95;
+                    mobHP = (baseMobHP + sjHP) * 0.95;
                 }
                 // Manticore family has 50% more HP
                 else if (PMob->m_Family == 179)
