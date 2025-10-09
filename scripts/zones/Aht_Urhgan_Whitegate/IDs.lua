@@ -36,7 +36,7 @@ zones[xi.zone.AHT_URHGAN_WHITEGATE] =
         OBTAIN_SCYLDS                 = 1515,  -- You obtain <number> [scyld/scylds]! Current balance: <number> [scyld/scylds].
         HUNT_CANCELED                 = 1519,  -- Hunt canceled.
         RUNIC_PORTAL                  = 4601,  -- You cannot use the runic portal without the Empire's authorization.
-		IMPERIAL_AUTHORIZATION        = 4604,  -- Confirming Imperial authorization... You are authorized to use the runic portal.
+	IMPERIAL_AUTHORIZATION        = 4604,  -- Confirming Imperial authorization... You are authorized to use the runic portal.
         SUFFICIENT_IMPERIAL_STANDING  = 4609,  -- You do not possess sufficient Imperial Standing.
         CONFIRMING                    = 4610,  -- Confirming <assault>...
         RUNIC_DENIED_ASSAULT_OFFSET   = 4618,  -- You have not opened a path between the Chamber of Passage and the Azouph Isle staging point (Leujaoam Sanctum). Unable to use runic portal.
@@ -47,11 +47,11 @@ zones[xi.zone.AHT_URHGAN_WHITEGATE] =
         ASSAULT_FAILED                = 5670,  -- Your mission was not successful; however, the Empire recognizes your contribution and has awarded you Assault Points.
         AUTOMATON_RENAME              = 5847,  -- Your automaton has a new name.
         YOU_CAN_BECOME_PUP            = 5850,  -- You can now become a puppetmaster!
-		PROMOTION_SERGEANT_MAJOR      = 6174,  -- <player> has been promoted to Sergeant Major!
+	PROMOTION_SERGEANT_MAJOR      = 6174,  -- <player> has been promoted to Sergeant Major!
         NYZUL_FAIL                    = 6191,  -- Your mission was not successful. I regret to inform you that the Imperial Army does not officially recognize your efforts within this Assault area.
-		LANCE_CORPORAL                = 6681,  -- ≺player≻ has been promoted to Lance Corporal!
+	LANCE_CORPORAL                = 6681,  -- ≺player≻ has been promoted to Lance Corporal!
         BESIEGED_OFFSET               = 6832,  -- Your Imperial Standing has increased!
-		PROMOTION_SERGEANT            = 7740,  -- <player> has been promoted to Sergeant!
+	PROMOTION_SERGEANT            = 7740,  -- <player> has been promoted to Sergeant!
         PAY_DIVINATION                = 8784,  -- ou pay 1000 gil for the divination.
         MEMBER_OF_SALAHEEMS_SENTINELS = 9262,  -- You are now a member of Salaheem's Sentinels.
         ACCESS_TO_A_MOG_LOCKER        = 9263,  -- ou now have access to a Mog Locker.
@@ -72,7 +72,7 @@ zones[xi.zone.AHT_URHGAN_WHITEGATE] =
         WAHRAGA_SHOP_DIALOG           = 9296,  -- Welcome to the Alchemists' Guild. We open ourselves to the hidden secrets of nature in order to create wonders. Are you looking to buy one of them?
         GATHWEEDA_SHOP_DIALOG         = 9297,  -- Only members of the Alchemists' Guild have the vision to create such fine products... Would you like to purchase something?
         ITEM_DELIVERY_DIALOG          = 9368,  -- You have something you want delivered?
-		FIRST_LIEUTENANT              = 9562,  -- <player> has been promoted to First Lieutenant!
+	FIRST_LIEUTENANT              = 9562,  -- <player> has been promoted to First Lieutenant!
         AUTOMATON_VALOREDGE_UNLOCK    = 9609,  -- You obtain the Valoredge X-900 head and frame!
         AUTOMATON_SHARPSHOT_UNLOCK    = 9614,  -- You obtain the Sharpshot Z-500 head and frame!
         AUTOMATON_STORMWAKER_UNLOCK   = 9619,  -- You obtain the Stormwaker Y-700 head and frame!
@@ -81,10 +81,10 @@ zones[xi.zone.AHT_URHGAN_WHITEGATE] =
         AUTOMATON_ATTACHMENT_UNLOCK   = 9668,  -- You can now equip your automaton with <item>.
         SANCTION                      = 9821,  -- You have received the Empire's Sanction.
         ZASSHAL_DIALOG                = 11015, -- 'ang about. Looks like the permit you got was the last one I 'ad, so it might take me a bit o' time to scrounge up some more. 'ere, don't gimme that look. I'll be restocked before you know it.
-		SECOND_LIEUTENANT             = 12041, -- <player> has been promoted to Second Lieutenant!
-		PROMOTION_CHIEF_SERGEANT      = 12345, -- <player> has been promoted to Chief Sergeant!																					   
-		ALEXANDER_UNLOCKED            = 12374, -- You have gained the ability to summon Alexander!																						  
-		HOPES_REST                    = 13125, -- Our hopes rest upon your able shoulders, noble adventurer.
+	SECOND_LIEUTENANT             = 12041, -- <player> has been promoted to Second Lieutenant!
+	PROMOTION_CHIEF_SERGEANT      = 12345, -- <player> has been promoted to Chief Sergeant!																					   
+	ALEXANDER_UNLOCKED            = 12374, -- You have gained the ability to summon Alexander!																						  
+	HOPES_REST                    = 13125, -- Our hopes rest upon your able shoulders, noble adventurer.
         ALREADY_IN_POSSESSION         = 13131, -- Oh, it seems you are already in possession of one. In that case, you will not be requiring another.
         APPRECIATE_MORE               = 13132, -- I appreciate you bringing me more <item>. However, I'm afraid I can only accept up to <amount> for each <days>. After all, we need to travel light.
         SINGLE_TALLY                  = 13162, -- A single tally seal is proof positive of your prowess as an adventurer. You shan't be requiring another.
@@ -97,7 +97,7 @@ zones[xi.zone.AHT_URHGAN_WHITEGATE] =
     },
     npc =
     {
-		SANRAKU = GetFirstID('Sanraku'),								
+	SANRAKU = GetFirstID('Sanraku'),								
     },
 }
 

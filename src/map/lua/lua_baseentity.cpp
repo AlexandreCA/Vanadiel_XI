@@ -98,15 +98,10 @@
 
 #include "packets/action.h"
 #include "packets/auction_house.h"
-#include "packets/char_abilities.h"
-#include "packets/char_equip.h"
 #include "packets/char_health.h"
 #include "packets/char_job_extra.h"
 #include "packets/char_jobs.h"
-#include "packets/char_mounts.h"
 #include "packets/char_recast.h"
-#include "packets/char_skills.h"
-#include "packets/char_spells.h"
 #include "packets/char_stats.h"
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
@@ -116,7 +111,6 @@
 #include "packets/entity_update.h"
 #include "packets/event.h"
 #include "packets/instance_entry.h"
-#include "packets/linkshell_equip.h"
 #include "packets/menu_jobpoints.h"
 #include "packets/menu_merit.h"
 #include "packets/message_basic.h"
@@ -130,7 +124,6 @@
 #include "packets/monipulator2.h"
 #include "packets/objective_utility.h"
 #include "packets/quest_mission_log.h"
-#include "packets/roe_questlog.h"
 #include "packets/s2c/0x01c_item_max.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "packets/s2c/0x01f_item_list.h"
@@ -139,6 +132,7 @@
 #include "packets/s2c/0x038_schedulor.h"
 #include "packets/s2c/0x039_mapschedulor.h"
 #include "packets/s2c/0x03a_magicschedulor.h"
+#include "packets/s2c/0x050_equip_list.h"
 #include "packets/s2c/0x051_grap_list.h"
 #include "packets/s2c/0x052_eventucoff.h"
 #include "packets/s2c/0x055_scenarioitem.h"
@@ -146,7 +140,12 @@
 #include "packets/s2c/0x05c_pendingnum.h"
 #include "packets/s2c/0x05d_pendingstr.h"
 #include "packets/s2c/0x05f_music.h"
+#include "packets/s2c/0x062_clistatus2.h"
 #include "packets/s2c/0x086_guild_open.h"
+#include "packets/s2c/0x0aa_magic_data.h"
+#include "packets/s2c/0x0ac_command_data.h"
+#include "packets/s2c/0x0ae_mount_data.h"
+#include "packets/s2c/0x0e0_group_comlink.h"
 #include "packets/s2c/0x0f9_res.h"
 #include "packets/server_ip.h"
 #include "packets/shop_items.h"
@@ -4792,7 +4791,7 @@ bool CLuaBaseEntity::addLinkpearl(std::string const& lsname, bool equip)
                     PChar->equipLoc[SLOT_LINK2] = LOC_INVENTORY;
                     PChar->pushPacket<GP_SERV_COMMAND_ITEM_LIST>(PItemLinkPearl, ItemLockFlg::Linkshell);
                     charutils::SaveCharEquip(PChar);
-                    PChar->pushPacket<CLinkshellEquipPacket>(PChar, PItemLinkPearl->GetLSID());
+                    PChar->pushPacket<GP_SERV_COMMAND_GROUP_COMLINK>(PChar, PItemLinkPearl->GetLSID());
                     PChar->pushPacket<GP_SERV_COMMAND_ITEM_ATTR>(PItemLinkPearl, LOC_INVENTORY, PItemLinkPearl->getSlotID());
                     PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>();
                     charutils::LoadInventory(PChar);
@@ -5157,7 +5156,7 @@ void CLuaBaseEntity::lockEquipSlot(uint8 slot)
 
     PChar->m_EquipBlock |= 1 << slot;
     PChar->pushPacket<GP_SERV_COMMAND_GRAP_LIST>(PChar);
-    PChar->pushPacket<CEquipPacket>(0, slot, LOC_INVENTORY);
+    PChar->pushPacket<GP_SERV_COMMAND_EQUIP_LIST>(0, static_cast<SLOTTYPE>(slot), LOC_INVENTORY);
     PChar->pushPacket<CCharJobsPacket>(PChar);
     PChar->updatemask |= UPDATE_LOOK;
 }
@@ -6345,6 +6344,25 @@ void CLuaBaseEntity::setWallhack(bool enabled)
 }
 
 /************************************************************************
+ *  Function: setFreezeFlag()
+ *  Purpose : Locks (or releases) a player, disallowing them from moving.
+ *  Example : player:setFreezeFlag(true)
+ ************************************************************************/
+
+void CLuaBaseEntity::setFreezeFlag(bool isFrozen)
+{
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+        return;
+    }
+
+    auto* PChar            = static_cast<CCharEntity*>(m_PBaseEntity);
+    PChar->isFrozenFlagged = isFrozen;
+    PChar->updatemask |= UPDATE_HP;
+}
+
+/************************************************************************
  *  Function: isJailed()
  *  Purpose : Returns true if a player is a violent felon
  *  Example : if player:isJailed() then
@@ -6612,9 +6630,9 @@ void CLuaBaseEntity::changeJob(uint8 newJob)
 
         PChar->pushPacket<CCharJobsPacket>(PChar);
         PChar->pushPacket<CCharStatsPacket>(PChar);
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
         PChar->pushPacket<CCharRecastPacket>(PChar);
-        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
         PChar->pushPacket<CCharStatusPacket>(PChar);
         PChar->pushPacket<CMenuMeritPacket>(PChar);
         PChar->pushPacket<CMonipulatorPacket1>(PChar);
@@ -6891,9 +6909,9 @@ void CLuaBaseEntity::setLevel(uint8 level)
 
         PChar->pushPacket<CCharJobsPacket>(PChar);
         PChar->pushPacket<CCharStatsPacket>(PChar);
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
         PChar->pushPacket<CCharRecastPacket>(PChar);
-        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
         PChar->pushPacket<CCharStatusPacket>(PChar);
         PChar->pushPacket<CMenuMeritPacket>(PChar);
         PChar->pushPacket<CMonipulatorPacket1>(PChar);
@@ -6948,9 +6966,9 @@ void CLuaBaseEntity::setsLevel(uint8 slevel)
 
     PChar->pushPacket<CCharJobsPacket>(PChar);
     PChar->pushPacket<CCharStatsPacket>(PChar);
-    PChar->pushPacket<CCharSkillsPacket>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
     PChar->pushPacket<CCharRecastPacket>(PChar);
-    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
     PChar->pushPacket<CCharStatusPacket>(PChar);
     PChar->pushPacket<CMenuMeritPacket>(PChar);
     PChar->pushPacket<CMonipulatorPacket1>(PChar);
@@ -7061,10 +7079,10 @@ uint8 CLuaBaseEntity::levelRestriction(sol::object const& level)
             {
                 PChar->pushPacket<CCharJobsPacket>(PChar);
                 PChar->pushPacket<CCharStatsPacket>(PChar);
-                PChar->pushPacket<CCharSkillsPacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
                 PChar->pushPacket<CCharRecastPacket>(PChar);
-                PChar->pushPacket<CCharAbilitiesPacket>(PChar);
-                PChar->pushPacket<CCharSpellsPacket>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
+                PChar->pushPacket<GP_SERV_COMMAND_MAGIC_DATA>(PChar);
                 PChar->pushPacket<CCharStatusPacket>(PChar);
                 PChar->pushPacket<CCharSyncPacket>(PChar);
             }
@@ -8824,7 +8842,7 @@ void CLuaBaseEntity::addKeyItem(const KeyItem keyItemID) const
 
     if (table == 6)
     {
-        PChar->pushPacket<CCharMountsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_MOUNT_DATA>(PChar);
     }
 
     charutils::SaveKeyItems(PChar);
@@ -10409,7 +10427,7 @@ void CLuaBaseEntity::capSkill(uint8 skill)
         PChar->RealSkills.skill[skill]    = maxSkill; // set to capped
         PChar->WorkingSkills.skill[skill] = maxSkill / 10;
         PChar->WorkingSkills.skill[skill] |= 0x8000; // set blue capped flag
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
         charutils::CheckWeaponSkill(PChar, skill);
         /* and ignore this part
         //reapply modifiers if valid
@@ -10452,7 +10470,7 @@ void CLuaBaseEntity::capAllSkills() const
         }
 
         charutils::CheckWeaponSkill(PChar, SKILL_NONE);
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
         return;
     }
 
@@ -10508,7 +10526,7 @@ void CLuaBaseEntity::setSkillLevel(uint8 SkillID, uint16 SkillAmount)
     charutils::CheckWeaponSkill(PChar, SkillID);
     charutils::SaveCharSkills(PChar, SkillID);
 
-    PChar->pushPacket<CCharSkillsPacket>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
 }
 
 /************************************************************************
@@ -10561,7 +10579,7 @@ void CLuaBaseEntity::setSkillRank(uint8 skillID, uint8 newrank)
         jobpointutils::RefreshGiftMods(PChar);
         charutils::BuildingCharSkillsTable(PChar);
         charutils::SaveCharSkills(PChar, skillID);
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
     }
 }
 
@@ -10604,7 +10622,7 @@ void CLuaBaseEntity::addLearnedWeaponskill(uint8 wsUnlockId)
     charutils::addLearnedWeaponskill(PChar, wsUnlockId);
     charutils::BuildingCharWeaponSkills(PChar);
     charutils::SaveLearnedAbilities(PChar);
-    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
 }
 
 /************************************************************************
@@ -10645,7 +10663,7 @@ void CLuaBaseEntity::delLearnedWeaponskill(uint8 wsUnlockId)
     charutils::delLearnedWeaponskill(PChar, wsUnlockId);
     charutils::BuildingCharWeaponSkills(PChar);
     charutils::SaveLearnedAbilities(PChar);
-    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
 }
 
 /************************************************************************
@@ -10712,7 +10730,7 @@ void CLuaBaseEntity::addLearnedAbility(uint16 abilityID)
     {
         charutils::addAbility(PChar, abilityID);
         charutils::SaveLearnedAbilities(PChar);
-        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
         PChar->pushPacket<CMessageBasicPacket>(PChar, PChar, 0, 0, 442);
     }
 }
@@ -10785,7 +10803,7 @@ void CLuaBaseEntity::delLearnedAbility(uint16 abilityID)
     if (charutils::delLearnedAbility(PChar, abilityID))
     {
         charutils::SaveLearnedAbilities(PChar);
-        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
     }
 }
 
@@ -10814,7 +10832,7 @@ void CLuaBaseEntity::addSpell(uint16 spellID, sol::variadic_args va)
     {
         if (sendUpdate)
         {
-            PChar->pushPacket<CCharSpellsPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_MAGIC_DATA>(PChar);
         }
 
         if (!silentLog)
@@ -10896,7 +10914,7 @@ void CLuaBaseEntity::delSpell(uint16 spellID)
     if (charutils::delSpell(PChar, spellID))
     {
         charutils::DeleteSpell(PChar, spellID);
-        PChar->pushPacket<CCharSpellsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_MAGIC_DATA>(PChar);
     }
 }
 
@@ -10920,9 +10938,9 @@ void CLuaBaseEntity::recalculateSkillsTable()
     charutils::BuildingCharSkillsTable(PChar);
     charutils::BuildingCharWeaponSkills(PChar);
 
-    PChar->pushPacket<CCharSkillsPacket>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
     PChar->pushPacket<CCharRecastPacket>(PChar);
-    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
 }
 
 /************************************************************************
@@ -10953,7 +10971,7 @@ void CLuaBaseEntity::recalculateAbilitiesTable()
         charutils::BuildingCharPetAbilityTable(PChar, PPetEntity, PPetEntity->m_PetID);
     }
 
-    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+    PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
 }
 
 /************************************************************************
@@ -12477,7 +12495,7 @@ void CLuaBaseEntity::addRecast(uint8 recastCont, uint16 recastID, uint32 duratio
         if (PBattleEntity->objtype == TYPE_PC)
         {
             CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
-            PChar->pushPacket<CCharSkillsPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
             PChar->pushPacket<CCharRecastPacket>(PChar);
         }
     }
@@ -12528,7 +12546,7 @@ void CLuaBaseEntity::resetRecast(uint8 rType, uint16 recastID)
             PChar->PRecastContainer->Add(recastContainer, recastID, 0s);
         }
 
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
         PChar->pushPacket<CCharRecastPacket>(PChar);
     }
 }
@@ -12549,7 +12567,7 @@ void CLuaBaseEntity::resetRecasts()
 
         PChar->PRecastContainer->Del(RECAST_MAGIC);
         PChar->PRecastContainer->Del(RECAST_ABILITY);
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
         PChar->pushPacket<CCharRecastPacket>(PChar);
     }
 }
@@ -12714,9 +12732,9 @@ void CLuaBaseEntity::recalculateStats()
 
         PChar->pushPacket<CCharJobsPacket>(PChar);
         PChar->pushPacket<CCharStatsPacket>(PChar);
-        PChar->pushPacket<CCharSkillsPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
         PChar->pushPacket<CCharRecastPacket>(PChar);
-        PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+        PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
         PChar->pushPacket<CCharStatusPacket>(PChar);
         PChar->pushPacket<CMenuMeritPacket>(PChar);
         PChar->pushPacket<CMonipulatorPacket1>(PChar);
@@ -18194,14 +18212,14 @@ void CLuaBaseEntity::useMobAbility(sol::variadic_args va)
         return;
     }
 
-    if (va.size() == 2)
+    if (va.size() >= 2)
     {
         CLuaBaseEntity* PLuaBaseEntity = va.get<CLuaBaseEntity*>(1);
         PTarget                        = PLuaBaseEntity ? (CBattleEntity*)PLuaBaseEntity->m_PBaseEntity : nullptr;
     }
 
     std::optional<timer::duration> castTimeOverride = std::nullopt;
-    if (va.size() == 3)
+    if (va.size() >= 3)
     {
         if (va.get_type(2) == sol::type::number)
         {
@@ -18209,8 +18227,17 @@ void CLuaBaseEntity::useMobAbility(sol::variadic_args va)
         }
     }
 
+    bool ignoreDistance = false;
+    if (va.size() >= 4)
+    {
+        if (va.get_type(3) == sol::type::boolean)
+        {
+            ignoreDistance = va.get<bool>(3);
+        }
+    }
+
     // clang-format off
-    m_PBaseEntity->PAI->QueueAction(queueAction_t(0ms, true, [PTarget, skillid, PMobSkill, castTimeOverride](auto PEntity)
+    m_PBaseEntity->PAI->QueueAction(queueAction_t(0ms, true, [PTarget, skillid, PMobSkill, castTimeOverride, ignoreDistance](auto PEntity)
     {
         auto mobObj = dynamic_cast<CMobEntity*>(PEntity);
 
@@ -18218,7 +18245,7 @@ void CLuaBaseEntity::useMobAbility(sol::variadic_args va)
         if (PTarget && mobObj)
         {
             float currentDistance = distance(mobObj->loc.p, PTarget->loc.p);
-            if (currentDistance <= PMobSkill->getDistance())
+            if (ignoreDistance || currentDistance <= PMobSkill->getDistance())
             {
                 PEntity->PAI->MobSkill(PTarget->targid, skillid, castTimeOverride);
             }
@@ -18233,7 +18260,7 @@ void CLuaBaseEntity::useMobAbility(sol::variadic_args va)
                 {
                     // check distance from player or mob will use TP move and 'lock' itself
                     float currentDistance = distance(mobObj->loc.p, defaultTarget->loc.p);
-                    if (currentDistance <= PMobSkill->getDistance())
+                    if (ignoreDistance || currentDistance <= PMobSkill->getDistance())
                     {
                         PEntity->PAI->MobSkill(defaultTarget->targid, skillid, castTimeOverride);
                     }
@@ -19621,6 +19648,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("setGMHidden", CLuaBaseEntity::setGMHidden);
     SOL_REGISTER("getWallhack", CLuaBaseEntity::getWallhack);
     SOL_REGISTER("setWallhack", CLuaBaseEntity::setWallhack);
+    SOL_REGISTER("setFreezeFlag", CLuaBaseEntity::setFreezeFlag);
 
     SOL_REGISTER("isJailed", CLuaBaseEntity::isJailed);
     SOL_REGISTER("jail", CLuaBaseEntity::jail);

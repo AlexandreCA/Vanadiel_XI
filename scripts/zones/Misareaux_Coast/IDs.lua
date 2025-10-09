@@ -25,6 +25,7 @@ zones[xi.zone.MISAREAUX_COAST] =
         BEEP_BEEP                     = 7587, -- Beep...beep...beep...beep...
         BEEP_CLICK_WHIR               = 7588, -- Beeeep. Click, whirrr...
         BUZZ_BEEP_BEEP                = 7589, -- Buzz... Beep beep!
+        FOUL_STENCH_OF_DEATH          = 7590, -- You sense the foul stench of death...
         CREATURE_HAS_APPEARED         = 7614, -- A creature has appeared out of nowhere!
         NOTHING_ELSE_OF_INTEREST      = 7615, -- There is nothing else of interest here.
         LOGGING_IS_POSSIBLE_HERE      = 7616, -- Logging is possible here if you have <item>.
@@ -41,12 +42,15 @@ zones[xi.zone.MISAREAUX_COAST] =
     },
     mob =
     {
+        ALSHA            = GetFirstID('Alsha'),
+        BLOODY_COFFIN    = GetFirstID('Bloody_Coffin'),
+        BOGGELMANN       = GetFirstID('Boggelmann'),
+        GIGAS_WARWOLF    = GetTableOfIDs('Gigas_Warwolf'),
+        GIGASS_SHEEP     = GetTableOfIDs('Gigass_Sheep'),
+        GRATION          = GetFirstID('Gration'),
         OKYUPETE         = GetFirstID('Okyupete'),
         PM6_2_MOB_OFFSET = GetFirstID('Warder_Aglaia'),
-        BOGGELMANN       = GetFirstID('Boggelmann'),
-        GRATION          = GetFirstID('Gration'),
         ZIPHIUS          = GetFirstID('Ziphius'),
-        ALSHA            = GetFirstID('Alsha'),
     },
     npc =
     {
