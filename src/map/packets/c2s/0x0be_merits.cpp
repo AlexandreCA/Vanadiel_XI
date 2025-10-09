@@ -22,10 +22,8 @@
 #include "0x0be_merits.h"
 
 #include "entities/charentity.h"
-#include "packets/char_abilities.h"
 #include "packets/char_job_extra.h"
 #include "packets/char_recast.h"
-#include "packets/char_skills.h"
 #include "packets/char_stats.h"
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
@@ -34,6 +32,8 @@
 #include "packets/message_basic.h"
 #include "packets/monipulator1.h"
 #include "packets/monipulator2.h"
+#include "packets/s2c/0x062_clistatus2.h"
+#include "packets/s2c/0x0ac_command_data.h"
 #include "utils/charutils.h"
 
 auto GP_CLI_COMMAND_MERITS::validate(MapSession* PSession, const CCharEntity* PChar) const -> PacketValidationResult
@@ -100,9 +100,9 @@ void GP_CLI_COMMAND_MERITS::process(MapSession* PSession, CCharEntity* PChar) co
                     PChar->addMP(PChar->GetMaxMP());
                     PChar->pushPacket<CCharStatusPacket>(PChar);
                     PChar->pushPacket<CCharStatsPacket>(PChar);
-                    PChar->pushPacket<CCharSkillsPacket>(PChar);
+                    PChar->pushPacket<GP_SERV_COMMAND_CLISTATUS2>(PChar);
                     PChar->pushPacket<CCharRecastPacket>(PChar);
-                    PChar->pushPacket<CCharAbilitiesPacket>(PChar);
+                    PChar->pushPacket<GP_SERV_COMMAND_COMMAND_DATA>(PChar);
                     PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                     PChar->pushPacket<CCharJobExtraPacket>(PChar, true);
                     PChar->pushPacket<CCharSyncPacket>(PChar);
