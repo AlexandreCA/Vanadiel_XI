@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,19 +19,22 @@
 ===========================================================================
 */
 
-#ifndef _CSHOPMENUPACKET_H
-#define _CSHOPMENUPACKET_H
+#pragma once
 
-#include "common/cbasetypes.h"
-
-#include "basic.h"
+#include "base.h"
 
 class CCharEntity;
 
-class CShopMenuPacket : public CBasicPacket
+// https://github.com/atom0s/XiPackets/tree/main/world/server/0x003E
+// This packet is sent by the server to inform the client to prepare to open a shop window.
+class GP_SERV_COMMAND_SHOP_OPEN final : public GP_SERV_PACKET<PacketS2C::GP_SERV_COMMAND_SHOP_OPEN, GP_SERV_COMMAND_SHOP_OPEN>
 {
 public:
-    CShopMenuPacket(CCharEntity* PChar);
-};
+    struct PacketData
+    {
+        uint16_t ShopListNum; // PS2: ShopListNum
+        uint16_t padding00;
+    };
 
-#endif
+    GP_SERV_COMMAND_SHOP_OPEN(const CCharEntity* PChar);
+};

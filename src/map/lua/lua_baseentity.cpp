@@ -132,6 +132,8 @@
 #include "packets/s2c/0x038_schedulor.h"
 #include "packets/s2c/0x039_mapschedulor.h"
 #include "packets/s2c/0x03a_magicschedulor.h"
+#include "packets/s2c/0x03c_shop_list.h"
+#include "packets/s2c/0x03e_shop_open.h"
 #include "packets/s2c/0x050_equip_list.h"
 #include "packets/s2c/0x051_grap_list.h"
 #include "packets/s2c/0x052_eventucoff.h"
@@ -148,8 +150,6 @@
 #include "packets/s2c/0x0e0_group_comlink.h"
 #include "packets/s2c/0x0f9_res.h"
 #include "packets/server_ip.h"
-#include "packets/shop_items.h"
-#include "packets/shop_menu.h"
 
 #include "utils/battleutils.h"
 #include "utils/blueutils.h"
@@ -2492,8 +2492,8 @@ void CLuaBaseEntity::sendMenu(uint32 menu)
             PChar->pushPacket<GP_SERV_COMMAND_OPENMOGMENU>();
             break;
         case 2:
-            PChar->pushPacket<CShopMenuPacket>(PChar);
-            PChar->pushPacket<CShopItemsPacket>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_SHOP_OPEN>(PChar);
+            PChar->pushPacket<GP_SERV_COMMAND_SHOP_LIST>(PChar);
             break;
         case 3:
             PChar->pushPacket<CAuctionHousePacket>(GP_CLI_COMMAND_AUC_COMMAND::Open);

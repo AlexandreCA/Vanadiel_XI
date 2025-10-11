@@ -28,11 +28,11 @@
 #include "packets/char_status.h"
 #include "packets/char_sync.h"
 #include "packets/menu_merit.h"
-#include "packets/merit_points_categories.h"
 #include "packets/message_basic.h"
 #include "packets/monipulator1.h"
 #include "packets/monipulator2.h"
 #include "packets/s2c/0x062_clistatus2.h"
+#include "packets/s2c/0x08c_merit.h"
 #include "packets/s2c/0x0ac_command_data.h"
 #include "utils/charutils.h"
 
@@ -84,7 +84,7 @@ void GP_CLI_COMMAND_MERITS::process(MapSession* PSession, CCharEntity* PChar) co
                     PChar->pushPacket<CMenuMeritPacket>(PChar);
                     PChar->pushPacket<CMonipulatorPacket1>(PChar);
                     PChar->pushPacket<CMonipulatorPacket2>(PChar);
-                    PChar->pushPacket<CMeritPointsCategoriesPacket>(PChar, merit);
+                    PChar->pushPacket<GP_SERV_COMMAND_MERIT>(PChar, merit);
 
                     charutils::SaveCharExp(PChar, PChar->GetMJob());
                     PChar->PMeritPoints->SaveMeritPoints(PChar->id);

@@ -1,7 +1,7 @@
-﻿/*
+/*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2025 LandSandBoat Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,14 +19,14 @@
 ===========================================================================
 */
 
-#include "shop_menu.h"
+#include "0x03e_shop_open.h"
+
 #include "entities/charentity.h"
 #include "trade_container.h"
 
-CShopMenuPacket::CShopMenuPacket(CCharEntity* PChar)
+GP_SERV_COMMAND_SHOP_OPEN::GP_SERV_COMMAND_SHOP_OPEN(const CCharEntity* PChar)
 {
-    this->setType(0x3E);
-    this->setSize(0x08);
+    auto& packet = this->data();
 
-    ref<uint8>(0x04) = PChar->Container->getItemsCount();
+    packet.ShopListNum = PChar->Container->getItemsCount();
 }

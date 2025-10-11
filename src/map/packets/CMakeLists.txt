@@ -53,10 +53,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/fish_ranking.h
     ${CMAKE_CURRENT_SOURCE_DIR}/instance_entry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/instance_entry.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/jobpoint_details.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/jobpoint_details.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/jobpoint_update.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/jobpoint_update.h
     ${CMAKE_CURRENT_SOURCE_DIR}/linkshell_message.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/linkshell_message.h
     ${CMAKE_CURRENT_SOURCE_DIR}/macroequipset.cpp
@@ -67,8 +63,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_jobpoints.h
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_merit.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_merit.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/merit_points_categories.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/merit_points_categories.h
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_unity.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/menu_unity.h
     ${CMAKE_CURRENT_SOURCE_DIR}/message_basic.cpp
@@ -111,10 +105,6 @@ set(PACKET_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/server_ip.h
     ${CMAKE_CURRENT_SOURCE_DIR}/server_message.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/server_message.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/shop_items.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/shop_items.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/shop_menu.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/shop_menu.h
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effects.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/status_effects.h
     ${CMAKE_CURRENT_SOURCE_DIR}/synth_suggestion.cpp

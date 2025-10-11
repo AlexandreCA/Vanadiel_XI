@@ -35,8 +35,12 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x039_mapschedulor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x03a_magicschedulor.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x03a_magicschedulor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x03c_shop_list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x03c_shop_list.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x03d_shop_sell.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x03d_shop_sell.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x03e_shop_open.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x03e_shop_open.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x03f_shop_buy.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x03f_shop_buy.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x041_black_list.h
@@ -84,6 +88,10 @@ set(PACKET_S2C_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/0x085_guild_selllist.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x086_guild_open.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x086_guild_open.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x08c_merit.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x08c_merit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x08d_job_points.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/0x08d_job_points.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0aa_magic_data.h
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0aa_magic_data.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/0x0ac_command_data.h
